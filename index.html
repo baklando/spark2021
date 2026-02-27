@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,7 @@
         /* 1. 기본 테마 설정 */
         :root {
             --primary-color: #0a2342; /* 네이비 */
-            --accent-color: #2ecc71;  /* 연두색 (버튼 색상) */
+            --accent-color: #2ecc71;  /* 연두색 */
             --text-color: #333;
             --bg-color: #f8f9fa;
         }
@@ -23,7 +23,7 @@
             line-height: 1.6;
         }
 
-        /* 2. 헤더: 로고 이미지와 메뉴 */
+        /* 2. 헤더 */
         header {
             background: white;
             padding: 0.5rem 10%;
@@ -36,10 +36,7 @@
             z-index: 100;
         }
 
-        .logo-img {
-            height: 45px; /* 로고 크기 */
-            display: block;
-        }
+        .logo-img { height: 45px; display: block; }
 
         nav a {
             text-decoration: none;
@@ -50,29 +47,8 @@
         }
 
         nav a:hover { color: var(--accent-color); }
-     <section id="apply" style="padding: 80px 10%; background: #fff;">
-    <div style="max-width: 500px; margin: 0 auto; border: 1px solid #ddd; padding: 30px; border-radius: 15px;">
-        <h2 style="text-align: center; color: var(--primary-color);">SPARK 10기 지원하기</h2>
-        <form id="submit-to-google">
-            <div style="margin-bottom: 15px;">
-                <label>이름</label>
-                <input type="text" name="name" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px;">
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label>학과 / 학번</label>
-                <input type="text" name="major" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px;">
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label>지원동기</label>
-                <textarea name="reason" rows="5" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px; resize:none;"></textarea>
-            </div>
-            <button type="submit" class="btn-apply" style="width:100%; border:none; cursor:pointer;">지원서 제출하기</button>
-        </form>
-        <span id="msg" style="display:block; margin-top:10px; text-align:center; color: var(--accent-color);"></span>
-    </div>
-</section>
 
-        /* 3. 히어로 섹션: 파란 배경 */
+        /* 3. 히어로 섹션 */
         .hero {
             height: 75vh;
             display: flex;
@@ -85,59 +61,48 @@
             padding: 0 20px;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; letter-spacing: -1px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
 
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            opacity: 0.9;
-        }
-
-        /* 4. [중요] 지금 지원하기 버튼: 연두색 타원형 */
+        /* 지원하기 타원형 버튼 */
         .cta-button {
-            background-color: var(--accent-color); /* 연두색 배경 */
+            background-color: var(--accent-color);
             color: white;
-            padding: 18px 60px;       /* 좌우를 길게 해서 타원 느낌 */
-            border-radius: 100px;     /* 완벽한 타원을 만드는 설정 */
+            padding: 18px 60px;
+            border-radius: 100px;
             text-decoration: none;
             font-weight: bold;
             font-size: 1.2rem;
             display: inline-block;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            border: none;
+            cursor: pointer;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
-            background-color: #27ae60; /* 마우스 올리면 조금 진한 연두색 */
+            background-color: #27ae60;
             box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
         }
 
-        /* 5. 소개 섹션 */
-        .about-section { padding: 100px 10%; background: white; }
-        .section-title { text-align: center; color: var(--primary-color); font-size: 2.2rem; margin-bottom: 40px; }
-        .about-content { max-width: 850px; margin: 0 auto; text-align: center; font-size: 1.1rem; }
+        /* 4. 섹션 공통 */
+        section { padding: 100px 10%; scroll-margin-top: 80px; }
+        .section-title { text-align: center; color: var(--primary-color); font-size: 2.5rem; margin-bottom: 50px; }
 
-        /* 6. 갤러리 섹션 */
-        .archive-section { padding: 100px 10%; background: var(--bg-color); }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        .gallery-item { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .gallery-item img { width: 100%; height: 250px; object-fit: cover; }
-        .gallery-item p { padding: 15px; text-align: center; font-weight: bold; color: var(--primary-color); }
-       /* 7. 소식 섹션 */
-.news-section { padding: 100px 10%; background: white; scroll-margin-top: 80px; }
-.news-list { max-width: 800px; margin: 0 auto; }
-.news-item { display: flex; padding: 20px 0; border-bottom: 1px solid #eee; align-items: center; }
-.news-date { font-weight: bold; color: var(--accent-color); margin-right: 30px; min-width: 100px; }
-.news-text { margin: 0; color: #444; }
+        /* 소개 섹션 카드 */
+        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .about-card { background: white; padding: 40px 25px; border-radius: 20px; text-align: center; border: 1px solid #eee; transition: 0.3s; }
+        .about-card:hover { transform: translateY(-10px); background: #f1f3f5; }
+        .card-icon { font-size: 3rem; margin-bottom: 20px; }
+
+        /* 인스타 스타일 그리드 */
+        .insta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .insta-item { position: relative; aspect-ratio: 1/1; overflow: hidden; border-radius: 15px; }
+        .insta-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .insta-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); color:white; display:flex; justify-content:center; align-items:center; opacity:0; transition:0.3s; }
+        .insta-item:hover .insta-overlay { opacity: 1; }
+        .insta-item:hover img { transform: scale(1.1); }
 
         footer { text-align: center; padding: 50px; background: #eee; font-size: 0.9rem; color: #777; }
     </style>
@@ -150,233 +115,118 @@
             <a href="#about">소개</a>
             <a href="#activity">활동</a>
             <a href="#news">소식</a>
-           <a href="https://docs.google.com/document/d/1pvLWyicnvuVUp1Q3HuoDcOUBwWtD5ruR/edit" 
-   target="_blank" 
-   class="btn-apply">
-   지원
-</a>
+            <a href="#apply">지원</a>
         </nav>
     </header>
-<section class="about-section" id="about">
-        <div class="container">
-            <h2 class="section-title">About SPARK</h2>
-            <div class="about-content">
-                <p class="main-description">
-                    <strong>생명과학 연합학술동아리 SPARK</strong><br>
-                    (Scientific Poster on Analysis of Research Knowledge)는<br>
-                    과학 분야의 논문 분석을 기반으로 한 <strong>과학 포스터 제작 활동</strong>을 중심으로,<br>
-                    학생들의 폭넓은 과학적 지식 함양을 목표로 하고 있습니다.
-                </p>
-                
-                <p class="history-text">
-                    2021년 9월 1기 활동을 시작으로 현재까지 열정적인 활동을 이어가고 있습니다.
-                </p>
 
-                <div class="about-grid">
-                    <div class="about-card">
-                        <div class="card-icon">🎓</div>
-                        <h4>다양한 네트워크</h4>
-                        <p>역대 기수 포함 약 30여 개의 대학교에서 모인 생명과학 열정 가득한 대학생들</p>
-                    </div>
-                    <div class="about-card">
-                        <div class="card-icon">🔬</div>
-                        <h4>논문 스터디</h4>
-                        <p>체계적인 프로세스를 통한 생명과학 최신 논문 분석 및 심층 스터디 진행</p>
-                    </div>
-                    <div class="about-card">
-                        <div class="card-icon">🖼️</div>
-                        <h4>포스터 세션</h4>
-                        <p>6개월에 한 번, 한 기수당 1회의 학술 포스터 발표회 개최</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <style>
-        .about-section {
-            padding: 100px 10%;
-            background: white;
-            scroll-margin-top: 80px; /* 메뉴 클릭 시 헤더에 안 가려지게 */
-        }
-        .container { max-width: 1100px; margin: 0 auto; }
-        .section-title { 
-            text-align: center; 
-            color: #0a2342; 
-            font-size: 2.5rem; 
-            margin-bottom: 50px; 
-        }
-        .about-content { text-align: center; }
-        .main-description {
-            font-size: 1.25rem;
-            color: #333;
-            line-height: 1.8;
-            margin-bottom: 25px;
-            word-break: keep-all;
-        }
-        .history-text { color: #666; margin-bottom: 60px; }
-        .about-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        .about-card {
-            background: #f8f9fa;
-            padding: 40px 25px;
-            border-radius: 20px;
-            transition: transform 0.3s ease;
-            border: 1px solid #eee;
-        }
-        .about-card:hover { transform: translateY(-10px); background: #f1f3f5; }
-        .card-icon { font-size: 3rem; margin-bottom: 20px; }
-        .about-card h4 { color: #0a2342; font-size: 1.3rem; margin-bottom: 15px; }
-        .about-card p { color: #555; line-height: 1.6; font-size: 0.95rem; }
-      /* 7. 소식 섹션 (인스타그램 스타일 그리드) */
-.news-section { 
-    padding: 100px 10%; 
-    background: white; 
-    scroll-margin-top: 80px; 
-}
-
-.insta-grid {
-    display: grid;
-    /* 화면 너비에 따라 자동으로 사진 개수 조절 */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-    gap: 20px;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.insta-item {
-    position: relative;
-    display: block;
-    aspect-ratio: 1 / 1; /* 인스타처럼 완벽한 정사각형 유지 */
-    overflow: hidden;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.insta-item img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; /* 사진이 찌그러지지 않게 꽉 채움 */
-    transition: transform 0.3s ease; 
-}
-
-/* 마우스를 올렸을 때 나타나는 검은색 반투명 레이어 */
-.insta-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0; /* 평소에는 숨김 */
-    transition: opacity 0.3s ease;
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-/* 마우스 올렸을 때 사진 확대 및 레이어 표시 효과 */
-.insta-item:hover img { transform: scale(1.1); }
-.insta-item:hover .insta-overlay { opacity: 1; }
-    </style>
     <section class="hero">
         <h1>Exploring Life, Ignite Ideas</h1>
         <p>생명과학의 경이로움을 탐구하는 학술 공동체, SPARK</p>
-        <a href="https://linktr.ee/spark_2021" target="_blank" class="cta-button">지금 지원하기</a>
+        <a href="#apply" class="cta-button">지금 지원하기</a>
     </section>
 
-   <section class="archive-section" id="activity">
-        <h2 class="section-title">Archive</h2>
-        <div class="gallery-grid">
-            
-            <div class="gallery-item">
-                <img src="photo1.png" alt="정기 학술 세미나" class="activity-photo">
-                <p>정기 학술 세미나</p>
+    <section id="about" class="about-section">
+        <h2 class="section-title">About SPARK</h2>
+        <div class="about-grid">
+            <div class="about-card">
+                <div class="card-icon">🎓</div>
+                <h4>다양한 네트워크</h4>
+                <p>약 30여 개의 대학교에서 모인 생명과학 열정 가득한 대학생들</p>
             </div>
-
-            <div class="gallery-item">
-                <img src="photo2.png" alt="포스터 세션" class="activity-photo">
-                <p>포스터 세션</p>
+            <div class="about-card">
+                <div class="card-icon">🔬</div>
+                <h4>논문 스터디</h4>
+                <p>체계적인 프로세스를 통한 생명과학 최신 논문 분석 및 심층 스터디</p>
             </div>
-
-            <div class="gallery-item">
-                <img src="photo3.png" alt="외부 활동" class="activity-photo">
-                <p>외부 활동</p>
+            <div class="about-card">
+                <div class="card-icon">🖼️</div>
+                <h4>포스터 세션</h4>
+                <p>6개월에 한 번 개최되는 정기 학술 포스터 발표회</p>
             </div>
-
         </div>
     </section>
 
-  <section class="news-section" id="news">
-    <div class="container">
+    <section id="activity" style="background:#f8f9fa;">
+        <h2 class="section-title">Archive</h2>
+        <div class="insta-grid">
+            <div class="insta-item"><img src="photo1.png" alt="활동1"><div class="insta-overlay">정기 세미나</div></div>
+            <div class="insta-item"><img src="photo2.png" alt="활동2"><div class="insta-overlay">포스터 세션</div></div>
+            <div class="insta-item"><img src="photo3.png" alt="활동3"><div class="insta-overlay">외부 활동</div></div>
+        </div>
+    </section>
+
+    <section id="news">
         <h2 class="section-title">Latest News</h2>
-        <p style="text-align:center; color:#888; margin-bottom:40px;">사진을 클릭하면 SPARK 소식으로 연결됩니다.</p>
-        
         <div class="insta-grid">
             <a href="https://www.instagram.com/spark__2021/" target="_blank" class="insta-item">
-                <img src="news1.jpg" alt="인스타 소식">
-                <div class="insta-overlay"><span>자세히 보기</span></div>
+                <img src="news1.jpg" alt="인스타">
+                <div class="insta-overlay">Instagram 보기</div>
             </a>
             <a href="https://cafe.naver.com/spark0326" target="_blank" class="insta-item">
-                <img src="news2.jpg" alt="네이버 카페">
-                <div class="insta-overlay"><span>자세히 보기</span></div>
+                <img src="news2.jpg" alt="카페">
+                <div class="insta-overlay">Naver Cafe 보기</div>
             </a>
-            <a href="https://www.linkedin.com/in/spark-%EC%83%9D%EB%AA%85%EA%B3%BC%ED%95%99-%EC%97%B0%ED%95%A9%ED%95%99%EC%88%A0%EB%8F%99%EC%95%84%EB%A6%AC-2748612b2/" target="_blank" class="insta-item">
+            <a href="https://www.linkedin.com/..." target="_blank" class="insta-item">
                 <img src="news3.jpg" alt="링크드인">
-                <div class="insta-overlay"><span>자세히 보기</span></div>
+                <div class="insta-overlay">LinkedIn 보기</div>
             </a>
         </div>
-    </div>
-</section>
-<section id="apply" style="padding: 80px 10%; text-align: center; background-color: #fff;">
-    <h2 style="color: var(--primary-color);">Join SPARK 10th</h2>
-    <p>2026년 상반기 SPARK와 함께할 10기 신입부원을 모집합니다. </p>
-    <p style="font-size: 0.9rem; color: #666; margin-bottom: 30px;">
-        아래 버튼을 눌러 양식을 확인한 후 작성하여 제출해 주세요.
-    </p>
-    
-    <a href="https://docs.google.com/document/d/1pvLWyicnvuVUp1Q3HuoDcOUBwWtD5ruR/edit" 
-       target="_blank" 
-       class="btn-apply" 
-       style="display: inline-block; text-decoration: none;">
-       10기 지원서 양식 확인하기
-    </a>
-</section>
+    </section>
+
+    <section id="apply" style="background-color: white;">
+        <div style="max-width: 500px; margin: 0 auto; border: 1px solid #ddd; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <h2 style="text-align: center; color: var(--primary-color); margin-top:0;">SPARK 10기 지원하기</h2>
+            <p style="text-align:center; font-size:0.9rem; color:#666; margin-bottom:30px;">
+                양식은 <a href="https://docs.google.com/document/d/1pvLWyicnvuVUp1Q3HuoDcOUBwWtD5ruR/edit" target="_blank" style="color:var(--accent-color);">이곳</a>에서 확인 가능합니다.
+            </p>
+            
+            <form id="submit-to-google">
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight:bold;">이름</label>
+                    <input type="text" name="name" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight:bold;">학과 / 학번</label>
+                    <input type="text" name="major" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight:bold;">지원동기 및 한마디</label>
+                    <textarea name="reason" rows="5" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; resize:none; box-sizing: border-box;"></textarea>
+                </div>
+                <button type="submit" class="cta-button" style="width:100%; padding:15px;">지원서 제출하기</button>
+            </form>
+            <span id="msg" style="display:block; margin-top:15px; text-align:center; font-weight:bold; color: var(--accent-color);"></span>
+        </div>
+    </section>
+
     <footer>
         <p>&copy; 2026 SPARK. All rights reserved.</p>
     </footer>
 
+    <script>
+        const scriptURL = 'https://script.google.com/a/macros/spark2021.com/s/AKfycbyXhKQJf6B4jlmvamNFlKRVz3za9qeUzKJ0r3szdE-SFMyo-Pq0WVJV4HboZhxBuUAA8A/exec'
+        const form = document.forms['submit-to-google']
+        const msg = document.getElementById("msg")
+
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            msg.innerHTML = "제출 중입니다... 잠시만 기다려주세요."
+            msg.style.color = "#666"
+            
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                msg.innerHTML = "🎉 성공적으로 제출되었습니다!"
+                msg.style.color = "var(--accent-color)"
+                form.reset()
+                setTimeout(() => { msg.innerHTML = "" }, 5000)
+            })
+            .catch(error => {
+                msg.innerHTML = "❌ 오류가 발생했습니다. 다시 시도해주세요."
+                msg.style.color = "red"
+                console.error('Error!', error.message)
+            })
+        })
+    </script>
 </body>
-<script>
-  const scriptURL = 'https://script.google.com/a/macros/spark2021.com/s/AKfycbyXhKQJf6B4jlmvamNFlKRVz3za9qeUzKJ0r3szdE-SFMyo-Pq0WVJV4HboZhxBuUAA8A/exec'
-  const form = document.forms['submit-to-google']
-  const msg = document.getElementById("msg")
-
-  form.addEventListener('submit', e => {
-    e.preventDefault()
-    msg.innerHTML = "제출 중입니다..."
-    
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      .then(response => {
-          msg.innerHTML = "성공적으로 제출되었습니다!"
-          setTimeout(function(){
-              msg.innerHTML = ""
-          }, 5000)
-          form.reset()
-      })
-      .catch(error => {
-          msg.innerHTML = "오류가 발생했습니다. 다시 시도해주세요."
-          console.error('Error!', error.message)
-      })
-  })
-</script>
 </html>
-
-
-
-
-
-
+       
