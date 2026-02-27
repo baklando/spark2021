@@ -173,140 +173,126 @@
         </div>
     </section>
 
-    <section id="apply" style="background-color: white;">
-        <div style="max-width: 500px; margin: 0 auto; border: 1px solid #ddd; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-            <h2 style="text-align: center; color: var(--primary-color); margin-top:0;">SPARK 지원하기</h2>
-            <p style="text-align:center; font-size:0.9rem; color:#666; margin-bottom:30px;">
-                양식은 <a href="https://docs.google.com/document/d/1pvLWyicnvuVUp1Q3HuoDcOUBwWtD5ruR/edit" target="_blank" style="color:var(--accent-color);">이곳</a>에서 확인 가능합니다.
-            </p>
-            
-            <form id="submit-to-google">
-                <div style="margin-bottom: 20px;">
-    <label style="font-weight:bold;">지원서 업로드 (PDF)</label>
-    <input type="file" id="fileInput" accept=".pdf" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:8px;">
-    <p style="font-size:0.8rem; color:#888; margin-top:5px;">* PDF 형식만 업로드 가능합니다.</p>
-</div>
-                <div style="margin-bottom: 15px;">
-                    <label style="font-weight:bold;">이름</label>
-                    <input type="text" name="name" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="font-weight:bold;">학과 / 학번</label>
-                    <input type="text" name="major" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="font-weight:bold;">연락처</label>
-                    <textarea name="reason" rows="5" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; resize:none; box-sizing: border-box;"></textarea>
-                </div>
-                <button type="submit" class="cta-button" style="width:100%; padding:15px;">지원서 제출하기</button>
-            </form>
-            <span id="msg" style="display:block; margin-top:15px; text-align:center; font-weight:bold; color: var(--accent-color);"></span>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 SPARK. All rights reserved.</p>
-    </footer>
+   <section id="apply" style="padding: 80px 10%; background-color: white;">
+    <div style="max-width: 500px; margin: 0 auto; border: 1px solid #ddd; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        <h2 style="text-align: center; color: var(--primary-color); margin-top:0;">SPARK 10기 지원하기</h2>
+        
+        <form id="spark-form">
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight:bold;">지원서 업로드 (PDF)</label>
+                <input type="file" id="fileInput" accept=".pdf" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:8px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight:bold;">이름</label>
+                <input type="text" name="user_name" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight:bold;">학과 / 학번</label>
+                <input type="text" name="user_major" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight:bold;">연락처 및 한마디</label>
+                <textarea name="user_reason" rows="5" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; resize:none; box-sizing: border-box;"></textarea>
+            </div>
+            <button type="submit" id="submit-btn" class="cta-button" style="width:100%; padding:15px; border:none; cursor:pointer;">지원서 제출하기</button>
+        </form>
+        <span id="form-msg" style="display:block; margin-top:15px; text-align:center; font-weight:bold;"></span>
+    </div>
+</section>
 
 <script>
-    // 1. 설정: 지원 기간 및 구글 웹 앱 URL
-    const startDate = new Date(2026, 1, 4, 0, 0);  // 2026년 2월 4일
-    const endDate = new Date(2026, 2, 7, 23, 59);   // 2026년 3월 7일
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxZ5Qp5NAHeirv5WSga7e5evQS7EWmMu3tq3CjKJPgvJXwF8kiFClQO7Y2ew_L8dsQzng/exec';
+(function() {
+    // 1. 설정 (날짜 및 URL)
+    const START_DATE = new Date(2026, 1, 4, 0, 0); 
+    const END_DATE = new Date(2026, 2, 7, 23, 59);
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzM5mswr5CtJniz-QOZWJETKNoDozZ8JzBgL78L1kWUV-hp4iZwdlIBb_59v8o1zt_z0A/exec';
 
-    // 2. 공통 요소 가져오기 (중복 선언 방지)
-    const form = document.getElementById('submit-to-google');
-    const msg = document.getElementById("msg");
-    const submitBtn = form.querySelector('button[type="submit"]');
+    const applyForm = document.getElementById('spark-form');
+    const msgArea = document.getElementById('form-msg');
+    const btn = document.getElementById('submit-btn');
 
-    // 3. 지원 기간 체크 함수
-    function checkApplyPeriod() {
+    // 2. 기간 체크
+    function checkDate() {
         const now = new Date();
-        if (now < startDate) {
-            submitBtn.disabled = true;
-            submitBtn.innerText = "지원 예정입니다";
-            submitBtn.style.backgroundColor = "#ccc";
-            msg.innerHTML = "지원 기간이 아닙니다. (2/4부터 시작)";
-        } else if (now > endDate) {
-            submitBtn.disabled = true;
-            submitBtn.innerText = "지원 종료되었습니다";
-            submitBtn.style.backgroundColor = "#ccc";
-            msg.innerHTML = "10기 신입부원 모집이 마감되었습니다.";
-        } else {
-            submitBtn.disabled = false;
+        if (now < START_DATE) {
+            btn.disabled = true;
+            btn.innerText = "지원 예정 (2/4~)";
+            btn.style.backgroundColor = "#ccc";
+        } else if (now > END_DATE) {
+            btn.disabled = true;
+            btn.innerText = "지원 마감";
+            btn.style.backgroundColor = "#ccc";
         }
     }
+    checkDate();
 
-    // 4. 제출 이벤트 처리 (하나의 리스너로 통합)
-    form.addEventListener('submit', e => {
-        // [중요] 새로고침 및 위로 튕김 방지
-        e.preventDefault();
-        
-        // 버튼 비활성화
-        submitBtn.disabled = true;
-        submitBtn.innerText = "제출 중... 잠시만 기다려주세요.";
-        msg.innerHTML = "파일 및 데이터를 처리 중입니다...";
-        msg.style.color = "#666";
+    // 3. 제출 이벤트
+    applyForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // [필수] 새로고침 방지
+        e.stopPropagation(); // [필수] 이벤트 전파 방지
+
+        btn.disabled = true;
+        btn.innerText = "제출 중...";
+        msgArea.innerText = "데이터 전송 중입니다. 페이지를 이동하지 마세요.";
+        msgArea.style.color = "#666";
 
         const fileInput = document.getElementById('fileInput');
         const file = fileInput.files[0];
-
-        if (!file) {
-            alert("PDF 파일을 선택해 주세요!");
-            submitBtn.disabled = false;
-            submitBtn.innerText = "지원서 제출하기";
-            return;
-        }
-
         const reader = new FileReader();
+
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
-            
             const payload = {
                 fileBase64: base64Data,
                 fileName: file.name,
                 mimeType: file.type,
-                name: form.elements['name'].value,
-                major: form.elements['major'].value,
-                reason: form.elements['reason'].value
+                name: applyForm.elements['user_name'].value,
+                major: applyForm.elements['user_major'].value,
+                reason: applyForm.elements['user_reason'].value
             };
 
-            fetch(scriptURL, {
+            fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify(payload)
             })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 if(data.result === "success") {
-                    msg.innerHTML = "🎉 성공적으로 제출되었습니다!";
-                    msg.style.color = "var(--accent-color)";
-                    form.reset();
+                    msgArea.innerText = "🎉 제출 성공! 확인 후 연락드리겠습니다.";
+                    msgArea.style.color = "#2ecc71";
+                    applyForm.reset();
                 } else {
-                    throw new Error(data.message);
+                    msgArea.innerText = "❌ 오류: " + data.message;
+                    msgArea.style.color = "red";
                 }
             })
-            .catch(error => {
-                msg.innerHTML = "❌ 제출 실패: 다시 시도해주세요.";
-                msg.style.color = "red";
-                console.error('Error!', error.message);
+            .catch(err => {
+                msgArea.innerText = "❌ 네트워크 오류가 발생했습니다.";
+                msgArea.style.color = "red";
+                console.error(err);
             })
             .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "지원서 제출하기";
-                checkApplyPeriod(); // 제출 후 기간 상태 다시 확인
+                btn.disabled = false;
+                btn.innerText = "지원서 제출하기";
+                checkDate();
             });
         };
-        
-        reader.readAsDataURL(file);
-    });
 
-    // 페이지 로드 시 기간 확인 실행
-    checkApplyPeriod();
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            alert("파일을 선택해 주세요.");
+            btn.disabled = false;
+            btn.innerText = "지원서 제출하기";
+        }
+    });
+})();
 
 </script>
 </body>
 </html>
        
+
 
 
 
