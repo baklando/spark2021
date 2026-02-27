@@ -50,6 +50,33 @@
         }
 
         nav a:hover { color: var(--accent-color); }
+       <section id="apply" style="padding: 100px 10%; background-color: white;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h2 style="text-align: center; color: var(--primary-color);">SPARK 지원하기</h2>
+        <p style="text-align: center; margin-bottom: 40px;">열정 있는 예비 SPARK 부원의 정보를 입력해 주세요.</p>
+        
+        <form id="applicationForm" style="display: flex; flex-direction: column; gap: 20px;">
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">이름</label>
+                <input type="text" name="name" placeholder="성함을 입력하세요" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">학과 / 학번</label>
+                <input type="text" name="major" placeholder="예: 생명과학과 / 24학번" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">지원 동기</label>
+                <textarea name="reason" rows="5" placeholder="SPARK에 지원하게 된 계기를 적어주세요" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: none;"></textarea>
+            </div>
+
+            <button type="submit" class="btn-apply" style="border: none; cursor: pointer; font-size: 1rem;">
+                지원서 제출하기
+            </button>
+        </form>
+    </div>
+</section>
 
         /* 3. 히어로 섹션: 파란 배경 */
         .hero {
@@ -129,7 +156,11 @@
             <a href="#about">소개</a>
             <a href="#activity">활동</a>
             <a href="#news">소식</a>
-            <a href="https://linktr.ee/spark_2021" target="_blank">지원</a>
+           <a href="https://docs.google.com/document/d/1pvLWyicnvuVUp1Q3HuoDcOUBwWtD5ruR/edit" 
+   target="_blank" 
+   class="btn-apply">
+   지원
+</a>
         </nav>
     </header>
 <section class="about-section" id="about">
@@ -306,72 +337,20 @@
         </div>
     </div>
 </section>
-<form id="applicationForm">
-  <label for="applicantName">이름:</label>
-  <input type="text" id="applicantName" placeholder="예: 이진재" required />
-  
-  <label for="uploadFile">지원서 첨부 (PDF, HWP 등):</label>
-  <input type="file" id="uploadFile" required />
-  
-  <button type="submit">지원서 제출</button>
-</form>
-
-<script>
-  document.getElementById('applicationForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // 폼 기본 제출 동작 방지
+<section id="apply" style="padding: 80px 10%; text-align: center; background-color: #fff;">
+    <h2 style="color: var(--primary-color);">Join SPARK 10th</h2>
+    <p>2026년 상반기 SPARK와 함께할 10기 신입부원을 모집합니다. </p>
+    <p style="font-size: 0.9rem; color: #666; margin-bottom: 30px;">
+        아래 버튼을 눌러 양식을 확인한 후 작성하여 제출해 주세요.
+    </p>
     
-    const name = document.getElementById('applicantName').value;
-    const fileInput = document.getElementById('uploadFile');
-    const file = fileInput.files[0];
-    
-    if(!file) return alert('파일을 선택해주세요.');
-    
-    // 제출 버튼 비활성화 (중복 제출 방지)
-    const submitBtn = e.target.querySelector('button');
-    submitBtn.innerText = "제출 중...";
-    submitBtn.disabled = true;
-
-    // 파일을 Base64로 읽기
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const base64Data = event.target.result.split(',')[1];
-      
-      const payload = {
-        name: name,
-        fileName: name + "_" + file.name, // 파일명 앞에 지원자 이름 추가
-        mimeType: file.type,
-        base64: base64Data
-      };
-      
-      // 3단계에서 복사한 웹앱 URL을 아래에 붙여넣으세요.
-      const scriptURL = "여기에_웹앱_URL을_넣으세요";
-      
-      fetch(scriptURL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if(data.result === 'success') {
-          alert('SPARK 지원서가 성공적으로 제출되었습니다!');
-          document.getElementById('applicationForm').reset();
-        } else {
-          alert('오류 발생: ' + data.message);
-        }
-      })
-      .catch(error => {
-        console.error('Error!', error.message);
-        alert('제출에 실패했습니다. 네트워크 상태를 확인해주세요.');
-      })
-      .finally(() => {
-        submitBtn.innerText = "지원서 제출";
-        submitBtn.disabled = false;
-      });
-    };
-    
-    reader.readAsDataURL(file);
-  });
-</script>
+    <a href="https://docs.google.com/document/d/1pvLWyicnvuVUp1Q3HuoDcOUBwWtD5ruR/edit" 
+       target="_blank" 
+       class="btn-apply" 
+       style="display: inline-block; text-decoration: none;">
+       10기 지원서 양식 확인하기
+    </a>
+</section>
     <footer>
         <p>&copy; 2026 SPARK. All rights reserved.</p>
     </footer>
@@ -379,6 +358,7 @@
 </body>
 
 </html>
+
 
 
 
