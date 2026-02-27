@@ -209,24 +209,24 @@
     </footer>
 
 <script>
-    // 1. 지원 기간 설정 (년, 월-1, 일, 시, 분) 
-    // 주의: 월은 0부터 시작합니다 (1월은 0, 3월은 2)
-    const startDate = new Date(2026, 1, 4, 0, 0);  // 시작: 2026년 2월 4일 00:00
-    const endDate = new Date(2026, 2, 7, 23, 59); // 종료: 2026년 3월 7일 23:59
+    // 1. 설정: 지원 기간 및 구글 웹 앱 URL
+    const startDate = new Date(2026, 1, 4, 0, 0);  // 2026년 2월 4일
+    const endDate = new Date(2026, 2, 7, 23, 59);   // 2026년 3월 7일
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxuZqJE3pcRAATS5iGzVUMGlgNeF8CHxTTBLTRzjE6s1RoExZNCTC8oa-MhVchycLvniA/exec';
 
+    // 2. 공통 요소 가져오기 (중복 선언 방지)
     const form = document.getElementById('submit-to-google');
     const msg = document.getElementById("msg");
     const submitBtn = form.querySelector('button[type="submit"]');
 
-    // 2. 현재 시간과 비교하여 버튼 제어
+    // 3. 지원 기간 체크 함수
     function checkApplyPeriod() {
         const now = new Date();
-
         if (now < startDate) {
             submitBtn.disabled = true;
             submitBtn.innerText = "지원 예정입니다";
             submitBtn.style.backgroundColor = "#ccc";
-            msg.innerHTML = "지원 기간이 아닙니다. (3/1부터 시작)";
+            msg.innerHTML = "지원 기간이 아닙니다. (2/4부터 시작)";
         } else if (now > endDate) {
             submitBtn.disabled = true;
             submitBtn.innerText = "지원 종료되었습니다";
@@ -234,30 +234,15 @@
             msg.innerHTML = "10기 신입부원 모집이 마감되었습니다.";
         } else {
             submitBtn.disabled = false;
-            // 원래 색상(연두색)으로 유지
         }
     }
 
-    // 페이지 로드 시 바로 확인
-    checkApplyPeriod();
-    
-    // (기존의 fetch 전송 로직은 이 아래에 그대로 두시면 됩니다)
+    // 4. 제출 이벤트 처리 (하나의 리스너로 통합)
     form.addEventListener('submit', e => {
-        // ... 기존 코드 ...
-    });
-//////////////////////
-
-    // 1. 본인의 구글 웹 앱 URL을 여기에 넣으세요 (새 배포 때마다 확인!)
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxuZqJE3pcRAATS5iGzVUMGlgNeF8CHxTTBLTRzjE6s1RoExZNCTC8oa-MhVchycLvniA/exec'; 
-    const form = document.getElementById('submit-to-google');
-    const msg = document.getElementById("msg");
-
-    form.addEventListener('submit', e => {
-        // [중요] 페이지 새로고침(화면 튕김)을 막습니다.
+        // [중요] 새로고침 및 위로 튕김 방지
         e.preventDefault();
         
-        // 제출 버튼 비활성화 (여러 번 클릭 방지)
-        const submitBtn = form.querySelector('button[type="submit"]');
+        // 버튼 비활성화
         submitBtn.disabled = true;
         submitBtn.innerText = "제출 중... 잠시만 기다려주세요.";
         msg.innerHTML = "파일 및 데이터를 처리 중입니다...";
@@ -265,19 +250,25 @@
 
         const fileInput = document.getElementById('fileInput');
         const file = fileInput.files[0];
-        const reader = new FileReader();
 
+        if (!file) {
+            alert("PDF 파일을 선택해 주세요!");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "지원서 제출하기";
+            return;
+        }
+
+        const reader = new FileReader();
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
             
-            // payload의 키값들을 구글 스크립트에서 읽는 이름과 일치시킵니다.
             const payload = {
                 fileBase64: base64Data,
                 fileName: file.name,
                 mimeType: file.type,
                 name: form.elements['name'].value,
                 major: form.elements['major'].value,
-                reason: form.elements['reason'].value // HTML에 적힌 name="reason"과 매칭
+                reason: form.elements['reason'].value
             };
 
             fetch(scriptURL, {
@@ -287,37 +278,36 @@
             .then(response => response.json())
             .then(data => {
                 if(data.result === "success") {
-                    msg.innerHTML = "🎉 성공적으로 제출되었습니다! 구글 시트를 확인하세요.";
+                    msg.innerHTML = "🎉 성공적으로 제출되었습니다!";
                     msg.style.color = "var(--accent-color)";
-                    form.reset(); // 입력창 초기화
+                    form.reset();
                 } else {
                     throw new Error(data.message);
                 }
             })
             .catch(error => {
-                msg.innerHTML = "❌ 제출 실패: 다시 시도해주거나 관리자에게 문의하세요.";
+                msg.innerHTML = "❌ 제출 실패: 다시 시도해주세요.";
                 msg.style.color = "red";
                 console.error('Error!', error.message);
             })
             .finally(() => {
-                // 완료 후 버튼 상태 복구
                 submitBtn.disabled = false;
                 submitBtn.innerText = "지원서 제출하기";
+                checkApplyPeriod(); // 제출 후 기간 상태 다시 확인
             });
         };
-
-        if (file) {
-            reader.readAsDataURL(file);
-        } else {
-            alert("PDF 파일을 선택해 주세요!");
-            submitBtn.disabled = false;
-            submitBtn.innerText = "지원서 제출하기";
-        }
+        
+        reader.readAsDataURL(file);
     });
+
+    // 페이지 로드 시 기간 확인 실행
+    checkApplyPeriod();
+
 </script>
 </body>
 </html>
        
+
 
 
 
