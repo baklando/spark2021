@@ -306,7 +306,72 @@
         </div>
     </div>
 </section>
+<form id="applicationForm">
+  <label for="applicantName">이름:</label>
+  <input type="text" id="applicantName" placeholder="예: 이진재" required />
+  
+  <label for="uploadFile">지원서 첨부 (PDF, HWP 등):</label>
+  <input type="file" id="uploadFile" required />
+  
+  <button type="submit">지원서 제출</button>
+</form>
 
+<script>
+  document.getElementById('applicationForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // 폼 기본 제출 동작 방지
+    
+    const name = document.getElementById('applicantName').value;
+    const fileInput = document.getElementById('uploadFile');
+    const file = fileInput.files[0];
+    
+    if(!file) return alert('파일을 선택해주세요.');
+    
+    // 제출 버튼 비활성화 (중복 제출 방지)
+    const submitBtn = e.target.querySelector('button');
+    submitBtn.innerText = "제출 중...";
+    submitBtn.disabled = true;
+
+    // 파일을 Base64로 읽기
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const base64Data = event.target.result.split(',')[1];
+      
+      const payload = {
+        name: name,
+        fileName: name + "_" + file.name, // 파일명 앞에 지원자 이름 추가
+        mimeType: file.type,
+        base64: base64Data
+      };
+      
+      // 3단계에서 복사한 웹앱 URL을 아래에 붙여넣으세요.
+      const scriptURL = "여기에_웹앱_URL을_넣으세요";
+      
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.result === 'success') {
+          alert('SPARK 지원서가 성공적으로 제출되었습니다!');
+          document.getElementById('applicationForm').reset();
+        } else {
+          alert('오류 발생: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error!', error.message);
+        alert('제출에 실패했습니다. 네트워크 상태를 확인해주세요.');
+      })
+      .finally(() => {
+        submitBtn.innerText = "지원서 제출";
+        submitBtn.disabled = false;
+      });
+    };
+    
+    reader.readAsDataURL(file);
+  });
+</script>
     <footer>
         <p>&copy; 2026 SPARK. All rights reserved.</p>
     </footer>
@@ -314,6 +379,7 @@
 </body>
 
 </html>
+
 
 
 
