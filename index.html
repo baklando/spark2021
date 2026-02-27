@@ -246,50 +246,79 @@
         // ... 기존 코드 ...
     });
 //////////////////////
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyFtdAUF7xmFpHfX2Epn-06ExR0guBgRHyBTNZXvA9mRtZhYMrQzIBMMh_fm5kXCE0z9A/exec';
+
+    // 1. 본인의 구글 웹 앱 URL을 여기에 넣으세요 (새 배포 때마다 확인!)
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxuZqJE3pcRAATS5iGzVUMGlgNeF8CHxTTBLTRzjE6s1RoExZNCTC8oa-MhVchycLvniA/exec'; 
     const form = document.getElementById('submit-to-google');
     const msg = document.getElementById("msg");
 
     form.addEventListener('submit', e => {
+        // [중요] 페이지 새로고침(화면 튕김)을 막습니다.
         e.preventDefault();
-        msg.innerHTML = "파일을 업로드 중입니다. 잠시만 기다려주세요...";
         
+        // 제출 버튼 비활성화 (여러 번 클릭 방지)
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerText = "제출 중... 잠시만 기다려주세요.";
+        msg.innerHTML = "파일 및 데이터를 처리 중입니다...";
+        msg.style.color = "#666";
+
         const fileInput = document.getElementById('fileInput');
         const file = fileInput.files[0];
         const reader = new FileReader();
 
-        // 파일을 읽어서 Base64로 변환 후 전송
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
+            
+            // payload의 키값들을 구글 스크립트에서 읽는 이름과 일치시킵니다.
             const payload = {
                 fileBase64: base64Data,
                 fileName: file.name,
                 mimeType: file.type,
-                name: form.name.value,
-                major: form.major.value,
-                reason: form.reason.value
+                name: form.elements['name'].value,
+                major: form.elements['major'].value,
+                reason: form.elements['reason'].value // HTML에 적힌 name="reason"과 매칭
             };
 
             fetch(scriptURL, {
                 method: 'POST',
                 body: JSON.stringify(payload)
             })
-            .then(response => {
-                msg.innerHTML = "🎉 지원서와 파일이 성공적으로 제출되었습니다!";
-                form.reset();
-                setTimeout(() => { msg.innerHTML = "" }, 5000);
+            .then(response => response.json())
+            .then(data => {
+                if(data.result === "success") {
+                    msg.innerHTML = "🎉 성공적으로 제출되었습니다! 구글 시트를 확인하세요.";
+                    msg.style.color = "var(--accent-color)";
+                    form.reset(); // 입력창 초기화
+                } else {
+                    throw new Error(data.message);
+                }
             })
             .catch(error => {
-                msg.innerHTML = "❌ 업로드 실패. 다시 시도해주세요.";
-                console.error('Error!', error);
+                msg.innerHTML = "❌ 제출 실패: 다시 시도해주거나 관리자에게 문의하세요.";
+                msg.style.color = "red";
+                console.error('Error!', error.message);
+            })
+            .finally(() => {
+                // 완료 후 버튼 상태 복구
+                submitBtn.disabled = false;
+                submitBtn.innerText = "지원서 제출하기";
             });
         };
-        reader.readAsDataURL(file);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            alert("PDF 파일을 선택해 주세요!");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "지원서 제출하기";
+        }
     });
 </script>
 </body>
 </html>
        
+
 
 
 
