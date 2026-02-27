@@ -50,31 +50,25 @@
         }
 
         nav a:hover { color: var(--accent-color); }
-       <section id="apply" style="padding: 100px 10%; background-color: white;">
-    <div style="max-width: 600px; margin: 0 auto;">
-        <h2 style="text-align: center; color: var(--primary-color);">SPARK 지원하기</h2>
-        <p style="text-align: center; margin-bottom: 40px;">열정 있는 예비 SPARK 부원의 정보를 입력해 주세요.</p>
-        
-        <form id="applicationForm" style="display: flex; flex-direction: column; gap: 20px;">
-            <div>
-                <label style="display: block; font-weight: bold; margin-bottom: 8px;">이름</label>
-                <input type="text" name="name" placeholder="성함을 입력하세요" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+     <section id="apply" style="padding: 80px 10%; background: #fff;">
+    <div style="max-width: 500px; margin: 0 auto; border: 1px solid #ddd; padding: 30px; border-radius: 15px;">
+        <h2 style="text-align: center; color: var(--primary-color);">SPARK 10기 지원하기</h2>
+        <form id="submit-to-google">
+            <div style="margin-bottom: 15px;">
+                <label>이름</label>
+                <input type="text" name="name" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px;">
             </div>
-            
-            <div>
-                <label style="display: block; font-weight: bold; margin-bottom: 8px;">학과 / 학번</label>
-                <input type="text" name="major" placeholder="예: 생명과학과 / 24학번" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+            <div style="margin-bottom: 15px;">
+                <label>학과 / 학번</label>
+                <input type="text" name="major" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px;">
             </div>
-
-            <div>
-                <label style="display: block; font-weight: bold; margin-bottom: 8px;">지원 동기</label>
-                <textarea name="reason" rows="5" placeholder="SPARK에 지원하게 된 계기를 적어주세요" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: none;"></textarea>
+            <div style="margin-bottom: 15px;">
+                <label>지원동기</label>
+                <textarea name="reason" rows="5" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px; resize:none;"></textarea>
             </div>
-
-            <button type="submit" class="btn-apply" style="border: none; cursor: pointer; font-size: 1rem;">
-                지원서 제출하기
-            </button>
+            <button type="submit" class="btn-apply" style="width:100%; border:none; cursor:pointer;">지원서 제출하기</button>
         </form>
+        <span id="msg" style="display:block; margin-top:10px; text-align:center; color: var(--accent-color);"></span>
     </div>
 </section>
 
@@ -356,8 +350,31 @@
     </footer>
 
 </body>
+<script>
+  const scriptURL = 'https://script.google.com/a/macros/spark2021.com/s/AKfycbyXhKQJf6B4jlmvamNFlKRVz3za9qeUzKJ0r3szdE-SFMyo-Pq0WVJV4HboZhxBuUAA8A/exec'
+  const form = document.forms['submit-to-google']
+  const msg = document.getElementById("msg")
 
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    msg.innerHTML = "제출 중입니다..."
+    
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+          msg.innerHTML = "성공적으로 제출되었습니다!"
+          setTimeout(function(){
+              msg.innerHTML = ""
+          }, 5000)
+          form.reset()
+      })
+      .catch(error => {
+          msg.innerHTML = "오류가 발생했습니다. 다시 시도해주세요."
+          console.error('Error!', error.message)
+      })
+  })
+</script>
 </html>
+
 
 
 
