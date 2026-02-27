@@ -111,6 +111,12 @@
         .gallery-item { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .gallery-item img { width: 100%; height: 250px; object-fit: cover; }
         .gallery-item p { padding: 15px; text-align: center; font-weight: bold; color: var(--primary-color); }
+       /* 7. 소식 섹션 */
+.news-section { padding: 100px 10%; background: white; scroll-margin-top: 80px; }
+.news-list { max-width: 800px; margin: 0 auto; }
+.news-item { display: flex; padding: 20px 0; border-bottom: 1px solid #eee; align-items: center; }
+.news-date { font-weight: bold; color: var(--accent-color); margin-right: 30px; min-width: 100px; }
+.news-text { margin: 0; color: #444; }
 
         footer { text-align: center; padding: 50px; background: #eee; font-size: 0.9rem; color: #777; }
     </style>
@@ -122,6 +128,7 @@
         <nav>
             <a href="#about">소개</a>
             <a href="#activity">활동</a>
+            <a href="#news">소식</a>
             <a href="https://linktr.ee/spark_2021" target="_blank">지원</a>
         </nav>
     </header>
@@ -228,9 +235,26 @@
         </div>
     </section>
 
+   <section class="news-section" id="news">
+    <div class="container">
+        <h2 class="section-title">Latest News</h2>
+        <div class="news-list">
+            <div class="news-item">
+                <span class="news-date">2026.02.27</span>
+                <p class="news-text">SPARK 9기 신입 부원 모집 중! 많은 관심 부탁드립니다.</p>
+            </div>
+            <div class="news-item">
+                <span class="news-date">2026.01.15</span>
+                <p class="news-text">제8기 포스터 세션이 성공적으로 마무리되었습니다.</p>
+            </div>
+        </div>
+    </div>
+</section>
+   
     <footer>
         <p>&copy; 2026 SPARK. All rights reserved.</p>
     </footer>
 
 </body>
+
 </html>
