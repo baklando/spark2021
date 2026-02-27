@@ -181,6 +181,11 @@
             </p>
             
             <form id="submit-to-google">
+                <div style="margin-bottom: 20px;">
+    <label style="font-weight:bold;">지원서 업로드 (PDF)</label>
+    <input type="file" id="fileInput" accept=".pdf" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:8px;">
+    <p style="font-size:0.8rem; color:#888; margin-top:5px;">* PDF 형식만 업로드 가능합니다.</p>
+</div>
                 <div style="margin-bottom: 15px;">
                     <label style="font-weight:bold;">이름</label>
                     <input type="text" name="name" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
@@ -203,30 +208,49 @@
         <p>&copy; 2026 SPARK. All rights reserved.</p>
     </footer>
 
-    <script>
-        const scriptURL = 'https://script.google.com/a/macros/spark2021.com/s/AKfycbyXhKQJf6B4jlmvamNFlKRVz3za9qeUzKJ0r3szdE-SFMyo-Pq0WVJV4HboZhxBuUAA8A/exec'
-        const form = document.forms['submit-to-google']
-        const msg = document.getElementById("msg")
+<script>
+    const scriptURL = '새로운_웹_앱_URL을_여기에_넣으세요';
+    const form = document.getElementById('submit-to-google');
+    const msg = document.getElementById("msg");
 
-        form.addEventListener('submit', e => {
-            e.preventDefault()
-            msg.innerHTML = "제출 중입니다... 잠시만 기다려주세요."
-            msg.style.color = "#666"
-            
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        msg.innerHTML = "파일을 업로드 중입니다. 잠시만 기다려주세요...";
+        
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        // 파일을 읽어서 Base64로 변환 후 전송
+        reader.onload = function() {
+            const base64Data = reader.result.split(',')[1];
+            const payload = {
+                fileBase64: base64Data,
+                fileName: file.name,
+                mimeType: file.type,
+                name: form.name.value,
+                major: form.major.value,
+                reason: form.reason.value
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
             .then(response => {
-                msg.innerHTML = "🎉 성공적으로 제출되었습니다!"
-                msg.style.color = "var(--accent-color)"
-                form.reset()
-                setTimeout(() => { msg.innerHTML = "" }, 5000)
+                msg.innerHTML = "🎉 지원서와 파일이 성공적으로 제출되었습니다!";
+                form.reset();
+                setTimeout(() => { msg.innerHTML = "" }, 5000);
             })
             .catch(error => {
-                msg.innerHTML = "❌ 오류가 발생했습니다. 다시 시도해주세요."
-                msg.style.color = "red"
-                console.error('Error!', error.message)
-            })
-        })
-    </script>
+                msg.innerHTML = "❌ 업로드 실패. 다시 시도해주세요.";
+                console.error('Error!', error);
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+</script>
 </body>
 </html>
        
+
