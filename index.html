@@ -192,7 +192,7 @@
             </div>
             <div style="margin-bottom: 20px;">
                 <label style="font-weight:bold;">연락처</label>
-                <textarea name="user_reason" rows="5" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; resize:none; box-sizing: border-box;"></textarea>
+                <textarea name="user_reason" rows="1" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; resize:none; box-sizing: border-box;"></textarea>
             </div>
             <button type="submit" id="submit-btn" class="cta-button" style="width:100%; padding:15px; border:none; cursor:pointer;">지원서 제출하기</button>
         </form>
@@ -203,7 +203,7 @@
 <script>
 (function() {
     // 1. 설정 (날짜 및 URL)
-    const START_DATE = new Date(2026, 1, 4, 0, 0); 
+    const START_DATE = new Date(2026, 1, 4, 0, 0); //년,월,일,시,분 순이고 월은 n-1임 ex.2월-->1
     const END_DATE = new Date(2026, 2, 7, 23, 59);
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwb9MeH0mvriV3uEDiUoFsgZn6YziGFce2j14oibxfulgN3OYVWhwjzLms1Cnm0lxFx4g/exec';
 
@@ -292,6 +292,7 @@
 </body>
 </html>
        
+
 
 
 
