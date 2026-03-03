@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARK | 활동 갤러리</title>
+    <style>
+        body { font-family: sans-serif; padding: 50px 10%; background: #f8f9fa; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .grid img { width: 100%; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; margin-bottom: 30px; padding: 10px 20px; background: #0a2342; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← 돌아가기</a>
+    <h1 id="gallery-title">활동 사진</h1>
+    <div id="photo-grid" class="grid"></div>
+
+    <script>
+        // 여기에 각 활동별로 보여줄 사진 파일 이름들을 넣으세요
+        const activityData = {
+            'seminar': {
+                title: "정기 세미나 현장",
+                images: ["semi1.jpg", "semi2.jpg", "semi3.jpg"] 
+            },
+            'poster': {
+                title: "학술 포스터 세션",
+                images: ["poster1.jpg", "poster2.jpg"]
+            },
+            'external': {
+                title: "다양한 외부 활동",
+                images: ["ext1.jpg", "ext2.jpg", "ext3.jpg", "ext4.jpg"]
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const type = params.get('type');
+        const grid = document.getElementById('photo-grid');
+        const title = document.getElementById('gallery-title');
+
+        if (type && activityData[type]) {
+            title.innerText = activityData[type].title;
+            activityData[type].images.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src; // 이미지 경로 주의 (폴더 안에 있다면 'images/semi1.jpg' 식으로)
+                grid.appendChild(img);
+            });
+        }
+    </script>
+</body>
+</html>
