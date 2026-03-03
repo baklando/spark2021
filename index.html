@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPARK | 생명과학 학술 동아리</title>
+    <meta property="og:title" content="SPARK - 생명과학 학술 동아리">
+    <meta property="og:description" content="생명과학의 경이로움을 탐구하는 학술 공동체, SPARK에 지원하세요.">
+    <meta property="og:image" content="logo.png">
+
     <style>
         /* 1. 기본 테마 설정 */
         :root {
@@ -16,7 +20,7 @@
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Pretendard', sans-serif;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
             margin: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -45,66 +49,42 @@
             font-weight: 600;
             transition: color 0.3s;
         }
+        
+        /* 모바일 메뉴 대응 */
+        @media (max-width: 768px) {
+            nav a { margin-left: 10px; font-size: 0.9rem; }
+            header { padding: 0.5rem 5%; }
+        }
 
         nav a:hover { color: var(--accent-color); }
 
+        /* 3. 히어로 섹션 */
+        .hero {
+            height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #0a2342 0%, #1a3a5f 100%);
+            color: white;
+            padding: 0 20px;
+        }
 
+        .hero h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 10px; 
+            letter-spacing: -1px; 
+            margin: 0 auto 10px;
+        }
 
-/* 3. 히어로 섹션 */
-.hero {
-    height: 75vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(135deg, #0a2342 0%, #1a3a5f 100%);
-    color: white;
-    padding: 0 20px;
-}
-
-/* 타이핑 효과 요소들을 모두 제거하고 기본 스타일만 남깁니다 */
-.hero h1.typing-txt { 
-    font-size: 3.5rem; 
-    margin-bottom: 10px; 
-    letter-spacing: -1px; 
-    display: block; /* 가로폭 제한 해제 */
-    white-space: normal; /* 줄바꿈 허용 (모바일 대응) */
-    margin: 0 auto;
-    width: auto; /* 너비 자동 조절 */
-    border-right: none; /* 커서 제거 */
-}
-
-/* 모바일 대응 */
-@media (max-width: 768px) {
-    .hero h1.typing-txt { font-size: 2.5rem; } /* 모바일에서 글자 크기 조정 */
-}
-
-.hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
-
-.cta-button {
-    background-color: var(--accent-color);
-    color: white;
-    padding: 18px 60px;
-    border-radius: 100px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.2rem;
-    display: inline-block;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
-    border: none;
-    cursor: pointer;
-}
-
-.cta-button:hover {
-    transform: translateY(-3px);
-    background-color: #27ae60;
-    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
-}
         .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
 
-        /* 지원하기 타원형 버튼 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; word-break: keep-all; } 
+            .hero p { font-size: 1rem; word-break: keep-all; }
+        }
+
         .cta-button {
             background-color: var(--accent-color);
             color: white;
@@ -126,8 +106,15 @@
             box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
         }
 
+        .cta-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
         /* 4. 섹션 공통 */
-        section { padding: 100px 10%; scroll-margin-top: 80px; }
+        section { padding: 100px 10%; scroll-margin-top: 60px; }
         .section-title { text-align: center; color: var(--primary-color); font-size: 2.5rem; margin-bottom: 50px; }
 
         /* 소개 섹션 카드 */
@@ -138,13 +125,49 @@
 
         /* 인스타 스타일 그리드 */
         .insta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .insta-item { position: relative; aspect-ratio: 1/1; overflow: hidden; border-radius: 15px; }
+        .insta-item { position: relative; aspect-ratio: 1/1; overflow: hidden; border-radius: 15px; display: block; }
         .insta-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
-        .insta-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); color:white; display:flex; justify-content:center; align-items:center; opacity:0; transition:0.3s; }
+        .insta-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); color:white; display:flex; justify-content:center; align-items:center; opacity:0; transition:0.3s; font-weight: bold; }
         .insta-item:hover .insta-overlay { opacity: 1; }
         .insta-item:hover img { transform: scale(1.1); }
 
-        footer { text-align: center; padding: 50px; background: #eee; font-size: 0.9rem; color: #777; }
+        /* 5. 지원하기 폼 스타일 (Clean Ver.) */
+        .form-container {
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: white;
+            border: 1px solid #eee; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-label { font-weight: bold; display: block; margin-bottom: 8px; color: var(--primary-color); }
+        .form-input { 
+            width: 100%; padding: 12px; 
+            border: 1px solid #ccc; border-radius: 8px; 
+            box-sizing: border-box; font-family: inherit;
+        }
+        .form-input:focus { outline: 2px solid var(--accent-color); border-color: transparent; }
+        
+        .privacy-box {
+            background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;
+        }
+        .privacy-scroll {
+            font-size: 12px; color: #666; height: 80px; overflow-y: scroll; background: #fff; padding: 10px; border: 1px solid #eee; margin-bottom: 10px; line-height: 1.6;
+        }
+
+        /* 6. 푸터 스타일 (추가됨) */
+        .site-footer { background-color: #111; color: #aaa; padding: 60px 10% 30px; margin-top: 50px; }
+        .footer-container { display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 40px; }
+        .footer-logo { color: white; margin-top: 0; }
+        .footer-tagline { font-size: 0.9rem; margin-top: 10px; }
+        .footer-contact a { color: var(--accent-color); text-decoration: none; }
+        .footer-bottom { border-top: 1px solid #333; padding-top: 20px; text-align: center; font-size: 0.8rem; }
+        
+        @media (max-width: 600px) {
+            .footer-container { flex-direction: column; gap: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -158,246 +181,232 @@
             <a href="#apply">지원</a>
         </nav>
     </header>
-<header>
-    </header>
 
-<section class="hero">
-    <h1 class="typing-txt">Exploring Life, Ignite Ideas</h1>
-    <p>생명과학의 경이로움을 탐구하는 학술 공동체, SPARK</p>
-    <a href="#apply" class="cta-button">지금 지원하기</a>
-</section>
-   
-
-    <section id="about" class="about-section">
+    <section class="hero">
+        <h1 class="typing-txt">Exploring Life, Ignite Ideas</h1>
+        <p>생명과학의 경이로움을 탐구하는 학술 공동체, SPARK</p>
+        <a href="#apply" class="cta-button">지금 지원하기</a>
+    </section>
+    
+    <section id="about">
         <h2 class="section-title">About SPARK</h2>
         <div class="about-grid">
             <div class="about-card">
                 <div class="card-icon">🎓</div>
                 <h4>다양한 네트워크</h4>
-                <p>약 30여 개의 대학교에서 모인 생명과학 열정 가득한 대학생들</p>
+                <p>30여 개 대학의 생명과학 전공자들이 모여 만드는 시너지</p>
             </div>
             <div class="about-card">
                 <div class="card-icon">🔬</div>
                 <h4>논문 스터디</h4>
-                <p>체계적인 프로세스를 통한 생명과학 최신 논문 분석 및 심층 스터디</p>
+                <p>최신 바이오 트렌드 분석 및 심층 논문 리딩</p>
             </div>
             <div class="about-card">
                 <div class="card-icon">🖼️</div>
                 <h4>포스터 세션</h4>
-                <p>6개월에 한 번 개최되는 정기 학술 포스터 발표회</p>
+                <p>매 학기 말 진행되는<br>정기 학술 포스터 발표회</p>
             </div>
         </div>
     </section>
 
-   <section id="activity" style="background:#f8f9fa;">
-    <h2 class="section-title">Archive</h2>
-    <div class="insta-grid">
-        <a href="gallery.html?type=seminar" class="insta-item" style="text-decoration: none;">
-            <img src="photo1.png" alt="활동1">
-            <div class="insta-overlay">정기 세미나</div>
-        </a>
-        
-        <a href="gallery.html?type=poster" class="insta-item" style="text-decoration: none;">
-            <img src="photo2.png" alt="활동2">
-            <div class="insta-overlay">포스터 세션</div>
-        </a>
-        
-        <a href="gallery.html?type=external" class="insta-item" style="text-decoration: none;">
-            <img src="photo3.png" alt="활동3">
-            <div class="insta-overlay">외부 활동</div>
-        </a>
-    </div>
-</section>
+    <section id="activity" style="background:#f8f9fa;">
+        <h2 class="section-title">Archive</h2>
+        <div class="insta-grid">
+            <a href="gallery.html?type=seminar" class="insta-item">
+                <img src="photo1.png" alt="활동1">
+                <div class="insta-overlay">정기 세미나</div>
+            </a>
+            
+            <a href="gallery.html?type=poster" class="insta-item">
+                <img src="photo2.png" alt="활동2">
+                <div class="insta-overlay">포스터 세션</div>
+            </a>
+            
+            <a href="gallery.html?type=external" class="insta-item">
+                <img src="photo3.png" alt="활동3">
+                <div class="insta-overlay">외부 활동</div>
+            </a>
+        </div>
+    </section>
 
     <section id="news">
         <h2 class="section-title">Latest News</h2>
         <div class="insta-grid">
             <a href="https://www.instagram.com/spark__2021/" target="_blank" class="insta-item">
                 <img src="news1.jpg" alt="인스타">
-                <div class="insta-overlay">Instagram 보기</div>
+                <div class="insta-overlay">Instagram</div>
             </a>
             <a href="https://cafe.naver.com/spark0326" target="_blank" class="insta-item">
                 <img src="news2.jpg" alt="카페">
-                <div class="insta-overlay">Naver Cafe 보기</div>
+                <div class="insta-overlay">Naver Cafe</div>
             </a>
-            <a href="https://www.linkedin.com/..." target="_blank" class="insta-item">
+            <a href="#" class="insta-item">
                 <img src="news3.jpg" alt="링크드인">
-                <div class="insta-overlay">LinkedIn 보기</div>
+                <div class="insta-overlay">LinkedIn</div>
             </a>
         </div>
     </section>
 
-   <section id="apply" style="padding: 80px 10%; background-color: white;">
-    <div style="max-width: 500px; margin: 0 auto; border: 1px solid #ddd; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-        <h2 style="text-align: center; color: var(--primary-color); margin-top:0;">SPARK 지원하기</h2>
-        
-        <form id="spark-form">
-            <div style="margin-bottom: 20px;">
-                <label style="font-weight:bold;">지원서 업로드 (PDF)</label>
-                <input type="file" id="fileInput" accept=".pdf" required style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:8px;">
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label style="font-weight:bold;">이름</label>
-                <input type="text" name="user_name" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label style="font-weight:bold;">학과 / 학번</label>
-                <input type="text" name="user_major" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; box-sizing: border-box;">
-            </div>
-            <div style="margin-bottom: 20px;">
-                <label style="font-weight:bold;">연락처</label>
-                <textarea name="user_reason" rows="1" required style="width:100%; padding:12px; margin-top:5px; border:1px solid #ccc; border-radius:8px; resize:none; box-sizing: border-box;"></textarea>
-            </div>
-            <div style="margin-bottom: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
-                <label style="font-weight:bold; display: block; margin-bottom: 10px;">개인정보 수집 및 이용 동의 (필수)</label>
-                <div style="font-size: 12px; color: #666; height: 80px; overflow-y: scroll; background: #fff; padding: 10px; border: 1px solid #eee; margin-bottom: 10px; line-height: 1.6;">
-                    1. 수집 항목: 이름, 학과, 학번, 연락처, 지원서 파일<br>
-                    2. 수집 목적: 지원자 식별 및 선발 전형 안내<br>
-                    3. 보유 기간: 추가 합격자 발표일<br>
-                    * 귀하는 동의를 거부할 권리가 있으나, 동의하지 않을 경우 지원이 제한될 수 있습니다.
+    <section id="apply" style="background-color: white;">
+        <div class="form-container">
+            <h2 style="text-align: center; color: var(--primary-color); margin-top:0;">SPARK 지원하기</h2>
+            
+            <form id="spark-form">
+                <div class="form-group">
+                    <label class="form-label">지원서 업로드 (PDF)</label>
+                    <input type="file" id="fileInput" accept=".pdf" required class="form-input" style="padding: 10px;">
+                    <small style="color: #888;">* 10MB 이하의 PDF 파일만 가능합니다.</small>
                 </div>
-                <label style="display: flex; align-items: center; font-size: 14px; cursor: pointer;">
-                    <input type="checkbox" name="privacy_agree" required style="margin-right: 10px; width: 18px; height: 18px;">
-                    위 내용을 확인했으며, 개인정보 수집에 동의합니다.
-                </label>
+                <div class="form-group">
+                    <label class="form-label">이름</label>
+                    <input type="text" name="user_name" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">학과 / 학번</label>
+                    <input type="text" name="user_major" placeholder="예: 생명과학과 / 20261234" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">지원 동기 (간략히)</label>
+                    <textarea name="user_reason" rows="3" required class="form-input" style="resize: vertical;"></textarea>
+                </div>
+                
+                <div class="form-group privacy-box">
+                    <label class="form-label" style="font-size: 0.9rem;">개인정보 수집 및 이용 동의 (필수)</label>
+                    <div class="privacy-scroll">
+                        1. 수집 항목: 이름, 학과, 학번, 연락처, 지원서 파일<br>
+                        2. 수집 목적: 지원자 식별 및 선발 전형 안내<br>
+                        3. 보유 기간: 추가 합격자 발표일로부터 14일 후 파기<br>
+                        * 귀하는 동의를 거부할 권리가 있으나, 동의하지 않을 경우 지원이 제한될 수 있습니다.
+                    </div>
+                    <label style="display: flex; align-items: center; font-size: 14px; cursor: pointer;">
+                        <input type="checkbox" name="privacy_agree" required style="margin-right: 10px; width: 18px; height: 18px;">
+                        위 내용을 확인했으며, 이에 동의합니다.
+                    </label>
+                </div>
+
+                <button type="submit" id="submit-btn" class="cta-button" style="width:100%; border-radius: 10px;">지원서 제출하기</button>
+            </form>
+            <span id="form-msg" style="display:block; margin-top:15px; text-align:center; font-weight:bold; font-size: 0.9rem;"></span>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <h2 class="footer-logo">SPARK</h2>
+                <p class="footer-tagline">Scientific Poster on Analysis of Research Knowledge</p>
             </div>
-            <button type="submit" id="submit-btn" class="cta-button" style="width:100%; padding:15px; border:none; cursor:pointer;">지원서 제출하기</button>
-        </form>
-        <span id="form-msg" style="display:block; margin-top:15px; text-align:center; font-weight:bold;"></span>
-    </div>
-</section>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>Email: <a href="mailto:officialspark@spark2021.com">officialspark@spark2021.com</a></p>
+                <p>Instagram: @spark__2021</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 SPARK. All rights reserved.</p>
+        </div>
+    </footer>
 
-<script>
-(function() {
-    // 1. 설정 (날짜 및 URL)
-    const START_DATE = new Date(2026, 1, 4, 0, 0); //년,월,일,시,분 순이고 월은 n-1임 ex.2월-->1
-    const END_DATE = new Date(2026, 2, 7, 23, 59);
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwb9MeH0mvriV3uEDiUoFsgZn6YziGFce2j14oibxfulgN3OYVWhwjzLms1Cnm0lxFx4g/exec';
+    <script>
+    (function() {
+        // 1. 설정 (날짜 및 URL)
+        // 주의: 월(Month)은 0부터 시작합니다 (1월=0, 2월=1, 3월=2)
+        const START_DATE = new Date(2026, 1, 4, 0, 0); // 2월 4일
+        const END_DATE = new Date(2026, 2, 7, 23, 59); // 3월 7일
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwb9MeH0mvriV3uEDiUoFsgZn6YziGFce2j14oibxfulgN3OYVWhwjzLms1Cnm0lxFx4g/exec';
 
-    const applyForm = document.getElementById('spark-form');
-    const msgArea = document.getElementById('form-msg');
-    const btn = document.getElementById('submit-btn');
-
-    // 2. 기간 체크
-    function checkDate() {
-        const now = new Date();
-        if (now < START_DATE) {
-            btn.disabled = true;
-            btn.innerText = "지원 예정 (2/4~)";
-            btn.style.backgroundColor = "#ccc";
-        } else if (now > END_DATE) {
-            btn.disabled = true;
-            btn.innerText = "지원 마감";
-            btn.style.backgroundColor = "#ccc";
-        }
-    }
-    checkDate();
-
-    // 3. 제출 이벤트
-    applyForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // [필수] 새로고침 방지
-        e.stopPropagation(); // [필수] 이벤트 전파 방지
-
-        btn.disabled = true;
-        btn.innerText = "제출 중...";
-        msgArea.innerText = "데이터 전송 중입니다. 페이지를 이동하지 마세요.";
-        msgArea.style.color = "#666";
-
+        const applyForm = document.getElementById('spark-form');
+        const msgArea = document.getElementById('form-msg');
+        const btn = document.getElementById('submit-btn');
         const fileInput = document.getElementById('fileInput');
-        const file = fileInput.files[0];
-        const reader = new FileReader();
 
-        reader.onload = function() {
-            const base64Data = reader.result.split(',')[1];
-            const payload = {
-                fileBase64: base64Data,
-                fileName: file.name,
-                mimeType: file.type,
-                name: applyForm.elements['user_name'].value,
-                major: applyForm.elements['user_major'].value,
-                reason: applyForm.elements['user_reason'].value
+        // 2. 기간 체크
+        function checkDate() {
+            const now = new Date();
+            if (now < START_DATE) {
+                btn.disabled = true;
+                btn.innerText = "지원 기간이 아닙니다 (2/4 오픈)";
+            } else if (now > END_DATE) {
+                btn.disabled = true;
+                btn.innerText = "지원이 마감되었습니다";
+            }
+        }
+        checkDate();
+
+        // 3. 파일 용량 체크 (10MB 제한)
+        fileInput.addEventListener('change', function() {
+            if(this.files[0].size > 10 * 1024 * 1024) {
+                alert("파일 용량은 10MB를 초과할 수 없습니다.");
+                this.value = ""; // 초기화
+            }
+        });
+
+        // 4. 제출 이벤트
+        applyForm.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            e.stopPropagation();
+
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("파일을 선택해 주세요.");
+                return;
+            }
+
+            // 버튼 비활성화 및 로딩 표시
+            btn.disabled = true;
+            btn.innerText = "제출 중... (잠시만 기다려주세요)";
+            msgArea.innerText = "데이터 전송 중입니다. 브라우저를 닫지 마세요.";
+            msgArea.style.color = "#666";
+
+            const reader = new FileReader();
+            
+            // 파일 읽기 완료 시 실행될 함수
+            reader.onload = function() {
+                const base64Data = reader.result.split(',')[1];
+                const payload = {
+                    fileBase64: base64Data,
+                    fileName: file.name,
+                    mimeType: file.type,
+                    name: applyForm.elements['user_name'].value,
+                    major: applyForm.elements['user_major'].value,
+                    reason: applyForm.elements['user_reason'].value
+                };
+
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                    // mode: 'no-cors' // 만약 CORS 에러가 계속 발생하면 주석 해제 (단, 응답 확인 불가)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.result === "success") {
+                        msgArea.innerText = "🎉 제출이 완료되었습니다! 확인 후 연락드리겠습니다.";
+                        msgArea.style.color = "#2ecc71";
+                        applyForm.reset();
+                        btn.innerText = "제출 완료";
+                    } else {
+                        throw new Error(data.message || "Unknown error");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    msgArea.innerText = "❌ 제출 실패: 네트워크 상태를 확인하거나 관리자에게 문의하세요.";
+                    msgArea.style.color = "red";
+                    btn.disabled = false;
+                    btn.innerText = "다시 제출하기";
+                });
             };
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.result === "success") {
-                    msgArea.innerText = "🎉 제출 성공! 확인 후 연락드리겠습니다.";
-                    msgArea.style.color = "#2ecc71";
-                    applyForm.reset();
-                } else {
-                    msgArea.innerText = "❌ 오류: " + data.message;
-                    msgArea.style.color = "red";
-                }
-            })
-            .catch(err => {
-                msgArea.innerText = "❌ 네트워크 오류가 발생했습니다.";
-                msgArea.style.color = "red";
-                console.error(err);
-            })
-            .finally(() => {
+            reader.onerror = function() {
+                alert("파일을 읽는 중 오류가 발생했습니다.");
                 btn.disabled = false;
                 btn.innerText = "지원서 제출하기";
-                checkDate();
-            });
-        };
+            };
 
-        if (file) {
+            // 파일 읽기 시작
             reader.readAsDataURL(file);
-        } else {
-            alert("파일을 선택해 주세요.");
-            btn.disabled = false;
-            btn.innerText = "지원서 제출하기";
-        }
-    });
-})();
-
-</script>
+        });
+    })();
+    </script>
 </body>
-    <footer class="site-footer">
-    <div class="footer-container">
-        <div class="footer-info">
-            <h2 class="footer-logo">SPARK</h2>
-            <p class="footer-tagline"> Scientific Poster on Analysis of Research Knowledge</p>
-        </div>
-
-    
-        <div class="footer-contact">
-            <h4>Contact</h4>
-            <p>Email: <a href="mailto:your-email@example.com">officialspark@spark2021.com</a></p>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>&copy; 2026 SPARK. All rights reserved.</p>
-    </div>
-</footer>
 </html>
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
