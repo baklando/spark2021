@@ -48,20 +48,75 @@
 
         nav a:hover { color: var(--accent-color); }
 
-        /* 3. 히어로 섹션 */
-        .hero {
-            height: 75vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(135deg, #0a2342 0%, #1a3a5f 100%);
-            color: white;
-            padding: 0 20px;
-        }
+/* <style> 태그 내부에 위치 시키세요 */
 
-        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; letter-spacing: -1px; }
+/* 3. 히어로 섹션 */
+.hero {
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0a2342 0%, #1a3a5f 100%);
+    color: white;
+    padding: 0 20px;
+}
+
+/* 기존 hero h1 스타일에 typing-txt 효과를 병합합니다 */
+.hero h1.typing-txt { 
+    font-size: 3.5rem; 
+    margin-bottom: 10px; 
+    letter-spacing: -1px; 
+    display: inline-block;
+    overflow: hidden; 
+    border-right: .15em solid var(--accent-color); 
+    white-space: nowrap; 
+    margin: 0 auto;
+    width: 0; 
+    animation: 
+        typing 3.5s steps(30, end) forwards, 
+        blink-caret .75s step-end infinite;
+}
+
+/* 애니메이션 키프레임들 */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--accent-color); }
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .hero h1.typing-txt { font-size: 2rem; border-right-width: .1em; }
+}
+
+.hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
+
+.cta-button {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 18px 60px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+    border: none;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    background-color: #27ae60;
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+}
         .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
 
         /* 지원하기 타원형 버튼 */
@@ -118,12 +173,15 @@
             <a href="#apply">지원</a>
         </nav>
     </header>
+<header>
+    </header>
 
-    <section class="hero">
-        <h1>Exploring Life, Ignite Ideas</h1>
-        <p>생명과학의 경이로움을 탐구하는 학술 공동체, SPARK</p>
-        <a href="#apply" class="cta-button">지금 지원하기</a>
-    </section>
+<section class="hero">
+    <h1 class="typing-txt">Exploring Life, Ignite Ideas</h1>
+    <p>생명과학의 경이로움을 탐구하는 학술 공동체, SPARK</p>
+    <a href="#apply" class="cta-button">지금 지원하기</a>
+</section>
+   
 
     <section id="about" class="about-section">
         <h2 class="section-title">About SPARK</h2>
@@ -334,6 +392,7 @@
 </footer>
 </html>
        
+
 
 
 
