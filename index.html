@@ -48,7 +48,7 @@
 
         nav a:hover { color: var(--accent-color); }
 
-/* <style> 태그 내부에 위치 시키세요 */
+
 
 /* 3. 히어로 섹션 */
 .hero {
@@ -63,36 +63,21 @@
     padding: 0 20px;
 }
 
-/* 기존 hero h1 스타일에 typing-txt 효과를 병합합니다 */
+/* 타이핑 효과 요소들을 모두 제거하고 기본 스타일만 남깁니다 */
 .hero h1.typing-txt { 
     font-size: 3.5rem; 
     margin-bottom: 10px; 
     letter-spacing: -1px; 
-    display: inline-block;
-    overflow: hidden; 
-    border-right: .15em solid var(--accent-color); 
-    white-space: nowrap; 
+    display: block; /* 가로폭 제한 해제 */
+    white-space: normal; /* 줄바꿈 허용 (모바일 대응) */
     margin: 0 auto;
-    width: 0; 
-    animation: 
-        typing 3.5s steps(30, end) forwards, 
-        blink-caret .75s step-end infinite;
-}
-
-/* 애니메이션 키프레임들 */
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: var(--accent-color); }
+    width: auto; /* 너비 자동 조절 */
+    border-right: none; /* 커서 제거 */
 }
 
 /* 모바일 대응 */
 @media (max-width: 768px) {
-    .hero h1.typing-txt { font-size: 2rem; border-right-width: .1em; }
+    .hero h1.typing-txt { font-size: 2.5rem; } /* 모바일에서 글자 크기 조정 */
 }
 
 .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
@@ -392,6 +377,7 @@
 </footer>
 </html>
        
+
 
 
 
