@@ -371,11 +371,11 @@
 // 5. 합격 조회 로직 (추가됨)
         const RESULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAMYCXVVe-FkOVluTGloYkgBNtwMyk9dUt2RYnlVBLpFjKNvL9242GQeX7ZosDfJ9n/exec'; // 배포한 웹앱 URL
 
-        window.searchResult = function() {
+        window.searchResult = function() {  // 반드시 window. 을 붙여주세요!
             const userInput = document.getElementById('checkInput').value.trim();
             const display = document.getElementById('search-result-display');
             const btn = document.getElementById('search-btn');
-
+            
             if (!userInput) {
                 alert("이메일 또는 전화번호를 입력해 주세요.");
                 return;
@@ -471,6 +471,7 @@
     </script>
 </body>
 </html>
+
 
 
 
