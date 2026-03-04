@@ -289,7 +289,24 @@
             <span id="form-msg" style="display:block; margin-top:15px; text-align:center; font-weight:bold; font-size: 0.9rem;"></span>
         </div>
     </section>
-
+    
+<section id="result-check" style="background-color: #f1f3f5;">
+        <div class="form-container" style="border-top: 5px solid var(--accent-color);">
+            <h2 style="text-align: center; color: var(--primary-color); margin-top:0;">합격 결과 조회</h2>
+            <p style="text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 25px;">
+                지원 시 입력했던 <strong>이메일</strong> 또는 <strong>전화번호</strong>를 입력해 주세요.
+            </p>
+            
+            <div class="form-group">
+                <input type="text" id="checkInput" placeholder="이메일 또는 전화번호" class="form-input">
+            </div>
+            
+            <button type="button" onclick="searchResult()" id="search-btn" class="cta-button" style="width:100%; border-radius: 10px;">결과 확인하기</button>
+            
+            <div id="search-result-display" style="margin-top: 25px; padding: 20px; border-radius: 10px; display: none; text-align: center;">
+                </div>
+        </div>
+    </section>
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-info">
@@ -351,7 +368,51 @@
                 alert("파일을 선택해 주세요.");
                 return;
             }
+// 5. 합격 조회 로직 (추가됨)
+        const RESULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAMYCXVVe-FkOVluTGloYkgBNtwMyk9dUt2RYnlVBLpFjKNvL9242GQeX7ZosDfJ9n/exec'; // 배포한 웹앱 URL
 
+        window.searchResult = function() {
+            const userInput = document.getElementById('checkInput').value.trim();
+            const display = document.getElementById('search-result-display');
+            const btn = document.getElementById('search-btn');
+
+            if (!userInput) {
+                alert("이메일 또는 전화번호를 입력해 주세요.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "조회 중...";
+            display.style.display = "none";
+
+            // JSONP 방식으로 GAS 호출 (CORS 우회)
+            // 주의: GAS 백엔드 코드가 파라미터를 받아 시트 정보를 반환하도록 설정되어 있어야 합니다.
+            fetch(`${RESULT_SCRIPT_URL}?query=${encodeURIComponent(userInput)}`)
+                .then(res => res.json())
+                .then(data => {
+                    display.style.display = "block";
+                    if (data.found) {
+                        const isPass = data.status === "합격";
+                        display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
+                        display.innerHTML = `
+                            <h3 style="margin-top:0; color: ${isPass ? '#2e7d32' : '#c62828'};">
+                                ${data.name}님은 [${data.status}]입니다.
+                            </h3>
+                            <p style="font-size: 0.9rem; color: #333; line-height: 1.5;">${data.note}</p>
+                        `;
+                    } else {
+                        display.style.backgroundColor = "#fff3e0";
+                        display.innerHTML = `<p style="color: #ef6c00;">일치하는 정보가 없습니다.<br>입력하신 내용을 다시 확인해 주세요.</p>`;
+                    }
+                })
+                .catch(err => {
+                    alert("조회 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerText = "결과 확인하기";
+                });
+        };
             // 버튼 비활성화 및 로딩 표시
             btn.disabled = true;
             btn.innerText = "제출 중... (잠시만 기다려주세요)";
@@ -410,5 +471,6 @@
     </script>
 </body>
 </html>
+
 
 
