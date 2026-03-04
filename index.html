@@ -290,23 +290,101 @@
         </div>
     </section>
     
-<section id="result-check" style="background-color: #f1f3f5;">
-        <div class="form-container" style="border-top: 5px solid var(--accent-color);">
-            <h2 style="text-align: center; color: var(--primary-color); margin-top:0;">합격 결과 조회</h2>
-            <p style="text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 25px;">
-                지원 시 입력했던 <strong>전화번호</strong>를 입력해 주세요.
+<section id="result-check" style="background-color: #f8f9fa; padding: 100px 10%;">
+        <div class="form-container" style="max-width: 500px; margin: 0 auto; background: white; border: 1px solid #eee; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 5px solid var(--accent-color);">
+            <h2 style="text-align: center; color: var(--primary-color); margin-top:0;">SPARK 10기 1차 합격 조회</h2>
+            <p style="text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 25px; word-break: keep-all;">
+                지원 시 입력했던 <strong>전화번호</strong>를 입력하여 합격 여부를 확인해 주세요.
             </p>
             
-            <div class="form-group">
-                <input type="text" id="checkInput" placeholder="이메일 또는 전화번호" class="form-input">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <input type="text" id="checkInput" placeholder="예: 010-1234-5678" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-family: inherit;">
             </div>
             
-            <button type="button" onclick="searchResult()" id="search-btn" class="cta-button" style="width:100%; border-radius: 10px;">결과 확인하기</button>
+            <button type="button" onclick="searchResult()" id="search-btn" class="cta-button" 
+                    style="width:100%; border-radius: 10px; background-color: var(--accent-color); color: white; padding: 15px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s;">
+                결과 확인하기
+            </button>
             
-            <div id="search-result-display" style="margin-top: 25px; padding: 20px; border-radius: 10px; display: none; text-align: center;">
-                </div>
+            <div id="search-result-display" style="margin-top: 25px; padding: 20px; border-radius: 10px; display: none; text-align: center; line-height: 1.6;">
+            </div>
         </div>
     </section>
+
+    <footer class="site-footer">
+        <div class="footer-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; padding: 60px 10% 30px; background: #111; color: #aaa;">
+            <div>
+                <h2 style="color: white; margin: 0;">SPARK</h2>
+                <p style="font-size: 0.8rem;">Scientific Poster on Analysis of Research Knowledge</p>
+            </div>
+            <div style="font-size: 0.9rem;">
+                <p>&copy; 2026 SPARK. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    (function() {
+        // 합격 조회용 GAS 배포 URL
+        const RESULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAMYCXVVe-FkOVluTGloYkgBNtwMyk9dUt2RYnlVBLpFjKNvL9242GQeX7ZosDfJ9n/exec';
+
+        window.searchResult = function() {
+            const userInput = document.getElementById('checkInput').value.trim();
+            const display = document.getElementById('search-result-display');
+            const btn = document.getElementById('search-btn');
+            
+            if (!userInput) {
+                alert("이메일 또는 전화번호를 입력해 주세요.");
+                return;
+            }
+
+            // 버튼 상태 변경
+            btn.disabled = true;
+            btn.innerText = "데이터 조회 중...";
+            display.style.display = "none";
+
+            // GAS API 호출
+            fetch(`${RESULT_SCRIPT_URL}?query=${encodeURIComponent(userInput)}`)
+                .then(res => res.json())
+                .then(data => {
+                    display.style.display = "block";
+                    if (data.found) {
+                        const isPass = data.status === "합격";
+                        // 합격/불합격에 따른 스타일 변경
+                        display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
+                        display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
+                        
+                        display.innerHTML = `
+                            <h3 style="margin: 0 0 10px 0; color: ${isPass ? '#2e7d32' : '#c62828'};">
+                                ${data.name}님은 <span style="text-decoration: underline;">[${data.status}]</span>입니다.
+                            </h3>
+                            <p style="font-size: 0.95rem; color: #333; margin: 0;">${data.note}</p>
+                        `;
+                    } else {
+                        display.style.backgroundColor = "#fff3e0";
+                        display.style.border = "1px solid #ffe0b2";
+                        display.innerHTML = `
+                            <p style="margin: 0; color: #ef6c00; font-weight: bold;">
+                                일치하는 정보를 찾을 수 없습니다.
+                            </p>
+                            <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                                입력하신 내용을 다시 확인하거나 관리자에게 문의해 주세요.
+                            </p>
+                        `;
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("서버 연결에 실패했습니다. 네트워크 상태를 확인해 주세요.");
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerText = "결과 확인하기";
+                });
+        };
+    })();
+    </script>
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-info">
@@ -471,6 +549,7 @@
     </script>
 </body>
 </html>
+
 
 
 
