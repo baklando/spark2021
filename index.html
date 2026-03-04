@@ -347,12 +347,14 @@
                         display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
                         display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
                         
-                        display.innerHTML = `
-                            <h3 style="margin: 0 0 10px 0; color: ${isPass ? '#2e7d32' : '#c62828'};">
-                                ${data.name}님은 <span style="text-decoration: underline;">[${data.status}]</span>입니다.
-                            </h3>
-                            <p style="font-size: 0.95rem; color: #333; margin: 0;">${data.note}</p>
-                        `;
+                    display.innerHTML = `
+    <h3 style="margin: 0 0 15px 0; color: ${isPass ? '#2e7d32' : '#c62828'};">
+        ${data.name}님은 <span style="text-decoration: underline;">[${data.status}]</span>입니다.
+    </h3>
+    <p style="font-size: 0.95rem; color: #333; margin: 0; white-space: pre-wrap; word-break: break-all; line-height: 1.8;">
+        ${data.note}
+    </p>
+`;
                     } else {
                         display.style.backgroundColor = "#fff3e0";
                         display.style.border = "1px solid #ffe0b2";
@@ -541,6 +543,7 @@
     </script>
 </body>
 </html>
+
 
 
 
