@@ -317,84 +317,83 @@
 
 
     <script>
-    (function() {
-        // 합격 조회용 GAS 배포 URL
-        const RESULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAMYCXVVe-FkOVluTGloYkgBNtwMyk9dUt2RYnlVBLpFjKNvL9242GQeX7ZosDfJ9n/exec';
+(function() {
+    const RESULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAMYCXVVe-FkOVluTGloYkgBNtwMyk9dUt2RYnlVBLpFjKNvL9242GQeX7ZosDfJ9n/exec';
 
-        window.searchResult = function() {
-            const userInput = document.getElementById('checkInput').value.trim();
-            const display = document.getElementById('search-result-display');
-            const btn = document.getElementById('search-btn');
-            
-            if (!userInput) {
-                alert("전화번호를 입력해 주세요.");
-                return;
-            }
-
-            // 버튼 상태 변경
-            btn.disabled = true;
-            btn.innerText = "데이터 조회 중...";
-            display.style.display = "none";
-
-            // GAS API 호출
-            fetch(`${RESULT_SCRIPT_URL}?query=${encodeURIComponent(userInput)}`)
-                .then(res => res.json())
-              
-
-// ... (생략) ...
-.then(data => {
-    display.style.display = "flex";
-    if (data.found) {
-        const isPass = data.status === "합격";
-        display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
-        display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
+    window.searchResult = function() {
+        const userInputField = document.getElementById('checkInput');
+        const display = document.getElementById('search-result-display');
+        const btn = document.getElementById('search-btn');
         
-        // 시트의 비고란 내용을 줄바꿈(\n) 기준으로 쪼개기
-        const noteLines = data.note.split('\n');
-        const formattedNote = noteLines.map(line => 
-            `<p style="margin: 8px 0; width: 100%; text-align: center; word-break: break-all;">${line.trim()}</p>`
-        ).join('');
+        if (!userInputField || !userInputField.value.trim()) {
+            alert("전화번호를 입력해 주세요.");
+            return;
+        }
 
-        display.innerHTML = `
-            <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <h3 style="margin: 0 0 15px 0; color: ${isPass ? '#2e7d32' : '#c62828'}; font-size: 1.3rem; text-align: center; width: 100%;">
-                    ${data.name}님은 [${data.status}]입니다.
-                </h3>
-                
-                <div style="width: 100%; text-align: center; line-height: 1.6;">
-                    ${formattedNote}
-                </div>
-            </div>
-        `;
+        const userInput = userInputField.value.trim();
 
-    } else {
-        display.style.backgroundColor = "#fff3e0";
-        display.style.border = "1px solid #ffe0b2";
-        display.innerHTML = `
-            <div style="width: 100%; text-align: center;">
-                <p style="margin: 0; color: #ef6c00; font-weight: bold; text-align: center;">
-                    일치하는 정보를 찾을 수 없습니다.
-                </p>
-                <p style="font-size: 0.85rem; color: #666; margin: 8px auto 0 auto; text-align: center;">
-                    입력하신 연락처를 다시 확인해 주세요.
-                </p>
-            </div>
-        `;
-    }
-})
+        // 버튼 상태 변경
+        btn.disabled = true;
+        btn.innerText = "데이터 조회 중...";
+        display.style.display = "none";
 
+        // GAS API 호출
+        fetch(`${RESULT_SCRIPT_URL}?query=${encodeURIComponent(userInput)}`)
+            .then(res => res.json())
+            .then(data => {
+                display.style.display = "flex";
+                display.style.flexDirection = "column";
+                display.style.alignItems = "center";
+                display.style.width = "100%";
 
-                .catch(err => {
-                    console.error(err);
-                    alert("서버 연결에 실패했습니다. 네트워크 상태를 확인해 주세요.");
-                })
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.innerText = "결과 확인하기";
-                });
-        };
-    })();
-    </script>
+                if (data.found) {
+                    const isPass = data.status === "합격";
+                    display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
+                    display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
+                    
+                    // 비고란 데이터 정제 및 줄바꿈 처리
+                    const noteText = (data.note || "").toString();
+                    const noteLines = noteText.split('\n');
+                    
+                    const formattedNote = noteLines
+                        .filter(line => line.trim() !== "")
+                        .map(line => 
+                            `<p style="margin: 5px 0; width: 100%; text-align: center; word-break: break-all; display: block;">${line.trim()}</p>`
+                        ).join('');
+
+                    display.innerHTML = `
+                        <div style="width: 100%; text-align: center;">
+                            <h3 style="margin: 0 0 15px 0; color: ${isPass ? '#2e7d32' : '#c62828'}; font-size: 1.25rem; text-align: center; width: 100%;">
+                                ${data.name}님은 [${data.status}]입니다.
+                            </h3>
+                            <div style="width: 100%; text-align: center; line-height: 1.7;">
+                                ${formattedNote}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    display.style.backgroundColor = "#fff3e0";
+                    display.style.border = "1px solid #ffe0b2";
+                    display.innerHTML = `
+                        <div style="width: 100%; text-align: center;">
+                            <p style="margin: 0; color: #ef6c00; font-weight: bold;">일치하는 정보를 찾을 수 없습니다.</p>
+                            <p style="font-size: 0.85rem; color: #666; margin-top: 10px;">입력하신 연락처를 다시 확인해 주세요.</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("서버 연결에 실패했습니다. 네트워크 상태를 확인해 주세요.");
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = "결과 확인하기";
+            });
+    };
+})();
+</script>
+    
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-info">
@@ -559,6 +558,7 @@
     </script>
 </body>
 </html>
+
 
 
 
