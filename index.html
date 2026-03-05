@@ -350,17 +350,21 @@
         display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
         display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
         
-        display.innerHTML = `
-            <div style="width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                <h3 style="margin: 0 0 10px 0; color: ${isPass ? '#2e7d32' : '#c62828'}; font-size: 1.25rem; width: 100%; text-align: center;">
-                    ${data.name}님은 [${data.status}]입니다.
-                </h3>
-                <div style="width: 40px; height: 2px; background: ${isPass ? '#a5d6a7' : '#ef9a9a'}; margin: 10px auto;"></div>
-                <p style="font-size: 0.95rem; color: #333; margin: 10px auto 0 auto; white-space: pre-wrap; word-break: keep-all; line-height: 1.7; text-align: center; max-width: 100%;">
-                    ${data.note}
-                </p>
-            </div>
-        `;
+       // ... (생략) ...
+display.innerHTML = `
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%;">
+        <h3 style="margin: 0 0 15px 0; color: ${isPass ? '#2e7d32' : '#c62828'}; font-size: 1.3rem; word-break: keep-all; width: 100%;">
+            ${data.name}님은 <span style="text-decoration: underline;">[${data.status}]</span>입니다.
+        </h3>
+        
+        <div style="width: 50px; height: 1.5px; background: ${isPass ? '#a5d6a7' : '#ef9a9a'}; margin-bottom: 20px;"></div>
+        
+        <div style="font-size: 1rem; color: #333; margin: 0; white-space: pre-wrap; word-break: break-all; line-height: 1.8; width: 100%;">
+            ${data.note}
+        </div>
+    </div>
+`
+              
     } else {
         display.style.backgroundColor = "#fff3e0";
         display.style.border = "1px solid #ffe0b2";
@@ -553,6 +557,7 @@
     </script>
 </body>
 </html>
+
 
 
 
