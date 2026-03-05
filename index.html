@@ -264,8 +264,8 @@
                 결과 확인하기
             </button>
             
-            <div id="search-result-display" style="margin-top: 25px; padding: 20px; border-radius: 10px; display: none; text-align: center; line-height: 1.6;">
-            </div>
+           <div id="search-result-display" style="margin-top: 25px; padding: 30px 20px; border-radius: 15px; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.8;">
+</div>
         </div>
     </section>
 
@@ -339,35 +339,41 @@
             // GAS API 호출
             fetch(`${RESULT_SCRIPT_URL}?query=${encodeURIComponent(userInput)}`)
                 .then(res => res.json())
-                .then(data => {
-                    display.style.display = "block";
-                    if (data.found) {
-                        const isPass = data.status === "합격";
-                        // 합격/불합격에 따른 스타일 변경
-                        display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
-                        display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
-                        
-                    display.innerHTML = `
-    <h3 style="margin: 0 0 15px 0; color: ${isPass ? '#2e7d32' : '#c62828'};">
-        ${data.name}님은 <span style="text-decoration: underline;">[${data.status}]</span>입니다.
-    </h3>
-    <p style="font-size: 0.95rem; color: #333; margin: 0; white-space: pre-wrap; word-break: break-all; line-height: 1.8;">
-        ${data.note}
-    </p>
-`;
-                    } else {
-                        display.style.backgroundColor = "#fff3e0";
-                        display.style.border = "1px solid #ffe0b2";
-                        display.innerHTML = `
-                            <p style="margin: 0; color: #ef6c00; font-weight: bold;">
-                                일치하는 정보를 찾을 수 없습니다.
-                            </p>
-                            <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">
-                                입력하신 내용을 다시 확인하거나 관리자에게 문의해 주세요.
-                            </p>
-                        `;
-                    }
-                })
+              
+.then(data => {
+    display.style.display = "flex"; // block 대신 flex로 변경
+    if (data.found) {
+        const isPass = data.status === "합격";
+        display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
+        display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
+        
+        display.innerHTML = `
+            <div style="width: 100%;">
+                <h3 style="margin: 0 0 15px 0; color: ${isPass ? '#2e7d32' : '#c62828'}; font-size: 1.3rem;">
+                    ${data.name}님은 <span style="text-decoration: underline;">[${data.status}]</span>입니다.
+                </h3>
+                <p style="font-size: 1rem; color: #333; margin: 0 auto; white-space: pre-wrap; word-break: keep-all; max-width: 90%;">
+                    ${data.note}
+                </p>
+            </div>
+        `;
+    } else {
+        // ... (찾을 수 없을 때의 코드도 동일하게 정렬)
+        display.style.backgroundColor = "#fff3e0";
+        display.style.border = "1px solid #ffe0b2";
+        display.innerHTML = `
+            <div style="width: 100%;">
+                <p style="margin: 0; color: #ef6c00; font-weight: bold; font-size: 1.1rem;">
+                    일치하는 정보를 찾을 수 없습니다.
+                </p>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+                    입력하신 내용을 다시 확인하거나<br>관리자에게 문의해 주세요.
+                </p>
+            </div>
+        `;
+    }
+})
+
                 .catch(err => {
                     console.error(err);
                     alert("서버 연결에 실패했습니다. 네트워크 상태를 확인해 주세요.");
@@ -543,6 +549,7 @@
     </script>
 </body>
 </html>
+
 
 
 
