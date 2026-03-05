@@ -131,19 +131,7 @@
         .insta-item:hover .insta-overlay { opacity: 1; }
         .insta-item:hover img { transform: scale(1.1); }
         
-#notice-bar {
-  background-color: #333; /* 배경색 */
-  color: white;           /* 글자색 */
-  text-align: center;
-  padding: 10px 0;
-  position: sticky;       /* 스크롤해도 상단에 고정 */
-  top: 0;
-  z-index: 1000;          /* 다른 요소보다 위에 표시 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
+
 
 #notice-bar button {
   background: none;
@@ -194,11 +182,7 @@
 </head>
    
 <body>
-    
-<div id="notice-bar">
-  <span>📢 [공지] SPARK 10기 면접 일정 안내.</span>
-  <button onclick="closeNotice()">닫기</button>
-</div>
+
     
     <header>
         <a href="#"><img src="logo.png" alt="SPARK Logo" class="logo-img"></a>
@@ -585,13 +569,9 @@
     })();
     </script>
     
- <script>
-      function closeNotice() {
-        document.getElementById('notice-bar').style.display = 'none';
-      }
-    </script>
 </body>
 </html>
+
 
 
 
