@@ -432,7 +432,7 @@
             const now = new Date();
             if (now < START_DATE) {
                 btn.disabled = true;
-                btn.innerText = "지원 기간이 아닙니다 (2/4 오픈)";
+                btn.innerText = "지원 기간이 아닙니다 (8/19 오픈)";
             } else if (now > END_DATE) {
                 btn.disabled = true;
                 btn.innerText = "지원이 마감되었습니다";
@@ -467,7 +467,7 @@
             const btn = document.getElementById('search-btn');
             
             if (!userInput) {
-                alert("이메일 또는 전화번호를 입력해 주세요.");
+                alert("전화번호를 입력해 주세요.");
                 return;
             }
 
@@ -562,6 +562,7 @@
     
 </body>
 </html>
+
 
 
 
