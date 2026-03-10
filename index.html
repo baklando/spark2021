@@ -7,8 +7,219 @@
     <meta property="og:title" content="SPARK - 생명과학 학술 동아리">
     <meta property="og:description" content="생명과학의 경이로움을 탐구하는 학술 공동체, SPARK에 지원하세요.">
     <meta property="og:image" content="logo.png">
-    
-    <link rel="stylesheet" href="style.css"> 
+ <style>
+        /* 1. 기본 테마 설정 */
+        :root {
+            --primary-color: #0a2342; /* 네이비 */
+            --accent-color: #2ecc71;  /* 연두색 */
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* 2. 헤더 */
+        header {
+            background: white;
+            padding: 0.5rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-img { height: 45px; display: block; }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            margin-left: 25px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        /* 모바일 메뉴 대응 */
+        @media (max-width: 768px) {
+            nav a { margin-left: 10px; font-size: 0.9rem; }
+            header { padding: 0.5rem 5%; }
+        }
+
+        nav a:hover { color: var(--accent-color); }
+
+        /* 3. 히어로 섹션 */
+        .hero {
+            height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #0a2342 0%, #1a3a5f 100%);
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 10px; 
+            letter-spacing: -1px; 
+            margin: 0 auto 10px;
+        }
+
+        .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; word-break: keep-all; } 
+            .hero p { font-size: 1rem; word-break: keep-all; }
+        }
+
+        .cta-button {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 18px 60px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: #27ae60;
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+        }
+
+        .cta-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* 4. 섹션 공통 */
+        section { padding: 100px 10%; scroll-margin-top: 60px; }
+        .section-title { text-align: center; color: var(--primary-color); font-size: 2.5rem; margin-bottom: 50px; }
+
+        /* 소개 섹션 카드 */
+        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .about-card { background: white; padding: 40px 25px; border-radius: 20px; text-align: center; border: 1px solid #eee; transition: 0.3s; }
+        .about-card:hover { transform: translateY(-10px); background: #f1f3f5; }
+        .card-icon { font-size: 3rem; margin-bottom: 20px; }
+
+        /* 인스타 스타일 그리드 */
+        .insta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .insta-item { position: relative; aspect-ratio: 1/1; overflow: hidden; border-radius: 15px; display: block; }
+        .insta-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .insta-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); color:white; display:flex; justify-content:center; align-items:center; opacity:0; transition:0.3s; font-weight: bold; }
+        .insta-item:hover .insta-overlay { opacity: 1; }
+        .insta-item:hover img { transform: scale(1.1); }
+        
+
+        /* 5. 지원하기 폼 스타일 (Clean Ver.) */
+        .form-container {
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: white;
+            border: 1px solid #eee; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-label { font-weight: bold; display: block; margin-bottom: 8px; color: var(--primary-color); }
+        .form-input { 
+            width: 100%; padding: 12px; 
+            border: 1px solid #ccc; border-radius: 8px; 
+            box-sizing: border-box; font-family: inherit;
+        }
+        .form-input:focus { outline: 2px solid var(--accent-color); border-color: transparent; }
+        
+        .privacy-box {
+            background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;
+        }
+        .privacy-scroll {
+            font-size: 12px; color: #666; height: 80px; overflow-y: scroll; background: #fff; padding: 10px; border: 1px solid #eee; margin-bottom: 10px; line-height: 1.6;
+        }
+
+        /* 6. 푸터 스타일 (추가됨) */
+        .site-footer { background-color: #111; color: #aaa; padding: 60px 10% 30px; margin-top: 50px; }
+        .footer-container { display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 40px; }
+        .footer-logo { color: white; margin-top: 0; }
+        .footer-tagline { font-size: 0.9rem; margin-top: 10px; }
+        .footer-contact a { color: var(--accent-color); text-decoration: none; }
+        .footer-bottom { border-top: 1px solid #333; padding-top: 20px; text-align: center; font-size: 0.8rem; }
+        
+        @media (max-width: 600px) {
+            .footer-container { flex-direction: column; gap: 30px; }
+        }
+
+/* 공지사항 섹션 전체 */
+.notice-section {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 테이블 스타일 */
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.notice-table th, .notice-table td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.notice-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+/* 제목 왼쪽 정렬 및 링크 색상 */
+.notice-table .title {
+    text-align: left;
+}
+
+.notice-table .title a {
+    text-decoration: none;
+    color: #333;
+}
+
+.notice-table .title a:hover {
+    color: #007bff; /* 마우스 올리면 파란색 */
+}
+
+/* 뱃지 스타일 */
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: white;
+}
+.red { background-color: #ff4d4d; }
+.blue { background-color: #4d79ff; }
+.green { background-color: #2eb82e; }
+    </style>
 
 </head>
    
@@ -403,6 +614,7 @@
     
 </body>
 </html>
+
 
 
 
