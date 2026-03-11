@@ -453,12 +453,14 @@
             }
 
             // [B] 합격 조회 섹션(result-check) 관리
-            // 예: 2026년 9월 20일 밤 11시 59분이 지나면 숨김 (날짜는 원하시는 대로 수정하세요)
-            const RESULT_DEADLINE = new Date(2026, 2, 20, 23, 59); 
-            
-            if (now > RESULT_DEADLINE) {
-                if (resultSection) resultSection.style.display = 'none';
-            }
+         // 9월 10일 전이거나, 2월 10일 후면 숨김 (즉, 10일~20일 사이만 노출)
+const RESULT_OPEN = new Date(2026, 1, 10, 0, 0);
+if (now < RESULT_OPEN || now > RESULT_DEADLINE) {
+    if (resultSection) resultSection.style.display = 'none';
+} else {
+    if (resultSection) resultSection.style.display = 'block';
+}
+
         }
         
         // 페이지 로드 시 즉시 실행
@@ -568,6 +570,7 @@ faqItems.forEach(item => {
     </script>
 </body>
 </html>
+
 
 
 
