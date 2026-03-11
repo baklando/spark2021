@@ -226,7 +226,7 @@
                 지원 시 입력한 <strong>전화번호</strong>를 입력해 주세요.
             </p>
             <div class="form-group">
-                <input type="text" id="checkInput" placeholder="예: 010-1234-5678" class="form-input">
+                <input type="text" id="checkInput" placeholder="예: 010-1234-5678 '-'를 붙여주세요" class="form-input">
             </div>
             <button type="button" onclick="searchResult()" id="search-btn" class="cta-button" style="width:100%; border-radius: 10px;">결과 확인하기</button>
             <div id="search-result-display" style="margin-top: 25px; padding: 25px; border-radius: 12px; display: none; text-align: center;"></div>
@@ -258,7 +258,8 @@
                     <div class="privacy-scroll">
                         1. 수집 항목: 이름, 학과, 학번, 연락처, 지원서<br>
                         2. 목적: 지원자 선발 및 안내<br>
-                        3. 보유 기간: 선발 종료 후 14일 이내 파기
+                        3. 보유 기간: 선발 종료 후 14일 이내 파기<br>
+                          * 귀하는 동의를 거부할 권리가 있으나, 동의하지 않을 경우 지원이 제한될 수 있습니다.
                     </div>
                     <label style="display: flex; align-items: center; font-size: 14px; cursor: pointer;">
                         <input type="checkbox" name="privacy_agree" required style="margin-right: 10px;"> 위 내용을 확인했습니다.
@@ -402,3 +403,4 @@
     </script>
 </body>
 </html>
+
