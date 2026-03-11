@@ -412,156 +412,122 @@
     </footer>
 
     <script>
-    (function() {
-        // --- 1. 환경 설정 ---
-        const CONFIG = {
-            // 자바스크립트 월은 0부터 시작 (8월=7, 9월=8)
-            START_DATE: new Date(2026, 7, 19, 0, 0), 
-            END_DATE: new Date(2026, 8, 5, 23, 59),
-            // 구글 앱스 스크립트 배포 URL을 입력하세요
-            APPLY_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwb9MeH0mvriV3uEDiUoFsgZn6YziGFce2j14oibxfulgN3OYVWhwjzLms1Cnm0lxFx4g/exec',
-            RESULT_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzAMYCXVVe-FkOVluTGloYkgBNtwMyk9dUt2RYnlVBLpFjKNvL9242GQeX7ZosDfJ9n/exec'
-        };
+(function() {
+    // --- 1. 환경 설정 ---
+    const CONFIG = {
+        START_DATE: new Date(2026, 7, 19, 0, 0), // 8월 19일
+        END_DATE: new Date(2026, 8, 5, 23, 59),   // 9월 5일
+        APPLY_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwb9MeH0mvriV3uEDiUoFsgZn6YziGFce2j14oibxfulgN3OYVWhwjzLms1Cnm0lxFx4g/exec',
+        RESULT_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzAMYCXVVe-FkOVluTGloYkgBNtwMyk9dUt2RYnlVBLpFjKNvL9242GQeX7ZosDfJ9n/exec'
+    };
 
-        const applyForm = document.getElementById('spark-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const msgArea = document.getElementById('form-msg');
+    const applyForm = document.getElementById('spark-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const msgArea = document.getElementById('form-msg');
 
-     // --- 2. 지원 기간 체크 및 섹션 관리 ---
-        function checkDate() {
-            const now = new Date();
-            
-            // 제어할 섹션 가져오기
-            const applySection = document.getElementById('apply');
-            const resultSection = document.getElementById('result-check');
+    // --- 2. 지원 기간 체크 및 섹션 관리 (중복 제거 통합본) ---
+    function checkDate() {
+        const now = new Date();
+        const applySection = document.getElementById('apply');
+        const resultSection = document.getElementById('result-check');
 
-            // [A] 지원 섹션(apply) 관리
-            // CONFIG.END_DATE가 지나면 숨김
-            if (now > CONFIG.END_DATE) {
-                if (applySection) applySection.style.display = 'none';
-                
-                // 버튼 상태 업데이트 (혹시 섹션이 보일 경우를 대비)
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerText = "지원이 마감되었습니다";
-                }
-            } else if (now < CONFIG.START_DATE) {
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerText = "지원 기간이 아닙니다 (8/19 오픈)";
-                }
+        // [A] 지원 섹션(apply) 관리
+        if (now > CONFIG.END_DATE) {
+            if (applySection) applySection.style.setProperty("display", "none", "important");
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "지원이 마감되었습니다";
             }
-
-       // --- 2. 지원 기간 체크 및 섹션 관리 (통합본) ---
-        function checkDate() {
-            const now = new Date();
-            
-            // 제어할 섹션 및 엘리먼트 가져오기
-            const applySection = document.getElementById('apply');
-            const resultSection = document.getElementById('result-check');
-
-            // [A] 지원 섹션(apply) 관리
-            if (now > CONFIG.END_DATE) {
-                // 1. 모집 기간 종료 후: 섹션 숨김
-               if (applySection) applySection.style.setProperty("display", "none", "important");
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerText = "지원이 마감되었습니다";
-                }
-            } else if (now < CONFIG.START_DATE) {
-                // 2. 모집 시작 전: 버튼 비활성화
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerText = "지원 기간이 아닙니다 (8/19 오픈)";
-                }
-            } else {
-                // 3. 모집 기간 중: 섹션 표시 및 버튼 활성화
-                if (applySection) applySection.style.display = 'block';
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "지원서 제출하기";
-                }
+        } else if (now < CONFIG.START_DATE) {
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "지원 기간이 아닙니다 (8/19 오픈)";
             }
-
-            // [B] 합격 조회 섹션(result-check) 관리
-            // 설정: 3월 10일 00:00 오픈 ~ 3월 20일 23:59 마감
-            const RESULT_OPEN = new Date(2026, 2, 10, 0, 0);      
-            const RESULT_DEADLINE = new Date(2026, 2, 20, 23, 59); 
-            
-            if (resultSection) {
-                if (now >= RESULT_OPEN && now <= RESULT_DEADLINE) {
-                    // 지정된 기간 내에만 노출
-                    resultSection.style.display = 'block';
-                } else {
-                    // 그 외의 시간에는 숨김
-                    resultSection.style.display = 'none';
-                }
+        } else {
+            if (applySection) applySection.style.display = 'block';
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "지원서 제출하기";
             }
         }
+
+        // [B] 합격 조회 섹션(result-check) 관리
+        // 현재 테스트 기간: 3월 10일 ~ 3월 20일
+        const RESULT_OPEN = new Date(2026, 2, 10, 0, 0);      
+        const RESULT_DEADLINE = new Date(2026, 2, 20, 23, 59); 
         
-        // 페이지 로드 시 즉시 실행하여 섹션 상태 결정
-        checkDate();
-
-        // --- 3. 합격 조회 로직 (Global) ---
-        window.searchResult = function() {
-            const input = document.getElementById('checkInput').value.trim();
-            const display = document.getElementById('search-result-display');
-            const btn = document.getElementById('search-btn');
-            
-            if (!input) { alert("전화번호를 입력해 주세요."); return; }
-
-            btn.disabled = true;
-            btn.innerText = "조회 중...";
-            display.style.display = "none";
-
-            fetch(`${CONFIG.RESULT_SCRIPT_URL}?query=${encodeURIComponent(input)}`)
-                .then(res => res.json())
-                .then(data => {
-                    display.style.display = "block";
-                    if (data.found) {
-                        const isPass = data.status === "합격";
-                        display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
-                        display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
-                        display.innerHTML = `
-                            <h3 style="color: ${isPass ? '#2e7d32' : '#c62828'};">${data.name}님은 [${data.status}]입니다.</h3>
-                            <p style="font-size:0.9rem;">${data.note || ""}</p>
-                        `;
-                    } else {
-                        display.style.backgroundColor = "#fff3e0";
-                        display.innerHTML = `<p style="color:#ef6c00;">일치하는 정보가 없습니다. 번호를 확인해 주세요.</p>`;
-                    }
-                })
-                .catch(() => alert("서버 연결 실패"))
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.innerText = "결과 확인하기";
-                });
-        };
-
-        // FAQ 아코디언 로직
-const faqItems = document.querySelectorAll('.faq-item');
-
-faqItems.forEach(item => {
-    const question = item.querySelector('.faq-question');
-    question.addEventListener('click', () => {
-        // 이미 열려있는 다른 항목 닫기 (하나씩만 열리게 하고 싶을 때)
-        faqItems.forEach(otherItem => {
-            if (otherItem !== item) {
-                otherItem.classList.remove('active');
+        if (resultSection) {
+            if (now >= RESULT_OPEN && now <= RESULT_DEADLINE) {
+                resultSection.style.display = 'block';
+            } else {
+                resultSection.style.display = 'none';
             }
-        });
-        
-        // 현재 클릭한 항목 토글
-        item.classList.toggle('active');
-    });
-});
+        }
+    }
+    
+    // 페이지 로드 시 즉시 실행
+    checkDate();
 
-        // --- 4. 지원서 제출 로직 ---
+    // --- 3. 합격 조회 로직 (Global) ---
+    window.searchResult = function() {
+        const inputField = document.getElementById('checkInput');
+        const display = document.getElementById('search-result-display');
+        const btn = document.getElementById('search-btn');
+        
+        if (!inputField || !inputField.value.trim()) { 
+            alert("전화번호를 입력해 주세요."); 
+            return; 
+        }
+
+        const input = inputField.value.trim();
+        btn.disabled = true;
+        btn.innerText = "조회 중...";
+        display.style.display = "none";
+
+        fetch(`${CONFIG.RESULT_SCRIPT_URL}?query=${encodeURIComponent(input)}`)
+            .then(res => res.json())
+            .then(data => {
+                display.style.display = "block";
+                if (data.found) {
+                    const isPass = data.status === "합격";
+                    display.style.backgroundColor = isPass ? "#e8f5e9" : "#ffebee";
+                    display.style.border = `1px solid ${isPass ? '#a5d6a7' : '#ef9a9a'}`;
+                    display.innerHTML = `
+                        <h3 style="color: ${isPass ? '#2e7d32' : '#c62828'};">${data.name}님은 [${data.status}]입니다.</h3>
+                        <p style="font-size:0.9rem;">${data.note || ""}</p>
+                    `;
+                } else {
+                    display.style.backgroundColor = "#fff3e0";
+                    display.innerHTML = `<p style="color:#ef6c00;">일치하는 정보가 없습니다. 번호를 확인해 주세요.</p>`;
+                }
+            })
+            .catch(() => alert("서버 연결 실패"))
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = "결과 확인하기";
+            });
+    };
+
+    // FAQ 아코디언 로직
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) otherItem.classList.remove('active');
+            });
+            item.classList.toggle('active');
+        });
+    });
+
+    // --- 4. 지원서 제출 로직 ---
+    if (applyForm) {
         applyForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
 
+            if (!file) { alert("파일을 선택해 주세요."); return; }
             if (file.size > 10 * 1024 * 1024) { alert("파일은 10MB 이하여야 합니다."); return; }
 
             submitBtn.disabled = true;
@@ -602,10 +568,12 @@ faqItems.forEach(item => {
             };
             reader.readAsDataURL(file);
         });
-    })();
-    </script>
+    }
+})();
+</script>
 </body>
 </html>
+
 
 
 
