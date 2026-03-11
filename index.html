@@ -127,6 +127,80 @@
         .insta-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); color:white; display:flex; justify-content:center; align-items:center; opacity:0; transition:0.3s; font-weight: bold; }
         .insta-item:hover .insta-overlay { opacity: 1; }
         .insta-item:hover img { transform: scale(1.1); }
+
+        /* FAQ 스타일 */
+.faq-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.faq-item {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    transition: background 0.3s;
+}
+
+.faq-question:hover {
+    background: #fcfcfc;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    background: #fdfdfd;
+    padding: 0 20px;
+}
+
+.faq-answer p {
+    margin: 20px 0;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+/* 활성화 상태 */
+.faq-item.active {
+    border-color: var(--accent-color);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.1);
+}
+
+.faq-item.active .faq-answer {
+    max-height: 300px; /* 답변 길이에 따라 조절 가능 */
+    padding: 0 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.faq-item.active .arrow-icon {
+    transform: rotate(180deg);
+    color: var(--accent-color);
+}
+
+.arrow-icon {
+    font-style: normal;
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+    color: #ccc;
+}
         
         /* 5. 폼 스타일 */
         .form-container {
@@ -219,6 +293,53 @@
         </div>
     </section>
 
+    <section id="faq" style="background-color: white;">
+    <h2 class="section-title">FAQ</h2>
+    <div class="form-container" style="max-width: 800px;">
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Q. 비전공자도 지원 가능한가요?</span>
+                    <i class="arrow-icon">▼</i>
+                </button>
+                <div class="faq-answer">
+                    <p>네, 가능합니다! 생명과학에 대한 열정과 기초 지식을 갖추고 계신다면 전공에 상관없이 환영합니다. 실제로 통계, 컴퓨터공학, 화학 전공자분들도 함께 활동하며 시너지를 내고 있습니다.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Q. 정기 모임 시간과 장소는 어떻게 되나요?</span>
+                    <i class="arrow-icon">▼</i>
+                </button>
+                <div class="faq-answer">
+                    <p>.........</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Q. 시험 기간에도 활동을 진행하나요?</span>
+                    <i class="arrow-icon">▼</i>
+                </button>
+                <div class="faq-answer">
+                    <p>.........</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Q. 활동 혜택은 무엇이 있나요?</span>
+                    <i class="arrow-icon">▼</i>
+                </button>
+                <div class="faq-answer">
+                    <p>........</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
     <section id="result-check">
         <div class="form-container" style="border-top: 5px solid var(--accent-color);">
             <h2 style="text-align: center; color: var(--primary-color);">1차 합격 조회</h2>
@@ -353,6 +474,24 @@
                 });
         };
 
+        // FAQ 아코디언 로직
+const faqItems = document.querySelectorAll('.faq-item');
+
+faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    question.addEventListener('click', () => {
+        // 이미 열려있는 다른 항목 닫기 (하나씩만 열리게 하고 싶을 때)
+        faqItems.forEach(otherItem => {
+            if (otherItem !== item) {
+                otherItem.classList.remove('active');
+            }
+        });
+        
+        // 현재 클릭한 항목 토글
+        item.classList.toggle('active');
+    });
+});
+
         // --- 4. 지원서 제출 로직 ---
         applyForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -403,4 +542,5 @@
     </script>
 </body>
 </html>
+
 
