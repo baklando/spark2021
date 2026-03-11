@@ -463,7 +463,7 @@
             // [A] 지원 섹션(apply) 관리
             if (now > CONFIG.END_DATE) {
                 // 1. 모집 기간 종료 후: 섹션 숨김
-                if (applySection) applySection.style.display = 'none';
+               if (applySection) applySection.style.setProperty("display", "none", "important");
                 if (submitBtn) {
                     submitBtn.disabled = true;
                     submitBtn.innerText = "지원이 마감되었습니다";
@@ -606,6 +606,7 @@ faqItems.forEach(item => {
     </script>
 </body>
 </html>
+
 
 
 
