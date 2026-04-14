@@ -434,6 +434,59 @@
             word-break: break-all;
         }
 
+        /* ── 현장 사진 갤러리 ── */
+.photo-gallery {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
+    gap: 12px;
+}
+
+.photo-item {
+    position: relative;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    cursor: pointer;
+    border: 1px solid var(--border);
+}
+
+.photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.photo-item:hover img {
+    transform: scale(1.1); /* 호버 시 살짝 확대 */
+}
+
+.photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 35, 66, 0.4);
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.photo-item:hover .photo-overlay {
+    opacity: 1;
+}
+
+.photo-overlay span {
+    color: white;
+    font-size: 1.2rem;
+}
+
+/* 모바일에서는 1열로 */
+@media (max-width: 480px) {
+    .photo-gallery { grid-template-columns: 1fr; }
+}
+
         /* 개인정보 동의 박스 */
         .privacy-box {
             background: #f8fafb;
@@ -699,6 +752,32 @@
             </div>
         </div>
 
+
+        <div class="info-card">
+    <div class="info-card-title">지난 세션 현장</div>
+    <p style="font-size:0.85rem; color:var(--muted); margin-bottom:15px;">
+        열정적인 학술 교류의 현장을 확인해보세요.
+    </p>
+    
+    <div class="photo-gallery">
+        <div class="photo-item" onclick="openLightbox('posterpo1.jpg')">
+            <img src="posterpo1.jpg" alt="포스터 세션 현장 1">
+            <div class="photo-overlay"><span>🔍</span></div>
+        </div>
+        <div class="photo-item" onclick="openLightbox('posterpo2.jpg')">
+            <img src="posterpo2.jpg" alt="포스터 세션 현장 2">
+            <div class="photo-overlay"><span>🔍</span></div>
+        </div>
+        <div class="photo-item" onclick="openLightbox('posterpo3.jpg')">
+            <img src="posterpo3.jpg" alt="포스터 세션 현장 3">
+            <div class="photo-overlay"><span>🔍</span></div>
+        </div>
+        <div class="photo-item" onclick="openLightbox('posterpo4.jpg')">
+            <img src="posterpo4.jpg" alt="포스터 세션 현장 4">
+            <div class="photo-overlay"><span>🔍</span></div>
+        </div>
+    </div>
+</div>
         <!-- 안내사항 -->
         <div class="info-card">
             <div class="info-card-title">참가 안내사항</div>
@@ -996,7 +1075,33 @@
         }
         frame = requestAnimationFrame(draw);
     }
+/* ── 라이트박스 기능 (이미지 크게 보기) ── */
+window.openLightbox = function(src) {
+    // 이미 존재하는 라이트박스가 있으면 제거
+    const oldBox = document.getElementById('lightbox');
+    if (oldBox) oldBox.remove();
 
+    const lightbox = document.createElement('div');
+    lightbox.id = 'lightbox';
+    lightbox.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85); display: flex; align-items: center;
+        justify-content: center; z-index: 10000; cursor: zoom-out;
+        backdrop-filter: blur(5px); transition: opacity 0.3s ease;
+    `;
+    
+    const img = document.createElement('img');
+    img.src = src;
+    img.style.cssText = 'max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.5);';
+    
+    lightbox.appendChild(img);
+    document.body.appendChild(lightbox);
+    
+    lightbox.onclick = () => {
+        lightbox.style.opacity = '0';
+        setTimeout(() => lightbox.remove(), 300);
+    };
+};
 })();
 </script>
 </body>
