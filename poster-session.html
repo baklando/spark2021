@@ -666,7 +666,7 @@
                 <span class="hero-card-icon">📅</span>
                 <div>
                     <span class="hero-card-label">행사 일자</span>
-                    <span class="hero-card-value">2025. 08. 19</span>
+                    <span class="hero-card-value">2026. 08. 19</span>
                 </div>
             </div>
             <div class="hero-card">
@@ -680,7 +680,7 @@
                 <span class="hero-card-icon">🕐</span>
                 <div>
                     <span class="hero-card-label">신청 마감</span>
-                    <span class="hero-card-value">2025. 08. 10</span>
+                    <span class="hero-card-value">2026. 08. 18</span>
                 </div>
             </div>
         </div>
@@ -699,7 +699,7 @@
             <p style="font-size:0.9rem; color:#444; line-height:1.85;">
                 SPARK 포스터 세션은 매 기수 마지막에 진행되는 정기 학술 발표 행사로,
                 회원들이 한 학기 동안 논문 스터디를 통해 쌓은 지식을 시각화하여 발표합니다.
-                발표자는 자신이 선정한 생명과학 주제를 A0 포맷 포스터로 제작하고,
+                발표자는 자신이 선정한 생명과학 주제를 A1 포맷 포스터로 제작하고,
                 참관자들과 자유롭게 토론하며 발표 역량을 키웁니다.
             </p>
             <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;">
@@ -792,7 +792,7 @@
                 </div>
                 <div class="notice-row">
                     <div class="notice-icon">③</div>
-                    <span>행사 당일 <strong>출결 인정</strong>이 적용되므로 반드시 참석해 주세요. 사전 불참 통보 없는 결석은 수료에 영향을 줍니다.</span>
+                    <span>행사 당일 참석 할 경우 다음 기수 지원 시<strong>가산점</strong>이 부여됩니다.</span>
                 </div>
                 <div class="notice-row">
                     <div class="notice-icon">④</div>
@@ -869,7 +869,7 @@
                 </label>
                 <select id="inp-role" name="role" required class="form-input">
                     <option value="" disabled selected>선택해 주세요</option>
-                    <option value="발표자(SPARK 10기 회원)">발표자 (SPARK 10기 회원)</option>
+                    <option value="역대 기수자">역대 기수자</option>
                     <option value="외부 참관객">외부 참관객</option>
                 </select>
             </div>
@@ -885,7 +885,7 @@
                     <option value="네이버 카페">네이버 카페</option>
                     <option value="링크드인">LinkedIn</option>
                     <option value="지인 소개">지인 소개</option>
-                    <option value="학교 공지">학교 공지 / 게시판</option>
+                    <option value="학교 공지">에브리타임</option>
                     <option value="기타">기타</option>
                 </select>
             </div>
@@ -899,10 +899,6 @@
                     <label class="checkbox-row">
                         <input type="radio" name="photo_agree" value="동의함" required>
                         동의합니다 — 행사 사진·영상에 제 모습이 포함될 수 있습니다.
-                    </label>
-                    <label class="checkbox-row">
-                        <input type="radio" name="photo_agree" value="동의하지 않음">
-                        동의하지 않습니다
                     </label>
                 </div>
             </div>
@@ -970,7 +966,7 @@
     // (이 폼에는 파일 업로드 없음 — 추후 확장 시 사용)
 
     /* ── 폼 제출 ── */
-    const POSTER_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_POSTER_SCRIPT_URL_HERE/exec';
+    const POSTER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwafY2GCfXNe0e4CGdds370ynk6iQxYengdOIseEKtxSETXdswL27q1G55Dhe1YTATB/exec';
     // ↑ Google Apps Script 배포 URL로 교체해 주세요.
 
     const form      = document.getElementById('poster-form');
