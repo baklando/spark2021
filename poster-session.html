@@ -1016,21 +1016,16 @@
                 launchConfetti();
             } else { throw new Error(); }
         })
+       // 폼 제출 fetch 로직의 .catch 부분
         .catch(() => {
-            // ── 개발/테스트 환경: URL 미설정 시 성공 처리 ──
-            if (POSTER_SCRIPT_URL.includes('YOUR_POSTER_SCRIPT_URL_HERE')) {
-                form.style.display = 'none';
-                document.getElementById('success-view').style.display = 'block';
-                launchConfetti();
-                return;
-            }
-            msgArea.textContent = '❌ 제출에 실패했습니다. 다시 시도해 주세요.';
+            // 통신 실패 또는 서버 에러 발생 시 처리
+            msgArea.textContent = '❌ 제출에 실패했습니다. 네트워크 상태를 확인하고 다시 시도해 주세요.';
             msgArea.style.color = '#e74c3c';
+            
             submitBtn.disabled  = false;
             submitBtn.textContent = '신청하기 →';
         });
     });
-
     /* ── Confetti ── */
     function launchConfetti() {
         const colors = ['#2ecc71','#0a2342','#f1c40f','#3498db','#e74c3c','#9b59b6','#1abc9c'];
