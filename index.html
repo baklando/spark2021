@@ -677,44 +677,56 @@ Allow:/
         </div>
     </section>
 
-    <!-- ── 지원하기 ── -->
-    <section id="apply" style="background: var(--white);">
-        <div class="form-container reveal">
-            <h2 style="text-align:center; color:var(--primary); margin-bottom:26px;">SPARK 지원하기</h2>
-            <form id="spark-form">
-                <div class="form-group">
-                    <label class="form-label">지원서 업로드 (PDF)</label>
-                    <input type="file" id="fileInput" accept=".pdf" required class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">이름</label>
-                    <input type="text" name="user_name" required class="form-input" placeholder="홍길동">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">학과 / 학번</label>
-                    <input type="text" name="user_major" placeholder="예: 생명과학과 / 23학번" required class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">연락처</label>
-                    <input type="tel" name="user_phone" placeholder="010-0000-0000" required class="form-input">
-                </div>
-                <div class="form-group privacy-box">
-                    <label class="form-label" style="font-size:0.88rem;">개인정보 수집·이용 동의 (필수)</label>
-                    <div class="privacy-scroll">
-                        1. 수집 항목: 이름, 학과, 학번, 연락처, 지원서<br>
-                        2. 수집 목적: 지원자 선발 및 안내<br>
-                        3. 보유 기간: 선발 종료 후 14일 이내 파기<br>
-                        * 귀하는 동의를 거부할 권리가 있으나, 동의하지 않을 경우 지원이 제한될 수 있습니다.
-                    </div>
-                    <label style="display:flex; align-items:center; font-size:14px; cursor:pointer; gap:10px;">
-                        <input type="checkbox" name="privacy_agree" required> 위 내용을 확인했습니다.
-                    </label>
-                </div>
-                <button type="submit" id="submit-btn" class="cta-button" style="width:100%; border-radius:12px;">지원서 제출하기</button>
-            </form>
-            <span id="form-msg" style="display:block; margin-top:15px; text-align:center; font-weight:bold;"></span>
+   <!-- ── 지원하기 ── -->
+<section id="apply" style="background: var(--white);">
+    <div class="form-container reveal">
+        <h2 style="text-align:center; color:var(--primary); margin-bottom:26px;">SPARK 지원하기</h2>
+        
+        <!-- 💡 [추가] 구글 독스 지원서 양식 다운로드 섹션 -->
+        <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 18px; margin-bottom: 24px; text-align: center;">
+            <p style="margin: 0 0 12px 0; font-size: 0.95rem; color: #495057; font-weight: 500;">
+                아래 양식을 다운로드하여 작성하신 후, <strong>PDF 파일</strong>로 변환하여 제출해 주세요.
+            </p>
+            <!-- ⚠️ '여기에_구글_독스_공유_링크_입력' 부분에 실제 구글 문서 주소를 넣으세요 -->
+            <a href="여기에_구글_독스_공유_링크_입력" target="_blank" class="cta-button" style="display: inline-flex; align-items: center; gap: 8px; background: #2ecc71; font-size: 0.9rem; padding: 10px 20px; text-decoration: none; border-radius: 8px;">
+                📄 SPARK 지원서 양식 다운로드 (Google Docs)
+            </a>
         </div>
-    </section>
+
+        <form id="spark-form">
+            <div class="form-group">
+                <label class="form-label">지원서 업로드 (PDF)</label>
+                <input type="file" id="fileInput" accept=".pdf" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">이름</label>
+                <input type="text" name="user_name" required class="form-input" placeholder="홍길동">
+            </div>
+            <div class="form-group">
+                <label class="form-label">학과 / 학번</label>
+                <input type="text" name="user_major" placeholder="예: 생명과학과 / 23학번" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">연락처</label>
+                <input type="tel" name="user_phone" placeholder="010-0000-0000" required class="form-input">
+            </div>
+            <div class="form-group privacy-box">
+                <label class="form-label" style="font-size:0.88rem;">개인정보 수집·이용 동의 (필수)</label>
+                <div class="privacy-scroll">
+                    1. 수집 항목: 이름, 학과, 학번, 연락처, 지원서<br>
+                    2. 수집 목적: 지원자 선발 및 안내<br>
+                    3. 보유 기간: 선발 종료 후 14일 이내 파기<br>
+                    * 귀하는 동의를 거부할 권리가 있으나, 동의하지 않을 경우 지원이 제한될 수 있습니다.
+                </div>
+                <label style="display:flex; align-items:center; font-size:14px; cursor:pointer; gap:10px;">
+                    <input type="checkbox" name="privacy_agree" required> 위 내용을 확인했습니다.
+                </label>
+            </div>
+            <button type="submit" id="submit-btn" class="cta-button" style="width:100%; border-radius:12px;">지원서 제출하기</button>
+        </form>
+        <span id="form-msg" style="display:block; margin-top:15px; text-align:center; font-weight:bold;"></span>
+    </div>
+</section>
 
     <!-- ── 푸터 ── -->
     <footer class="site-footer">
