@@ -145,7 +145,9 @@
         .submit-btn { width: 100%; padding: 14px; background: var(--primary); color: var(--white); font-family: inherit; font-size: 0.95rem; font-weight: 700; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); box-shadow: 0 4px 14px rgba(10,35,66,0.25); margin-top: 10px; }
         .submit-btn:hover { background: var(--primary-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(10,35,66,0.35); }
         .submit-btn:active { transform: translateY(0); }
-        .submit-btn:disabled { background: #ccc; box-shadow: none; transform: none; cursor: not-allowed; }
+        
+        /* 💡 비활성화(disabled)되었을 때 회색으로 변하는 스타일 */
+        .submit-btn:disabled { background: #bbb !important; box-shadow: none !important; transform: none !important; cursor: not-allowed !important; }
 
         /* 제출 성공 시 노출 영역 */
         #success-view { display: none; text-align: center; padding: 25px 0; animation: fadeUp 0.5s ease both; }
@@ -308,7 +310,14 @@
 
     <script>
     (function () {
-        // [필수 변경] 구글 앱스 스크립트(GAS) 웹 앱 API 주소 연동 변수
+        /* ──────────────────────────────────────────
+           💡 1. 메인 홈피와 동일한 기간 설정 추가
+        ────────────────────────────────────────── */
+        const CONFIG = {
+            START_DATE:    new Date(2026, 7, 19, 0, 0),   // 8/19 오픈
+            END_DATE:      new Date(2026, 8,  5, 23, 59), // 9/5 마감
+        };
+
         const APPLY_API_URL = 'https://script.google.com/macros/s/AKfycbwb9MeH0mvriV3uEDiUoFsgZn6YziGFce2j14oibxfulgN3OYVWhwjzLms1Cnm0lxFx4g/exec';
 
         /* ── Toast 안내창 팝업 매크로 ── */
@@ -322,12 +331,14 @@
 
         /* ── 전화번호 자릿수 하이픈 자동 변환 포맷터 ── */
         const phoneInput = document.getElementById('inp-phone');
-        phoneInput.addEventListener('input', () => {
-            let v = phoneInput.value.replace(/\D/g, '');
-            if (v.length <= 3) phoneInput.value = v;
-            else if (v.length <= 7) phoneInput.value = v.slice(0,3) + '-' + v.slice(3);
-            else phoneInput.value = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7,11);
-        });
+        if (phoneInput) {
+            phoneInput.addEventListener('input', () => {
+                let v = phoneInput.value.replace(/\D/g, '');
+                if (v.length <= 3) phoneInput.value = v;
+                else if (v.length <= 7) phoneInput.value = v.slice(0,3) + '-' + v.slice(3);
+                else phoneInput.value = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7,11);
+            });
+        }
 
         /* ── 스크롤 reveal 애니메이션 적용 ── */
         const revealEls = document.querySelectorAll('.reveal');
@@ -346,55 +357,86 @@
         const submitBtn = document.getElementById('submit-btn');
         const msgArea   = document.getElementById('form-msg');
 
-        applyForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+        /* ──────────────────────────────────────────
+           💡 2. 기간 실시간 체크 제어 함수 추가
+        ────────────────────────────────────────── */
+        function checkApplyPeriod() {
+            const now = new Date();
             
-            const fileInput = document.getElementById('inp-file');
-            const file = fileInput.files[0];
-
-            if (!file) { toast('지원서 PDF 파일을 선택해 주세요.', '#e74c3c'); return; }
-            if (file.size > 10 * 1024 * 1024) { toast('파일 제한 용량은 10MB 이하입니다.', '#e74c3c'); return; }
-            
-            const phoneRegex = /^010-\d{4}-\d{4}$/;
-            if (!phoneRegex.test(phoneInput.value)) {
-                toast('올바른 연락처 형식을 준수해 주세요. (010-XXXX-XXXX)', '#e74c3c');
-                return;
+            if (now < CONFIG.START_DATE) {
+                // 오픈 일자 전일 때
+                submitBtn.disabled = true;
+                submitBtn.textContent = '지원 기간 전입니다 (8/19 오픈)';
+                return false;
+            } else if (now > CONFIG.END_DATE) {
+                // 마감 일자 지났을 때
+                submitBtn.disabled = true;
+                submitBtn.textContent = '모집이 마감되었습니다';
+                return false;
             }
+            // 정상 오픈 기간일 때
+            return true;
+        }
 
-            // 버튼 제어 상태 변환
-            submitBtn.disabled = true;
-            submitBtn.textContent = '제출 중...';
-            msgArea.textContent = '⏳ 파일 데이터를 인코딩하여 서버로 전송 중입니다.';
-            msgArea.style.color = '#3498db';
+        // 페이지가 처음 열릴 때 실시간 검증을 선행 실행합니다.
+        checkApplyPeriod();
 
-            const reader = new FileReader();
-            reader.onload = function () {
-                const payload = {
-                    fileBase64: reader.result.split(',')[1],
-                    fileName:   file.name,
-                    mimeType:   file.type,
-                    name:       document.getElementById('inp-name').value.trim(),
-                    major:      document.getElementById('inp-major').value.trim(),
-                    phone:      phoneInput.value.trim()
+        if (applyForm) {
+            applyForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // 💡 최종 제출 순간에도 한 번 더 시간을 역산 검증하여 차단막을 형성합니다.
+                if (!checkApplyPeriod()) return;
+                
+                const fileInput = document.getElementById('inp-file');
+                const file = fileInput.files[0];
+
+                if (!file) { toast('지원서 PDF 파일을 선택해 주세요.', '#e74c3c'); return; }
+                if (file.size > 10 * 1024 * 1024) { toast('파일 제한 용량은 10MB 이하입니다.', '#e74c3c'); return; }
+                
+                const phoneRegex = /^010-\d{4}-\d{4}$/;
+                if (!phoneRegex.test(phoneInput.value)) {
+                    toast('올바른 연락처 형식을 준수해 주세요. (010-XXXX-XXXX)', '#e74c3c');
+                    return;
+                }
+
+                // 버튼 제어 상태 변환
+                submitBtn.disabled = true;
+                submitBtn.textContent = '제출 중...';
+                msgArea.textContent = '⏳ 파일 데이터를 인코딩하여 서버로 전송 중입니다.';
+                msgArea.style.color = '#3498db';
+
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const payload = {
+                        fileBase64: reader.result.split(',')[1],
+                        fileName:   file.name,
+                        mimeType:   file.type,
+                        name:       document.getElementById('inp-name').value.trim(),
+                        major:      document.getElementById('inp-major').value.trim(),
+                        phone:      phoneInput.value.trim()
+                    };
+
+                    fetch(APPLY_API_URL, { method: 'POST', body: JSON.stringify(payload) })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.result === 'success') {
+                                document.getElementById('form-view').style.display = 'none';
+                                document.getElementById('success-view').style.display = 'block';
+                            } else { throw new Error(); }
+                        })
+                        .catch(() => {
+                            msgArea.textContent = '❌ 서버와 통신에 실패했습니다. 다시 시도해 주세요.';
+                            msgArea.style.color = '#e74c3c';
+                            submitBtn.disabled  = false;
+                            submitBtn.textContent = '지원서 제출하기';
+                            // 상태 복구 후 다시 한 번 시간 동기화 필터 작동
+                            checkApplyPeriod();
+                        });
                 };
-
-                fetch(APPLY_API_URL, { method: 'POST', body: JSON.stringify(payload) })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.result === 'success') {
-                            document.getElementById('form-view').style.display = 'none';
-                            document.getElementById('success-view').style.display = 'block';
-                        } else { throw new Error(); }
-                    })
-                    .catch(() => {
-                        msgArea.textContent = '❌ 서버와 통신에 실패했습니다. 다시 시도해 주세요.';
-                        msgArea.style.color = '#e74c3c';
-                        submitBtn.disabled  = false;
-                        submitBtn.textContent = '지원서 제출하기';
-                    });
-            };
-            reader.readAsDataURL(file);
-        });
+                reader.readAsDataURL(file);
+            });
+        }
     })();
     </script>
 </body>
