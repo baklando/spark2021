@@ -14,6 +14,112 @@
     <style>
         /* ── 1. CSS 변수 & 리셋 ── */
         :root {
+            /* ── 플로팅 소셜 사이드바 ── */
+#social-float {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(255,255,255,0.97);
+    border-radius: 0 14px 14px 0;
+    box-shadow: 3px 0 20px rgba(0,0,0,0.10);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+#social-float a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: var(--primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.25s ease, padding-left 0.25s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 46px;  /* 아이콘만 보이는 기본 너비 */
+}
+
+#social-float a:last-child {
+    border-bottom: none;
+}
+
+#social-float a img {
+    width: 22px;
+    height: 22px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+#social-float a span {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    font-size: 0.78rem;
+    color: var(--primary);
+}
+
+#social-float:hover {
+    box-shadow: 4px 0 24px rgba(0,0,0,0.14);
+}
+
+#social-float:hover a {
+    max-width: 160px;
+    padding-left: 16px;
+    background: rgba(46,204,113,0.06);
+}
+
+#social-float:hover a span {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+#social-float a:hover {
+    background: rgba(46,204,113,0.13) !important;
+    color: var(--accent-dark);
+}
+
+@media (max-width: 768px) {
+    #social-float {
+        top: auto;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        border-radius: 100px;
+        background: rgba(255,255,255,0.97);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    #social-float a {
+        max-width: none;
+        padding: 10px 16px;
+        border-bottom: none;
+        border-right: 1px solid #f0f0f0;
+        justify-content: center;
+    }
+
+    #social-float a:last-child {
+        border-right: none;
+    }
+
+    #social-float a span {
+        display: none;
+    }
+
+    #social-float:hover a {
+        max-width: none;
+        padding-left: 16px;
+    }
+}
             --primary:  #0a2342;
             --accent:   #2ecc71;
             --accent-dark: #27ae60;
@@ -475,7 +581,21 @@
     </style>
 </head>
 <body>
-
+<!-- 좌측 플로팅 소셜 바 -->
+<div id="social-float">
+    <a href="https://www.instagram.com/spark__2021/" target="_blank" aria-label="Instagram">
+        <img src="news1.jpg" alt="Instagram">
+        <span>Instagram</span>
+    </a>
+    <a href="https://cafe.naver.com/spark0326" target="_blank" aria-label="네이버 카페">
+        <img src="news2.jpg" alt="네이버 카페">
+        <span>네이버 카페</span>
+    </a>
+    <a href="https://www.linkedin.com/in/spark-%EC%83%9D%EB%AA%85%EA%B3%BC%ED%95%99-%EC%97%B0%ED%95%A9%ED%95%99%EC%88%A0%EB%8F%99%EC%95%84%EB%A6%AC-2748612b2/" target="_blank" aria-label="LinkedIn">
+        <img src="news3.jpg" alt="LinkedIn">
+        <span>LinkedIn</span>
+    </a>
+</div>
     <div id="scroll-progress"></div>
 
     <div id="toast"></div>
@@ -556,24 +676,7 @@
         </div>
     </section>
 
-    <section id="pla">
-        <h2 class="section-title reveal">Latest News</h2>
-        <div class="insta-grid">
-            <a href="https://www.instagram.com/spark__2021/" target="_blank" class="insta-item reveal">
-                <img src="news1.jpg" alt="SPARK 인스타그램">
-                <div class="insta-overlay">Instagram</div>
-            </a>
-            <a href="https://cafe.naver.com/spark0326" target="_blank" class="insta-item reveal">
-                <img src="news2.jpg" alt="SPARK 네이버 카페">
-                <div class="insta-overlay">네이버 카페</div>
-            </a>
-            <a href="https://www.linkedin.com/in/spark-%EC%83%9D%EB%AA%85%EA%B3%BC%ED%95%99-%EC%97%B0%ED%95%A9%ED%95%99%EC%88%A0%EB%8F%99%EC%95%84%EB%A6%AC-2748612b2/" target="_blank" class="insta-item reveal">
-                <img src="news3.jpg" alt="SPARK 링크드인">
-                <div class="insta-overlay">LinkedIn</div>
-            </a>
-        </div>
-    </section>
-
+    
     <section id="news" style="background: var(--white);">
         <h2 class="section-title reveal">공지사항</h2>
         <div class="form-container reveal" style="max-width: 800px;">
