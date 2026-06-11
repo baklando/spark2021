@@ -893,7 +893,7 @@
                     <option value="네이버 카페">네이버 카페</option>
                     <option value="링크드인">LinkedIn</option>
                     <option value="지인 소개">지인 소개</option>
-                    <option value="학교 공지">에브리타임</option>
+                    <option value="에브리타임">에브리타임</option>
                     <option value="기타">기타</option>
                 </select>
             </div>
@@ -905,8 +905,8 @@
                 </label>
                 <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
                     <label class="checkbox-row">
-                        <input type="radio" name="photo_agree" value="동의함" required>
-                        동의합니다 — 행사 진행 중 촬영되는 사진 및 영상에 본인의 모습이 포함될 수 있습니다.
+                        <input type="checkbox" name="photo_agree" value="동의함" required>
+                        <span>동의합니다 — 행사 진행 중 촬영되는 사진 및 영상에 본인의 모습이 포함될 수 있습니다. <span style="color:#e74c3c; font-size:0.8rem;">(필수)</span></span>
                     </label>
                 </div>
             </div>
@@ -994,7 +994,7 @@
 
         const photoAgree = form.querySelector('input[name="photo_agree"]:checked');
         if (!photoAgree) {
-            toast('행사 사진 활용 동의 여부를 선택해 주세요.', '#e74c3c');
+            toast('행사 사진 활용에 동의해 주세요.', '#e74c3c');
             return;
         }
 
@@ -1014,22 +1014,21 @@
 
         fetch(POSTER_SCRIPT_URL, {
             method: 'POST',
+            mode: 'no-cors',
             body: JSON.stringify(payload)
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.result === 'success') {
-                form.style.display = 'none';
-                document.getElementById('success-view').style.display = 'block';
-                launchConfetti();
-            } else { throw new Error(); }
+        .then(() => {
+            // no-cors 응답은 본문을 읽을 수 없으므로, 전송 완료를 성공으로 처리합니다.
+            // (Apps Script의 리다이렉트/CORS 때문에 데이터가 저장됐는데도 실패로 뜨는 문제 방지)
+            form.style.display = 'none';
+            document.getElementById('success-view').style.display = 'block';
+            launchConfetti();
         })
-       // 폼 제출 fetch 로직의 .catch 부분
         .catch(() => {
-            // 통신 실패 또는 서버 에러 발생 시 처리
+            // 네트워크 자체가 끊긴 경우에만 여기로 들어옵니다.
             msgArea.textContent = '❌ 제출에 실패했습니다. 네트워크 상태를 확인하고 다시 시도해 주세요.';
             msgArea.style.color = '#e74c3c';
-            
+
             submitBtn.disabled  = false;
             submitBtn.textContent = '신청하기 →';
         });
