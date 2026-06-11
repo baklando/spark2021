@@ -192,7 +192,7 @@
             <p class="hero-desc">
                최신 바이오 연구 트렌드를 함께 탐구하는 논문 리딩부터, 한 학기 동안의 성장을 공유하는 정기 학술 포스터 세션까지. 
                SPARK와 함께 생명과학의 더 넓은 가능성을 경험해 보세요.
-
+            </p>
         </div>
     </section>
 
@@ -295,7 +295,7 @@
                     <div class="success-icon">🎉</div>
                     <h3>지원서 제출이 완료되었습니다!</h3>
                     <p>
-                        성공적으로 동 동아리 서류 접수를 수집했습니다.<br>
+                        성공적으로 동아리 서류 접수를 수집했습니다.<br>
                         기입하신 번호로 추후 면접 일정 및 1차 결과가 조율되오니 공지사항을 확인 바랍니다.
                     </p>
                 </div>
@@ -434,6 +434,13 @@
                             // 상태 복구 후 다시 한 번 시간 동기화 필터 작동
                             checkApplyPeriod();
                         });
+                };
+                reader.onerror = function () {
+                    msgArea.textContent = '❌ 파일을 읽는 중 오류가 발생했습니다. 다시 시도해 주세요.';
+                    msgArea.style.color = '#e74c3c';
+                    submitBtn.disabled  = false;
+                    submitBtn.textContent = '지원서 제출하기';
+                    checkApplyPeriod();
                 };
                 reader.readAsDataURL(file);
             });
