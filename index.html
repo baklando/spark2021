@@ -14,7 +14,18 @@
     <style>
         /* ── 1. CSS 변수 & 리셋 ── */
         :root {
-            /* ── 플로팅 소셜 사이드바 ── */
+            --primary:  #0a2342;
+            --accent:   #2ecc71;
+            --accent-dark: #27ae60;
+            --text:     #333;
+            --bg:        #f8f9fa;
+            --white:    #ffffff;
+            --shadow:   0 4px 20px rgba(0,0,0,0.08);
+            --radius:   16px;
+            --transition: 0.3s ease;
+        }
+
+        /* ── 플로팅 소셜 사이드바 ── */
 #social-float {
     position: fixed;
     left: 0;
@@ -120,16 +131,6 @@
         padding-left: 16px;
     }
 }
-            --primary:  #0a2342;
-            --accent:   #2ecc71;
-            --accent-dark: #27ae60;
-            --text:     #333;
-            --bg:        #f8f9fa;
-            --white:    #ffffff;
-            --shadow:   0 4px 20px rgba(0,0,0,0.08);
-            --radius:   16px;
-            --transition: 0.3s ease;
-        }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -606,7 +607,6 @@
         <nav class="pc-nav" id="pc-nav">
             <a href="#about">소개</a>
             <a href="#activity">활동</a>
-            <a href="#pla">소식</a>
             <a href="#news">공지사항</a>
             <a href="#result-check" id="nav-result" style="display:none;">합격조회</a>
             <a href="apply-session.html" id="nav-apply">지원하기</a>
@@ -621,7 +621,6 @@
     <div class="mobile-menu" id="mobile-menu">
         <a href="#about"       onclick="closeMobileMenu()">소개</a>
         <a href="#activity"    onclick="closeMobileMenu()">활동</a>
-        <a href="#pla"         onclick="closeMobileMenu()">소식</a>
         <a href="#news"        onclick="closeMobileMenu()">공지사항</a>
         <a href="#result-check" id="mob-result" style="display:none;" onclick="closeMobileMenu()">합격조회</a>
         <a href="apply-session.html" id="mob-apply">지원하기</a>
@@ -882,7 +881,7 @@
             } else if (now < CONFIG.START_DATE) {
                 // 오픈 전에도 안내 페이지(apply-session.html)는 열람 가이드가 뜨므로 버튼 클릭 허용 가능 (원할 경우 비활성화 유지)
                 if (heroCta) {
-                    heroCta.textContent = '8월 19일 11기 신입부원 모집';
+                    heroCta.textContent = '8월 19 11기 신입부원 모집';
                     heroCta.style.pointerEvents = 'none';
                     heroCta.style.background    = '#888';
                     heroCta.style.boxShadow     = 'none';
