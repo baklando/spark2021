@@ -11,7 +11,7 @@
     <meta property="og:image" content="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ── 1. CSS 변수 & 리셋 ── */
         :root {
@@ -32,6 +32,7 @@
             --transition: 0.3s ease;
             --font-display: 'Space Grotesk', 'Noto Sans KR', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
+            --font-hand: 'Caveat', 'Comic Sans MS', 'Segoe Print', cursive;
         }
 
         /* ── 플로팅 소셜 사이드바 ── */
@@ -309,37 +310,6 @@
             pointer-events: none;
         }
 
-        .hero-eyebrow {
-            position: relative;
-            z-index: 1;
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: var(--accent);
-            background: rgba(46,204,113,0.1);
-            border: 1px solid rgba(46,204,113,0.35);
-            padding: 7px 18px;
-            border-radius: 100px;
-            margin-top: 4px;
-            margin-bottom: 22px;
-            animation: fadeUp 0.8s ease 0.05s both;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .hero-eyebrow .dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent-glow);
-            animation: pulse-dot 2s ease-in-out infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-        }
-
         .hero-content {
             position: relative;
             z-index: 1;
@@ -365,10 +335,7 @@
             letter-spacing: -1px;
             margin-bottom: 12px;
             animation: fadeUp 0.8s ease 0.2s both;
-            background: linear-gradient(90deg, #ffffff 30%, #d4f7e3 60%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--white);
         }
 
         .hero p {
@@ -673,14 +640,6 @@
             section { padding: 70px 5%; }
             .hero { min-height: 85vh; }
             .hero-logo { height: 190px; }
-            .hero-eyebrow {
-                font-size: 0.6rem;
-                letter-spacing: 1.5px;
-                padding: 6px 14px;
-                max-width: 92%;
-                text-align: center;
-                line-height: 1.5;
-            }
         }
     </style>
 </head>
@@ -738,7 +697,6 @@
         <canvas id="hero-network"></canvas>
         <div class="hero-content">
             <img src="logo1.png" alt="SPARK 로고" class="hero-logo">
-            <div class="hero-eyebrow"><span class="dot"></span>SCIENTIFIC POSTER ON ANALYSIS OF RESEARCH KNOWLEDGE</div>
             <h1>Think, Spark, Grow</h1>
             <p>생명과학의 경이로움을 탐구하는 학술 공동체, SPARK</p>
             <a href="apply-session.html" class="cta-button" id="hero-cta">지금 지원하기</a>
