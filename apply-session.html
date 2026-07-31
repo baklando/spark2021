@@ -521,10 +521,10 @@
         /* ──────────────────────────────────────────
            💡 1. 메인 홈피와 동일한 기간 설정 추가
         ────────────────────────────────────────── */
-        const CONFIG = {
-            START_DATE:    new Date(2026, 7, 19, 0, 0, 0),      // 8/19 00:00 오픈
-            END_DATE:      new Date(2026, 8,  5, 23, 59, 59),   // 9/5 23:59:59 마감 (9/6로 넘어가는 자정)
-        };
+      const CONFIG = {
+    START_DATE: new Date('2026-08-19T00:00:00+09:00'),  // KST 8/19 00:00 오픈
+    END_DATE:   new Date('2026-09-06T00:00:00+09:00'),  // KST 9/6 00:00 마감 (9/5 23:59:59.999까지 포함)
+};
 
         const APPLY_API_URL = 'https://script.google.com/macros/s/AKfycbzrUAV0oP4MqN452g5L0e-R13RlpaGRKUrsTtfyf1MRBj3T1s8Rb8UeczSKWBpeIH4Nfg/exec';
 
