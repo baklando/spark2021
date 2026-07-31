@@ -97,7 +97,7 @@
         .info-side { display: flex; flex-direction: column; gap: 24px; }
         .info-card { background: var(--white); border-radius: var(--radius-md); padding: 30px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
         .card-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #f0f2f5; }
-        
+
         /* 공지사항(행사 안내) 스타일 */
         .notice-box { background: #fffde7; border-left: 4px solid #f1c40f; padding: 15px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9rem; color: #555; }
         .notice-box strong { color: #555; display: block; margin-bottom: 4px; }
@@ -107,10 +107,78 @@
         .guide-item { display: flex; gap: 12px; align-items: flex-start; font-size: 0.92rem; color: #444; }
         .guide-icon { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-pale); color: var(--accent-dark); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px; }
 
+        /* ── 5-1. 일정(타임라인) 스타일 ── */
+        .schedule-list { display: flex; flex-direction: column; }
+        .schedule-item {
+            display: grid;
+            grid-template-columns: 132px 1fr;
+            gap: 16px;
+            padding: 13px 0;
+            border-bottom: 1px dashed #eceff3;
+            align-items: baseline;
+        }
+        .schedule-item:first-child { padding-top: 0; }
+        .schedule-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .schedule-date {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+            position: relative;
+            padding-left: 14px;
+        }
+        .schedule-date::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0.55em;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+        .schedule-date small { display: block; font-size: 0.76rem; font-weight: 500; color: var(--muted); margin-top: 1px; }
+        .schedule-body { font-size: 0.9rem; color: #444; }
+        .schedule-body em { font-style: normal; display: block; font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+        /* 강조 항목 (지원서 접수 기간 등) */
+        .schedule-item.is-key .schedule-date { color: var(--accent-dark); }
+        .schedule-item.is-key .schedule-body { font-weight: 600; color: var(--primary); }
+
+        /* 필참 뱃지 */
+        .tag-must {
+            display: inline-block;
+            background: var(--accent-pale);
+            color: var(--accent-dark);
+            border: 1px solid rgba(46,204,113,0.25);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 100px;
+            margin-left: 6px;
+            vertical-align: 1px;
+        }
+
+        /* 장소 안내 박스 */
+        .place-box {
+            margin-top: 18px;
+            background: #f4f6f8;
+            border-left: 4px solid var(--primary-mid);
+            border-radius: 6px;
+            padding: 14px 15px;
+            font-size: 0.86rem;
+            color: #555;
+        }
+        .place-box strong { display: block; color: var(--primary); margin-bottom: 4px; font-size: 0.88rem; }
+        .place-box span { display: block; }
+
+        @media (max-width: 520px) {
+            .schedule-item { grid-template-columns: 1fr; gap: 4px; }
+            .schedule-body { padding-left: 14px; }
+        }
+
         /* ── 6. 오른쪽 섹션: 지원서 제출 폼 카드 ── */
         .form-card { background: var(--white); border-radius: var(--radius-md); padding: 35px; box-shadow: var(--shadow-md); border: 1px solid var(--border); position: sticky; top: 95px; }
         @media (max-width: 900px) { .form-card { position: static; } }
-        
+
         .form-header { margin-bottom: 24px; }
         .form-header h2 { font-size: 1.3rem; color: var(--primary); font-weight: 700; }
         .form-header p { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
@@ -129,7 +197,7 @@
         .form-label span { color: #e74c3c; margin-left: 2px; }
         .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9rem; color: var(--text); background: #fafbfc; transition: var(--transition); }
         .form-input:focus { outline: none; border-color: var(--accent); background: var(--white); box-shadow: 0 0 0 3px rgba(46,204,113,0.12); }
-        
+
         /* 파일 입력 필드 특화 */
         input[type="file"].form-input { padding: 9px 12px; cursor: pointer; background: var(--white); }
 
@@ -145,7 +213,7 @@
         .submit-btn { width: 100%; padding: 14px; background: var(--primary); color: var(--white); font-family: inherit; font-size: 0.95rem; font-weight: 700; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); box-shadow: 0 4px 14px rgba(10,35,66,0.25); margin-top: 10px; }
         .submit-btn:hover { background: var(--primary-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(10,35,66,0.35); }
         .submit-btn:active { transform: translateY(0); }
-        
+
         /* 💡 비활성화(disabled)되었을 때 회색으로 변하는 스타일 */
         .submit-btn:disabled { background: #bbb !important; box-shadow: none !important; transform: none !important; cursor: not-allowed !important; }
 
@@ -165,6 +233,11 @@
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(15px); }
             to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+            .reveal { opacity: 1; transform: none; }
         }
 
         /* ── 8. 푸터 ── */
@@ -190,7 +263,7 @@
             <div class="hero-chip">Recruiting New Members</div>
             <h1>SPARK와 함께할 <em>신입 부원</em>을 기다립니다</h1>
             <p class="hero-desc">
-               최신 바이오 연구 트렌드를 함께 탐구하는 논문 리딩부터,<br> 한 학기 동안의 성장을 공유하는 정기 학술 포스터 세션까지.<br> 
+               최신 바이오 연구 트렌드를 함께 탐구하는 논문 리딩부터,<br> 한 학기 동안의 성장을 공유하는 정기 학술 포스터 세션까지.<br>
                SPARK와 함께 생명과학의 더 넓은 가능성을 경험해 보세요.
             </p>
         </div>
@@ -199,7 +272,7 @@
     <main class="page-wrap main-container">
 
         <aside class="info-side">
-            
+
             <div class="info-card reveal">
                 <div class="card-title">📢 최신 공지사항</div>
                 <div class="notice-box">
@@ -209,6 +282,81 @@
                 <div class="notice-box" style="background:#f4f6f8; border-left-color:#7f8c8d; margin-bottom:0;">
                     <strong>출석 인정 수료 조건 확인 고지</strong>
                     세미나 지각 2회 혹은 결석 1회 초과 발생 시 수료 요건에서 제외됩니다. 학술 활동에 성실하고 책임감 있게 동참할 지원자분들의 많은 지원 바랍니다.
+                </div>
+            </div>
+
+            <!-- ── 추가된 파트 ①: 11기 모집 일정 ── -->
+            <div class="info-card reveal">
+                <div class="card-title">🗓️ 11기 모집 일정</div>
+                <div class="schedule-list">
+                    <div class="schedule-item is-key">
+                        <div class="schedule-date">8월 19일 ~ 9월 5일<small>~ 23:59:59 마감</small></div>
+                        <div class="schedule-body">11기 지원서 제출 기간</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">9월 8일</div>
+                        <div class="schedule-body">
+                            1차 합격자 발표 및 면접 일정 안내
+                            <em>합격자·불합격자 모두 개별 문자 발송</em>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">9월 11일 ~ 9월 13일</div>
+                        <div class="schedule-body">비대면 면접</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">9월 14일</div>
+                        <div class="schedule-body">
+                            최종 합격자 발표
+                            <em>합격자·불합격자 모두 개별 문자 발송</em>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">9월 17일</div>
+                        <div class="schedule-body">추가 합격자 발표 마감</div>
+                    </div>
+                </div>
+
+                <div class="notice-box" style="margin: 20px 0 0;">
+                    <strong>지원서 접수 마감 안내</strong>
+                    9월 5일에서 9월 6일로 넘어가는 밤 12시에 맞추어 서류 제출폼이 마감됩니다. 형평성을 위해 추가 지원자는 받지 않습니다.
+                </div>
+            </div>
+
+            <!-- ── 추가된 파트 ②: 11기 활동 일정 ── -->
+            <div class="info-card reveal">
+                <div class="card-title">📚 11기 활동 일정</div>
+                <div class="schedule-list">
+                    <div class="schedule-item">
+                        <div class="schedule-date">9월 19일<small>13:00 ~ 18:00</small></div>
+                        <div class="schedule-body">대면 OT<span class="tag-must">전원 필참</span></div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">10월 31일<small>13:00 ~ 18:00</small></div>
+                        <div class="schedule-body">1차 대면 세미나<span class="tag-must">전원 필참</span></div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">12월 19일<small>13:00 ~ 18:00</small></div>
+                        <div class="schedule-body">2차 대면 세미나<span class="tag-must">전원 필참</span></div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">1월 23일<small>13:00 ~ 18:00</small></div>
+                        <div class="schedule-body">3차 대면 세미나<span class="tag-must">전원 필참</span></div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">2월 3일<small>19:00 ~ 21:00</small></div>
+                        <div class="schedule-body">포스터 세션<span class="tag-must">전원 필참</span></div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-date">2월 13일<small>16:00 ~ 18:00</small></div>
+                        <div class="schedule-body">수료식<span class="tag-must">전원 필참</span></div>
+                    </div>
+                </div>
+
+                <div class="place-box">
+                    <strong>활동 장소</strong>
+                    <span>· 정기모임(OT, 세미나) : 이화여자대학교 학관, 이화여자대학교 ECC (변동 가능)</span>
+                    <span>· 포스터 세션 : 추후 공지</span>
                 </div>
             </div>
 
@@ -225,7 +373,7 @@
                     </div>
                     <div class="guide-item">
                         <div class="guide-icon">3</div>
-                        <span>지원서에 기재하는 연락처는 추후 합격자 조회 및 개별 합격 안내에 사용됩니다. 
+                        <span>지원서에 기재하는 연락처는 추후 합격자 조회 및 개별 합격 안내에 사용됩니다.
                             연락처를 정확히 기재했는지 제출 전 다시 한 번 확인해 주시기 바랍니다.</span>
                     </div>
                     <div class="guide-item">
@@ -239,7 +387,7 @@
 
         <section class="form-side">
             <div class="form-card">
-                
+
                 <div id="form-view">
                     <div class="form-header">
                         <h2>지원 서류 제출</h2>
@@ -248,9 +396,8 @@
 
                     <div class="download-box">
                         <p>아직 서식을 작성하지 않으셨나요?</p>
-                       <a href="https://docs.google.com/document/d/1Kve6OYu3iI6fCsT7NbVKLL1D3neSMXkR/export?format=docx" class="btn-download">
-    📄 지원서 양식 다운로드 (Word/Docs)
-</a>
+                        <a href="https://docs.google.com/document/d/1Kve6OYu3iI6fCsT7NbVKLL1D3neSMXkR/export?format=docx" class="btn-download">
+                            📄 지원서 양식 다운로드 (Word/Docs)
                         </a>
                     </div>
 
@@ -271,7 +418,7 @@
                             <label class="form-label" for="inp-phone">연락처 <span>*</span></label>
                             <input type="tel" id="inp-phone" name="user_phone" placeholder="010-0000-0000" required class="form-input">
                         </div>
-                        
+
                         <div class="form-group privacy-box">
                             <label class="form-label" style="font-size:0.82rem;">개인정보 수집·이용 동의 (필수)</label>
                             <div class="privacy-scroll">
@@ -282,7 +429,7 @@
                                 * 귀하는 동의를 거부할 권리가 있으나, 동의하지 않을 경우 모집 절차상 지원서 접수가 불가합니다.
                             </div>
                             <label class="checkbox-label">
-                                <input type="checkbox" name="privacy_agree" id="privacy_agree" required> 
+                                <input type="checkbox" name="privacy_agree" id="privacy_agree" required>
                                 <span>위 내용을 모두 확인했으며 이에 동의합니다.</span>
                             </label>
                         </div>
@@ -316,8 +463,8 @@
            💡 1. 메인 홈피와 동일한 기간 설정 추가
         ────────────────────────────────────────── */
         const CONFIG = {
-            START_DATE:    new Date(2026, 7, 19, 0, 0),   // 8/19 오픈
-            END_DATE:      new Date(2026, 8,  5, 23, 59), // 9/5 마감
+            START_DATE:    new Date(2026, 7, 19, 0, 0, 0),      // 8/19 00:00 오픈
+            END_DATE:      new Date(2026, 8,  5, 23, 59, 59),   // 9/5 23:59:59 마감 (9/6로 넘어가는 자정)
         };
 
         const APPLY_API_URL = 'https://script.google.com/macros/s/AKfycbwTFLr_q3I2Rdrg3fGn8j3zombFdQtjdxWl9BZwOuKQf6yZ8UJ227K-nFQcwGA9FmYMWA/exec';
@@ -364,7 +511,7 @@
         ────────────────────────────────────────── */
         function checkApplyPeriod() {
             const now = new Date();
-            
+
             if (now < CONFIG.START_DATE) {
                 // 오픈 일자 전일 때
                 submitBtn.disabled = true;
@@ -389,13 +536,13 @@
 
                 // 💡 최종 제출 순간에도 한 번 더 시간을 역산 검증하여 차단막을 형성합니다.
                 if (!checkApplyPeriod()) return;
-                
+
                 const fileInput = document.getElementById('inp-file');
                 const file = fileInput.files[0];
 
                 if (!file) { toast('지원서 PDF 파일을 선택해 주세요.', '#e74c3c'); return; }
                 if (file.size > 10 * 1024 * 1024) { toast('파일 제한 용량은 10MB 이하입니다.', '#e74c3c'); return; }
-                
+
                 const phoneRegex = /^010-\d{4}-\d{4}$/;
                 if (!phoneRegex.test(phoneInput.value)) {
                     toast('올바른 연락처 형식을 준수해 주세요. (010-XXXX-XXXX)', '#e74c3c');
