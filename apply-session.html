@@ -606,12 +606,13 @@
                 if (!phoneRegex.test(phoneInput.value)) {
                     toast('올바른 연락처 형식을 준수해 주세요. (010-XXXX-XXXX)', '#e74c3c');
                     return;
+                }
+
                 const routeVal = document.getElementById('inp-route').value;
                 if (!routeVal) { toast('SPARK를 알게 된 경로를 선택해 주세요.', '#e74c3c'); return; }
 
                 const posterEl = document.querySelector('input[name="poster_join"]:checked');
                 if (!posterEl) { toast('10기 포스터 세션 참여 여부를 선택해 주세요.', '#e74c3c'); return; }
-                }
 
                 // 버튼 제어 상태 변환
                 submitBtn.disabled = true;
