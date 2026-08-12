@@ -402,6 +402,12 @@
     // ⚠️ 여기에 Apps Script 배포 후 나오는 웹 앱 URL을 붙여넣으세요.
     const SCRIPT_URL = 'https://script.google.com/macros/s/여기에_배포_URL/exec';
 
+    // ⚠️ 조회 기간은 여기(홈페이지 코드)에서만 제어합니다. 시트에는 기간 검증이 없습니다.
+    const CONFIG = {
+        START_DATE: new Date('2026-08-10T09:00:00+09:00'),
+        END_DATE:   new Date('2026-09-14T00:00:00+09:00')
+    };
+
     const screens = {
         checking: document.getElementById('checking'),
         closed: document.getElementById('closedState'),
@@ -416,8 +422,8 @@
         screens[key].classList.add('show');
     }
 
-    function fmtDate(iso) {
-        const d = new Date(iso);
+    function fmtDate(d) {
+        if (!(d instanceof Date)) d = new Date(d);
         if (isNaN(d)) return '-';
         const pad = n => String(n).padStart(2, '0');
         return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
@@ -430,26 +436,28 @@
         phoneInput.value = v;
     });
 
-    async function checkPeriod() {
-        try {
-            const res = await fetch(`${SCRIPT_URL}?action=status`);
-            const data = await res.json();
-            if (data.status !== 'ok') throw new Error();
-            if (data.isOpen) {
-                showOnly('form');
-            } else {
-                document.getElementById('periodStart').textContent = fmtDate(data.start);
-                document.getElementById('periodEnd').textContent = fmtDate(data.end);
-                showOnly('closed');
-            }
-        } catch (err) {
-            document.getElementById('periodStart').textContent = '확인 불가';
-            document.getElementById('periodEnd').textContent = '잠시 후 다시 시도해주세요';
+    function checkPeriod() {
+        // 코드에 적힌 CONFIG 기준으로 즉시 판단 (서버 왕복 없이 바로 표시)
+        const now = new Date();
+        const isOpen = now >= CONFIG.START_DATE && now <= CONFIG.END_DATE;
+        if (isOpen) {
+            showOnly('form');
+        } else {
+            document.getElementById('periodStart').textContent = fmtDate(CONFIG.START_DATE);
+            document.getElementById('periodEnd').textContent = fmtDate(CONFIG.END_DATE);
             showOnly('closed');
         }
     }
 
     async function lookup() {
+        const now = new Date();
+        if (now < CONFIG.START_DATE || now > CONFIG.END_DATE) {
+            document.getElementById('periodStart').textContent = fmtDate(CONFIG.START_DATE);
+            document.getElementById('periodEnd').textContent = fmtDate(CONFIG.END_DATE);
+            showOnly('closed');
+            return;
+        }
+
         const raw = phoneInput.value.trim();
         if (raw.replace(/[^0-9]/g, '').length < 9) {
             showToast('전화번호를 정확히 입력해주세요.', 'var(--fail)');
@@ -462,12 +470,6 @@
             const res = await fetch(`${SCRIPT_URL}?action=lookup&phone=${encodeURIComponent(raw)}`);
             const data = await res.json();
 
-            if (data.status === 'closed') {
-                document.getElementById('periodStart').textContent = fmtDate(data.start);
-                document.getElementById('periodEnd').textContent = fmtDate(data.end);
-                showOnly('closed');
-                return;
-            }
             if (data.status === 'notfound') {
                 showToast('입력하신 번호로 접수된 지원 내역을 찾을 수 없습니다.', '#c9432f');
                 return;
