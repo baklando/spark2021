@@ -592,7 +592,6 @@ footer a:hover { color: #fff; text-decoration: underline; }
         <p class="hero-desc" id="hero-desc"></p>
         <dl class="fact-row">
             <div class="fact"><dt>포스터</dt><dd><span id="fact-posters">–</span><small>편</small></dd></div>
-            <div class="fact"><dt>기수</dt><dd><span id="fact-groups">–</span><small>개</small></dd></div>
         </dl>
     </div>
 </section>
@@ -746,7 +745,6 @@ footer a:hover { color: #fff; text-decoration: underline; }
 
                 if (active !== 'all' && groups.indexOf(active) < 0) active = 'all';
                 $('fact-posters').textContent = posters.length;
-                $('fact-groups').textContent  = groups.length;
                 renderTabs();
                 render();
             })
