@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║  SPARK 포스터 아카이브 — 수정 안내                              ║
+║                                                              ║
+║  포스터는 구글 드라이브 폴더에 올리면 자동으로 이 페이지에 뜹니다.  ║
+║  이 파일에서 수정할 곳은 위쪽의 두 군데뿐입니다.                  ║
+║    [수정 구역 1] 브라우저 탭 제목 · 공유 미리보기                  ║
+║    [수정 구역 2] 페이지 글, 구글 드라이브 연결 주소                 ║
+╚══════════════════════════════════════════════════════════════╝
+
+  ■ 포스터 올리는 방법
+    구글 드라이브의 포스터 폴더 안에 기수별 폴더를 만들고 파일을 넣으세요.
+
+      📁 SPARK 포스터            ← 연결된 폴더
+         📁 11기                 ← 폴더 이름이 그대로 탭 이름이 됩니다
+            📄 CRISPR 기반 유전자 편집 연구 동향 - 홍길동.pdf
+            🖼️ 장내 미생물과 면역 - 김철수.png
+         📁 10기
+            📄 ...
+
+    - 파일 이름이 "제목 - 발표자" 이면 제목과 발표자가 나뉘어 표시됩니다.
+    - PDF와 이미지(jpg, png 등)만 표시됩니다.
+    - 올린 뒤 최대 5분 안에 페이지에 반영됩니다.
+    - 페이지에서 빼려면 드라이브에서 파일을 지우거나 다른 폴더로 옮기면 됩니다.
+-->
+
+
+<!-- ════════════════════════════════════════════
+     ✏️ [수정 구역 1] 탭 제목 · 공유 미리보기
+═════════════════════════════════════════════ -->
+<title>포스터 아카이브 | SPARK</title>
+<meta property="og:title" content="SPARK 포스터 아카이브">
+<meta property="og:description" content="SPARK 포스터 세션에서 발표된 학술 포스터를 기수별로 모았습니다.">
+<link rel="icon" type="image/png" href="favicon.png">
+
+
+<!-- ════════════════════════════════════════════
+     ✏️ [수정 구역 2] 페이지 내용
+═════════════════════════════════════════════ -->
+<script>
+/*
+ ┌─────────────────── 수정 규칙 ───────────────────┐
+ │ 1. 따옴표 '  ' 안의 글자만 바꾸세요.                │
+ │ 2. 항목 끝에는 항상 쉼표( , )를 붙입니다.            │
+ │ 3. 괄호 { } 는 지우지 마세요.                       │
+ │ 4. 줄을 바꾸고 싶으면 ` (백틱)으로 감싸고 Enter.     │
+ │                                                  │
+ │ 수정 후 페이지 위에 빨간 경고가 뜨면,                 │
+ │ 방금 고친 곳에서 쉼표나 따옴표가 빠진 것입니다.         │
+ └──────────────────────────────────────────────────┘
+*/
+const SITE = {
+
+    /* ────────── 첫 화면 ────────── */
+    kicker: 'Poster Archive',
+    title:  `SPARK 포스터 아카이브`,
+    intro:  `역대 SPARK 포스터 세션에서 발표된 학술 포스터를 기수별로 모았습니다.
+             포스터를 누르면 크게 볼 수 있습니다.`,
+
+
+    /* ────────── ⚠️ 구글 드라이브 연결 주소 ──────────
+       구글 Apps Script를 "웹 앱"으로 배포하고 받은 주소를 붙여 넣으세요.
+       (https://script.google.com/macros/s/..../exec 형태)
+       한 글자라도 틀리면 포스터를 불러오지 못합니다. */
+    driveApiUrl: '여기에_웹앱_주소를_붙여넣으세요',
+
+
+    /* ────────── 표시 방식 ────────── */
+    nameSeparator:  ' - ',     // 파일 이름을 제목과 발표자로 나누는 기호 ("제목 - 발표자")
+    looseGroupName: '기타',     // 기수 폴더 밖에 바로 올린 파일을 묶어 부르는 이름
+    emptyText:      '아직 올라온 포스터가 없습니다.',
+
+
+    /* ────────── 연락처 · 링크 ────────── */
+    email:    'officialspark@spark2021.com',
+    logo:     'logo.png',
+    homePage: 'index.html',
+
+
+    /* ────────── 색상 ────────── */
+    colors: {
+        main:      '#15674c',
+        mainDark:  '#0f4d38',
+        mainLight: '#eef3f0',
+    },
+
+};
+</script>
+<!-- ════════════════ ✏️ 수정 구역 끝 ════════════════ -->
+
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     ⛔ 여기부터 아래는 수정하지 않아도 됩니다 (디자인·동작 코드)
+═══════════════════════════════════════════════════════════════ -->
+
+<script>
+(function () {
+    if (typeof SITE === 'undefined' || !SITE.colors) return;
+    var root = document.documentElement.style, c = SITE.colors;
+    if (c.main)      root.setProperty('--accent', c.main);
+    if (c.mainDark)  root.setProperty('--accent-deep', c.mainDark);
+    if (c.mainLight) root.setProperty('--accent-wash', c.mainLight);
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════
+   SPARK 포스터 아카이브 — index.html과 동일한 보드 시스템
+   보드(회색) 위에 A1 포스터(종이)가 핀으로 꽂혀 있는 구조
+══════════════════════════════════════════════ */
+
+:root {
+    --board:        #e0e2dd;
+    --board-deep:   #d2d6d1;
+    --paper:        #ffffff;
+
+    --ink:          #132638;
+    --ink-mid:      #4a5a6b;
+    --ink-soft:     #7b8894;
+
+    --rule:         #dfe2de;
+    --rule-strong:  #c3c9c3;
+
+    --accent:       #15674c;
+    --accent-deep:  #0f4d38;
+    --accent-wash:  #eef3f0;
+
+    --alert:        #9c3a2a;
+    --alert-wash:   #f7eeec;
+
+    --lift:    0 1px 2px rgba(19,38,56,.05), 0 10px 28px rgba(19,38,56,.07);
+    --lift-hi: 0 2px 4px rgba(19,38,56,.07), 0 18px 44px rgba(19,38,56,.11);
+
+    --serif: 'Source Serif 4', 'Noto Serif KR', Georgia, serif;
+    --sans:  'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+    font-family: var(--sans);
+    background: var(--board);
+    color: var(--ink);
+    line-height: 1.75;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+body.is-locked { overflow: hidden; }
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+#config-error {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10001;
+    background: #b3261e;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+#config-error[hidden] { display: none; }
+
+/* ── 헤더 ─────────────────────────────────── */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-strong);
+}
+.header-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.header-logo { height: 36px; display: block; }
+.header-divider { width: 1px; height: 20px; background: var(--rule-strong); }
+.header-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--ink-mid); }
+.back-home {
+    margin-left: auto;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 1px;
+    transition: color .18s ease, border-color .18s ease;
+}
+.back-home:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+@media (max-width: 560px) {
+    .header-inner { padding: 0 18px; gap: 10px; }
+    .header-title { font-size: 0.9rem; }
+    .back-home { font-size: 0.8rem; }
+}
+
+/* ── 히어로 ───────────────────────────────── */
+.hero {
+    background-color: var(--paper);
+    background-image:
+        linear-gradient(rgba(19,38,56,.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(19,38,56,.038) 1px, transparent 1px);
+    background-size: 30px 30px;
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 76px 0 60px;
+}
+.hero-inner { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+.hero-kicker {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+}
+.hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.1rem, 5.4vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    padding-bottom: 24px;
+    border-bottom: 4px solid var(--ink);
+    margin-bottom: 24px;
+}
+.hero-desc { font-size: 1.02rem; color: var(--ink-mid); max-width: 46em; }
+
+.fact-row {
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(130px, auto);
+    border: 1px solid var(--rule-strong);
+    border-radius: 3px;
+    margin-top: 32px;
+    background: var(--paper);
+}
+.fact { padding: 14px 22px; border-right: 1px solid var(--rule-strong); }
+.fact:last-child { border-right: none; }
+.fact dt { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 2px; }
+.fact dd { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; line-height: 1.3; }
+.fact dd small { font-family: var(--sans); font-size: 0.82rem; font-weight: 400; color: var(--ink-mid); margin-left: 2px; }
+
+.hero-kicker, .hero h1, .hero-desc, .fact-row {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards;
+}
+.hero h1   { animation-delay: .06s; }
+.hero-desc { animation-delay: .16s; }
+.fact-row  { animation-delay: .24s; }
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+/* ── 보드 (필터 + 포스터 그리드) ──────────── */
+.board-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 44px 28px 96px;
+}
+
+.toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px 28px;
+    flex-wrap: wrap;
+    border-bottom: 4px solid var(--ink);
+    margin-bottom: 36px;
+}
+.tabs { display: flex; flex-wrap: wrap; gap: 4px 26px; }
+.tab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -4px;
+    padding: 6px 0 12px;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: color .18s ease, border-color .18s ease;
+}
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+.tab .count {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin-left: 5px;
+}
+
+.search {
+    position: relative;
+    margin-bottom: 12px;
+    width: min(280px, 100%);
+}
+.search input {
+    width: 100%;
+    padding: 10px 14px 10px 36px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--ink);
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+.search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(21,103,76,.12); }
+.search input::placeholder { color: #aab3bc; }
+.search svg {
+    position: absolute;
+    left: 12px; top: 50%;
+    width: 15px; height: 15px;
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+    pointer-events: none;
+}
+
+.poster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 34px 26px;
+}
+@media (max-width: 560px) {
+    .poster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 14px; }
+}
+
+/* 포스터 한 장 : 보드에 꽂힌 A1 용지 */
+.poster {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    cursor: zoom-in;
+}
+.sheet {
+    position: relative;
+    aspect-ratio: 1 / 1.414;
+    background: var(--paper);
+    box-shadow: var(--lift);
+    overflow: hidden;
+    transition: box-shadow .25s ease, transform .25s ease;
+}
+.sheet::before {                               /* 상단 핀 */
+    content: '';
+    position: absolute;
+    top: 9px; left: 50%;
+    width: 9px; height: 9px;
+    margin-left: -4.5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 1px 2px rgba(19,38,56,.35);
+    z-index: 2;
+}
+.sheet img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+}
+.poster:hover .sheet,
+.poster:focus-visible .sheet { box-shadow: var(--lift-hi); transform: translateY(-3px); }
+
+.sheet .fallback {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    background:
+        repeating-linear-gradient(0deg, #f3f5f3 0 6px, transparent 6px 14px),
+        var(--paper);
+}
+.sheet.is-broken img { display: none; }
+.sheet.is-broken .fallback { display: flex; }
+
+.caption { padding-top: 14px; }
+.caption .group {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-wash);
+    padding: 1px 8px;
+    border-radius: 2px;
+    margin-bottom: 6px;
+}
+.caption .title {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--ink);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.caption .by { display: block; font-size: 0.84rem; color: var(--ink-soft); margin-top: 3px; }
+
+/* 불러오는 중 */
+.poster.is-skeleton { cursor: default; pointer-events: none; }
+.poster.is-skeleton .sheet { background: var(--board-deep); box-shadow: none; animation: pulse 1.4s ease-in-out infinite; }
+.poster.is-skeleton .sheet::before { display: none; }
+.poster.is-skeleton .line { display: block; height: 11px; margin-top: 12px; background: var(--board-deep); border-radius: 2px; width: 80%; animation: pulse 1.4s ease-in-out infinite; }
+.poster.is-skeleton .line + .line { width: 45%; margin-top: 8px; }
+@keyframes pulse { 50% { opacity: .55; } }
+
+/* 비어 있음 / 오류 */
+.state {
+    grid-column: 1 / -1;
+    background: var(--paper);
+    box-shadow: var(--lift);
+    border-radius: 3px;
+    padding: 44px 32px;
+    text-align: center;
+    color: var(--ink-mid);
+    font-size: 0.95rem;
+}
+.state strong { display: block; font-family: var(--serif); font-size: 1.15rem; color: var(--ink); margin-bottom: 6px; }
+.state.is-error strong { color: var(--alert); }
+.state button {
+    margin-top: 18px;
+    padding: 9px 20px;
+    background: var(--accent);
+    color: var(--paper);
+    border: none;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+.state button:hover { background: var(--accent-deep); }
+
+/* ── 크게 보기 ────────────────────────────── */
+.viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.viewer[hidden] { display: none; }
+.viewer-backdrop { position: absolute; inset: 0; background: rgba(19,38,56,.86); }
+.viewer-panel {
+    position: relative;
+    width: min(1100px, 100%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
+.viewer-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px 14px 22px;
+    border-bottom: 1px solid var(--rule-strong);
+}
+.viewer-meta { min-width: 0; flex: 1; }
+.viewer-meta .group { font-size: 0.76rem; font-weight: 500; color: var(--accent); }
+.viewer-meta h2 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.viewer-meta p { font-size: 0.84rem; color: var(--ink-soft); }
+.viewer-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.v-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 36px;
+    min-width: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color .18s ease, color .18s ease;
+}
+.v-btn:hover { border-color: var(--accent); color: var(--accent); }
+.v-btn:disabled { opacity: .4; pointer-events: none; }
+.v-btn svg { width: 16px; height: 16px; }
+.viewer-body { flex: 1; background: #eceeeb; }
+.viewer-body iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+@media (max-width: 640px) {
+    .viewer { padding: 0; }
+    .viewer-panel { border-radius: 0; }
+    .viewer-head { flex-wrap: wrap; padding: 12px 14px; }
+    .viewer-actions { width: 100%; }
+    .v-btn.open-new { margin-right: auto; }
+}
+
+/* ── 푸터 ─────────────────────────────────── */
+footer {
+    background: var(--ink);
+    color: #9dabb8;
+    text-align: center;
+    padding: 30px 24px;
+    font-size: 0.85rem;
+}
+footer a { color: #9dabb8; text-decoration: none; }
+footer a:hover { color: #fff; text-decoration: underline; }
+
+@media (max-width: 860px) {
+    .hero { padding: 60px 0 48px; }
+    .hero-inner, .board-wrap { padding-left: 20px; padding-right: 20px; }
+    .fact-row { display: grid; grid-auto-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: .001ms !important;
+    }
+    .hero-kicker, .hero h1, .hero-desc, .fact-row { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!--
+  ⛔ 아래 HTML은 '틀'입니다. 글자는 [수정 구역 2]에서, 포스터는 구글 드라이브에서 채워집니다.
+-->
+
+<div id="config-error" hidden>
+    ⚠️ 페이지 내용 설정(SITE)에 오류가 있어 내용을 불러오지 못했습니다.
+    최근에 고친 곳에서 쉼표( , ), 따옴표( ' ), 괄호( { } )가 빠지거나 남지 않았는지 확인해 주세요.
+</div>
+
+<header>
+    <div class="header-inner">
+        <a class="home-link" aria-label="홈으로"><img id="logo" class="header-logo" alt=""></a>
+        <div class="header-divider"></div>
+        <span class="header-title">포스터 아카이브</span>
+        <a class="home-link back-home">메인으로</a>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-inner">
+        <p class="hero-kicker" id="hero-kicker"></p>
+        <h1 id="hero-title"></h1>
+        <p class="hero-desc" id="hero-desc"></p>
+        <dl class="fact-row">
+            <div class="fact"><dt>포스터</dt><dd><span id="fact-posters">–</span><small>편</small></dd></div>
+            <div class="fact"><dt>기수</dt><dd><span id="fact-groups">–</span><small>개</small></dd></div>
+        </dl>
+    </div>
+</section>
+
+<main class="board-wrap">
+    <div class="toolbar">
+        <div class="tabs" role="tablist" aria-label="기수 선택" id="tabs"></div>
+        <label class="search">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.5 10.5L14 14"/></svg>
+            <input type="search" id="search" placeholder="제목·발표자 검색" aria-label="포스터 검색">
+        </label>
+    </div>
+
+    <div class="poster-grid" id="grid" aria-live="polite"></div>
+</main>
+
+<!-- 크게 보기 -->
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="viewer-title">
+    <div class="viewer-backdrop" data-close></div>
+    <div class="viewer-panel">
+        <div class="viewer-head">
+            <div class="viewer-meta">
+                <span class="group" id="viewer-group"></span>
+                <h2 id="viewer-title"></h2>
+                <p id="viewer-by"></p>
+            </div>
+            <div class="viewer-actions">
+                <a class="v-btn open-new" id="viewer-open" target="_blank" rel="noopener">새 탭에서 열기</a>
+                <button type="button" class="v-btn" id="viewer-prev" aria-label="이전 포스터">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+                </button>
+                <button type="button" class="v-btn" id="viewer-next" aria-label="다음 포스터">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+                </button>
+                <button type="button" class="v-btn" id="viewer-close" data-close aria-label="닫기">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="viewer-body"><iframe id="viewer-frame" title="포스터 미리보기" allow="fullscreen"></iframe></div>
+    </div>
+</div>
+
+<footer><p id="footer-text"></p></footer>
+
+<script>
+/* ══════════════════════════════════════════════
+   ⛔ 동작 코드 — 수정하지 않아도 됩니다.
+══════════════════════════════════════════════ */
+(function () {
+    'use strict';
+
+    if (typeof SITE === 'undefined') {
+        document.getElementById('config-error').hidden = false;
+        return;
+    }
+
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+    const lines = s => esc(String(s == null ? '' : s).split('\n').map(l => l.trim()).join('\n').trim()).replace(/\n/g, '<br>');
+
+    /* ── 기본 글자 채우기 ───────────────────── */
+    document.querySelectorAll('.home-link').forEach(a => a.href = SITE.homePage);
+    $('logo').src = SITE.logo;
+    $('logo').alt = 'SPARK';
+    $('hero-kicker').textContent = SITE.kicker;
+    $('hero-title').innerHTML    = lines(SITE.title);
+    $('hero-desc').innerHTML     = lines(SITE.intro);
+    $('footer-text').innerHTML   = '&copy; ' + new Date().getFullYear() + ' SPARK &nbsp;|&nbsp; ' +
+        '<a href="mailto:' + esc(SITE.email) + '">' + esc(SITE.email) + '</a>';
+
+    /* ── 드라이브 주소 만들기 ───────────────── */
+    const thumbUrl   = id => 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(id) + '&sz=w900';
+    const previewUrl = id => 'https://drive.google.com/file/d/' + encodeURIComponent(id) + '/preview';
+    const viewUrl    = id => 'https://drive.google.com/file/d/' + encodeURIComponent(id) + '/view';
+
+    /* 파일 이름 → 제목 / 발표자 */
+    function parseName(fileName) {
+        const base = String(fileName).replace(/\.[^.]+$/, '').trim();
+        const sep  = SITE.nameSeparator;
+        const at   = sep ? base.indexOf(sep) : -1;
+        if (at > 0) return { title: base.slice(0, at).trim(), by: base.slice(at + sep.length).trim() };
+        return { title: base, by: '' };
+    }
+
+    /* 폴더 이름 정렬: 숫자가 큰 기수(최신)부터, 숫자 없는 폴더는 뒤로 */
+    const groupNumber = name => { const m = String(name).match(/\d+/); return m ? Number(m[0]) : -1; };
+    const collator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
+
+    /* ── 상태 ───────────────────────────────── */
+    let posters = [];       // { id, title, by, group }
+    let groups  = [];       // [ '11기', '10기', ... ]
+    let active  = 'all';
+    let query   = '';
+    let visible = [];       // 현재 화면에 보이는 포스터 목록
+    let current = -1;       // 크게 보기 중인 포스터 번호
+
+    const grid = $('grid');
+
+    /* ── 불러오는 중 ────────────────────────── */
+    function showSkeleton() {
+        grid.innerHTML = Array.from({ length: 8 }, () =>
+            '<div class="poster is-skeleton" aria-hidden="true"><div class="sheet"></div><span class="line"></span><span class="line"></span></div>'
+        ).join('');
+    }
+
+    function showState(title, body, isError, withRetry) {
+        grid.innerHTML = '<div class="state' + (isError ? ' is-error' : '') + '">' +
+            '<strong>' + esc(title) + '</strong>' + esc(body) +
+            (withRetry ? '<br><button type="button" id="retry">다시 불러오기</button>' : '') +
+        '</div>';
+        if (withRetry) $('retry').addEventListener('click', load);
+    }
+
+    /* ── 드라이브에서 목록 받아오기 ──────────── */
+    function load() {
+        const url = String(SITE.driveApiUrl || '').trim();
+        if (!/^https:\/\/script\.google(usercontent)?\.com\//.test(url)) {
+            showState('아직 구글 드라이브가 연결되지 않았습니다',
+                '수정 구역 2의 driveApiUrl에 Apps Script 웹 앱 주소를 넣어 주세요.', true, false);
+            return;
+        }
+
+        showSkeleton();
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (!data || data.result !== 'success') throw new Error((data && data.message) || 'bad response');
+
+                const map = {};
+                posters = [];
+                (data.groups || []).forEach(g => {
+                    const name = g.name || SITE.looseGroupName;
+                    (g.files || []).forEach(f => {
+                        const p = parseName(f.name);
+                        posters.push({ id: f.id, title: p.title, by: p.by, group: name });
+                        map[name] = true;
+                    });
+                });
+
+                groups = Object.keys(map).sort((a, b) => {
+                    const d = groupNumber(b) - groupNumber(a);
+                    return d !== 0 ? d : collator.compare(a, b);
+                });
+                posters.sort((a, b) => {
+                    const g = groups.indexOf(a.group) - groups.indexOf(b.group);
+                    return g !== 0 ? g : collator.compare(a.title, b.title);
+                });
+
+                if (active !== 'all' && groups.indexOf(active) < 0) active = 'all';
+                $('fact-posters').textContent = posters.length;
+                $('fact-groups').textContent  = groups.length;
+                renderTabs();
+                render();
+            })
+            .catch(() => {
+                showState('포스터를 불러오지 못했습니다',
+                    '잠시 후 다시 시도해 주세요. 계속 안 되면 운영진에게 알려 주세요.', true, true);
+            });
+    }
+
+    /* ── 기수 탭 ─────────────────────────────── */
+    function renderTabs() {
+        const count = name => posters.filter(p => p.group === name).length;
+        const tabs  = [{ key: 'all', label: '전체', n: posters.length }]
+            .concat(groups.map(g => ({ key: g, label: g, n: count(g) })));
+
+        $('tabs').innerHTML = tabs.map(t =>
+            '<button type="button" class="tab" role="tab" data-key="' + esc(t.key) + '" aria-selected="' + (t.key === active) + '">' +
+                esc(t.label) + '<span class="count">' + t.n + '</span>' +
+            '</button>'
+        ).join('');
+
+        $('tabs').querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => {
+            active = btn.dataset.key;
+            $('tabs').querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', String(b === btn)));
+            render();
+        }));
+    }
+
+    /* ── 포스터 그리드 ──────────────────────── */
+    function render() {
+        const q = query.toLowerCase();
+        visible = posters.filter(p =>
+            (active === 'all' || p.group === active) &&
+            (!q || (p.title + ' ' + p.by).toLowerCase().indexOf(q) >= 0)
+        );
+
+        if (!posters.length) { showState(SITE.emptyText, '', false, false); return; }
+        if (!visible.length) { showState('검색 결과가 없습니다', '다른 단어로 검색해 보세요.', false, false); return; }
+
+        const showGroup = active === 'all' && groups.length > 1;
+        grid.innerHTML = visible.map((p, i) =>
+            '<button type="button" class="poster" data-i="' + i + '" aria-label="' + esc(p.title) + ' 크게 보기">' +
+                '<div class="sheet">' +
+                    '<img src="' + thumbUrl(p.id) + '" alt="" loading="lazy">' +
+                    '<span class="fallback">미리보기를 불러올 수 없습니다.<br>파일의 공유 설정을 확인해 주세요.</span>' +
+                '</div>' +
+                '<div class="caption">' +
+                    (showGroup ? '<span class="group">' + esc(p.group) + '</span>' : '') +
+                    '<span class="title">' + esc(p.title) + '</span>' +
+                    (p.by ? '<span class="by">' + esc(p.by) + '</span>' : '') +
+                '</div>' +
+            '</button>'
+        ).join('');
+
+        grid.querySelectorAll('.poster').forEach(btn => {
+            btn.querySelector('img').addEventListener('error', () => btn.querySelector('.sheet').classList.add('is-broken'));
+            btn.addEventListener('click', () => openViewer(Number(btn.dataset.i)));
+        });
+    }
+
+    let searchTimer;
+    $('search').addEventListener('input', e => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => { query = e.target.value.trim(); if (posters.length) render(); }, 150);
+    });
+
+    /* ── 크게 보기 ───────────────────────────── */
+    const viewer = $('viewer');
+    let lastFocus = null;
+
+    function openViewer(i) {
+        if (i < 0 || i >= visible.length) return;
+        const p = visible[i];
+        current = i;
+        $('viewer-group').textContent = p.group;
+        $('viewer-title').textContent = p.title;
+        $('viewer-by').textContent    = p.by;
+        $('viewer-open').href         = viewUrl(p.id);
+        $('viewer-frame').src         = previewUrl(p.id);
+        $('viewer-prev').disabled     = i === 0;
+        $('viewer-next').disabled     = i === visible.length - 1;
+
+        if (viewer.hidden) {
+            lastFocus = document.activeElement;
+            viewer.hidden = false;
+            document.body.classList.add('is-locked');
+            $('viewer-close').focus();
+        }
+    }
+
+    function closeViewer() {
+        viewer.hidden = true;
+        $('viewer-frame').src = 'about:blank';
+        document.body.classList.remove('is-locked');
+        if (lastFocus) lastFocus.focus();
+    }
+
+    viewer.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeViewer));
+    $('viewer-prev').addEventListener('click', () => openViewer(current - 1));
+    $('viewer-next').addEventListener('click', () => openViewer(current + 1));
+    document.addEventListener('keydown', e => {
+        if (viewer.hidden) return;
+        if (e.key === 'Escape')     closeViewer();
+        if (e.key === 'ArrowLeft')  openViewer(current - 1);
+        if (e.key === 'ArrowRight') openViewer(current + 1);
+    });
+
+    load();
+})();
+</script>
+</body>
+</html>
