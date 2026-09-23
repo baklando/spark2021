@@ -184,7 +184,7 @@ const SITE = {
     /* ────────── 공지사항 ──────────
        content 는 여러 줄로 쓸 수 있도록 ` (백틱, 키보드 숫자 1 왼쪽 키)으로 감쌉니다.
        줄바꿈한 그대로 화면에 표시됩니다. */
-    notice: {
+      notice: {
         title:    '공지사항',
         subtitle: '지원 전에 확인해 주세요.',
         items: [
@@ -192,8 +192,8 @@ const SITE = {
                 title: '동아리 소개',
                 content: `
                     생명과학 연합학술동아리 SPARK
-                    (Scientific Poster on Analysis of Research Knowledge)는 
-                    과학 분야의 논문 분석을 기반으로 한 과학 포스터 제작 활동을 중심으로, 
+                    (Scientific Poster on Analysis of Research Knowledge)는
+                    과학 분야의 논문 분석을 기반으로 한 과학 포스터 제작 활동을 중심으로,
                     학생들의 폭넓은 과학적 지식 함양을 목표로 하고 있습니다.
                 `,
             },
@@ -208,12 +208,15 @@ const SITE = {
                     결석 1회 또는 지각 2회 이상 시 수료 불가
                 `,
             },
+            {
+                title: '11기 모집 안내',
+                content: `
+                    현재 11기 서류 모집이 마감되었습니다.
+                `,
+            },
         ],
-        // true 이면 맨 아래에 "11기 모집 안내" 공지가 날짜에 맞춰 자동으로 붙습니다. 끄려면 false
-        showRecruitNotice: true,
     },
-
-
+     
     /* ────────── 왼쪽(모바일은 아래쪽) SNS 버튼 ────────── */
     social: [
         { name: 'Instagram',   url: 'https://www.instagram.com/spark__2021/', icon: 'news1.jpg' },
