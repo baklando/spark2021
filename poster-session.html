@@ -1,1120 +1,1219 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>포스터 세션 신청 | SPARK</title>
-    <link rel="icon" href="logo.png">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <meta property="og:title" content="SPARK 포스터 세션 신청">
-    <meta property="og:description" content="SPARK 포스터 세션에 참가 신청하세요.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-   <style>
-    /* ── 변수 & 리셋 ── */
-    :root {
-        --primary:     #0a2342;
-        --primary-mid: #133257;
-        --accent:      #2ecc71;
-        --accent-dark: #27ae60;
-        --accent-pale: rgba(46,204,113,0.10);
-        --text:        #1e1e1e;
-        --muted:       #6b7280;
-        --bg:          #f5f7f9;
-        --white:       #ffffff;
-        --border:      #e2e8f0;
-        --shadow-sm:   0 2px 10px rgba(0,0,0,0.06);
-        --shadow-md:   0 8px 32px rgba(0,0,0,0.10);
-        --radius-sm:   10px;
-        --radius-md:   18px;
-        --radius-lg:   28px;
-        --transition:  0.28s cubic-bezier(.4,0,.2,1);
-        /* 상태 색상 (신규) */
-        --danger:      #e74c3c;
-        --danger-dark: #c0392b;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║  SPARK 포스터 세션 신청 페이지 — 수정 안내                      ║
+║                                                              ║
+║  수정할 곳은 이 파일 위쪽의 두 군데뿐입니다.                      ║
+║    [수정 구역 1] 검색·카톡 공유 시 보이는 제목과 설명               ║
+║    [수정 구역 2] 행사 정보, 신청 기간, 일정, 사진, 안내사항,         ║
+║                 신청서 선택지, 개인정보 동의문, 연락처              ║
+║                                                              ║
+║  "여기부터 아래는 수정하지 않아도 됩니다" 표시 이후는                ║
+║  디자인과 동작 코드이므로 건드리지 않아도 됩니다.                   ║
+╚══════════════════════════════════════════════════════════════╝
+-->
 
-    body {
-        font-family: 'Noto Sans KR', -apple-system, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        line-height: 1.7;
-        min-height: 100vh;
-    }
 
-    /* ── 헤더 ── */
-    header {
-        background: rgba(255,255,255,0.96);
-        backdrop-filter: blur(14px);
-        height: 62px;
-        display: flex;
-        align-items: center;
-        padding: 0 7%;
-        box-shadow: var(--shadow-sm);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
-    .header-inner {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-    }
-    .header-logo { height: 36px; }
-    .header-divider {
-        width: 1px;
-        height: 22px;
-        background: var(--border);
-    }
-    .header-title {
-        font-size: 0.92rem;
-        font-weight: 600;
-        color: var(--muted);
-        letter-spacing: 0.01em;
-    }
-    .header-badge {
-        margin-left: auto;
-        background: var(--accent-pale);
-        color: var(--accent-dark);
-        font-size: 0.78rem;
-        font-weight: 700;
-        padding: 4px 12px;
-        border-radius: 100px;
-        border: 1px solid rgba(46,204,113,0.3);
-        transition: var(--transition);   /* 상태 전환 부드럽게 (신규) */
-        white-space: nowrap;
-    }
+<!-- ════════════════════════════════════════════
+     ✏️ [수정 구역 1] 검색·공유 정보
+     따옴표 " " 안의 글자만 바꾸세요.
+═════════════════════════════════════════════ -->
 
-    /* ── 히어로 배너 ── */
-    .hero {
-        background: linear-gradient(135deg, var(--primary) 0%, #0d3060 50%, #0f3d7a 100%);
-        padding: 72px 7% 60px;
-        position: relative;
-        overflow: hidden;
-        color: var(--white);
-    }
-    .hero::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background:
-            radial-gradient(ellipse 70% 80% at 70% 50%, rgba(46,204,113,0.12) 0%, transparent 65%),
-            radial-gradient(ellipse 40% 60% at 10% 80%, rgba(0,180,255,0.07) 0%, transparent 60%);
-    }
-    .hero::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-        background-size: 32px 32px;
-    }
-    .hero-inner {
-        position: relative;
-        z-index: 1;
-        max-width: 760px;
-    }
-    .hero-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        background: rgba(46,204,113,0.18);
-        border: 1px solid rgba(46,204,113,0.4);
-        color: #7fffc0;
-        font-size: 0.8rem;
-        font-weight: 600;
-        padding: 5px 14px;
-        border-radius: 100px;
-        margin-bottom: 22px;
-        letter-spacing: 0.03em;
-        animation: fadeUp 0.6s ease both;
-    }
-    .hero-chip::before { content: '✦'; font-size: 0.65rem; }
-    .hero h1 {
-        font-size: clamp(2rem, 5vw, 3rem);
-        font-weight: 700;
-        line-height: 1.25;
-        margin-bottom: 18px;
-        letter-spacing: -0.02em;
-        animation: fadeUp 0.6s ease 0.1s both;
-    }
-    .hero h1 em {
-        font-style: normal;
-        color: var(--accent);
-    }
-    .hero-desc {
-        font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-        color: rgba(255,255,255,0.75);
-        max-width: 520px;
-        line-height: 1.85;
-        animation: fadeUp 0.6s ease 0.2s both;
-    }
+<!-- 브라우저 탭에 보이는 제목 -->
+<title>포스터 세션 신청 | SPARK</title>
 
-    /* 히어로 정보 카드들 */
-    .hero-cards {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 36px;
-        animation: fadeUp 0.6s ease 0.3s both;
-    }
-    .hero-card {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.14);
-        border-radius: var(--radius-sm);
-        padding: 14px 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        min-width: 160px;
-        backdrop-filter: blur(6px);
-    }
-    .hero-card-icon { font-size: 1.4rem; }
-    .hero-card-label {
-        font-size: 0.72rem;
-        color: rgba(255,255,255,0.55);
-        display: block;
-        margin-bottom: 2px;
-    }
-    .hero-card-value {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--white);
-    }
+<!-- 링크 공유 시 미리보기 제목 / 설명 -->
+<meta property="og:title" content="SPARK 포스터 세션 신청">
+<meta property="og:description" content="SPARK 포스터 세션에 참가 신청하세요.">
 
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
+<!-- 탭 아이콘 이미지 파일 이름 -->
+<link rel="icon" type="image/png" href="favicon.png">
 
-    /* ── 메인 레이아웃 ── */
-    .page-wrap {
-        max-width: 1080px;
-        margin: 0 auto;
-        padding: 56px 5% 80px;
-        display: grid;
-        grid-template-columns: 1fr 420px;
-        gap: 36px;
-        align-items: start;
-    }
 
-    @media (max-width: 860px) {
-        .page-wrap { grid-template-columns: 1fr; padding: 36px 5% 60px; }
-    }
+<!-- ════════════════════════════════════════════
+     ✏️ [수정 구역 2] 페이지 내용 전체
+═════════════════════════════════════════════ -->
+<script>
+/*
+ ┌─────────────────── 수정 규칙 ───────────────────┐
+ │ 1. 따옴표 '  ' 안의 글자만 바꾸세요.                │
+ │ 2. 항목 끝에는 항상 쉼표( , )를 붙입니다.            │
+ │ 3. 괄호 { } [ ] 는 지우지 마세요.                   │
+ │ 4. 항목을 추가/삭제할 때는 한 줄(또는 { ... }, 한     │
+ │    덩어리)을 통째로 복사하거나 지우세요.               │
+ │ 5. 날짜는 항상 '2026-08-19' 형식(연-월-일)으로 씁니다.│
+ │ 6. 글 안에 작은따옴표 ' 를 넣고 싶으면 ‘ ’ 를 쓰세요.  │
+ │ 7. // 뒤의 설명은 화면에 나오지 않습니다.             │
+ │                                                  │
+ │ ★ 글 꾸미기 (안내사항·행사 소개·동의문에서 사용 가능)   │
+ │   **굵게 할 글자**      → 굵은 글씨                   │
+ │   [보일 글자](주소)     → 누르면 이동하는 링크           │
+ │   {기수}               → 아래 generation 숫자로 자동 변환│
+ │                                                  │
+ │ 수정 후 페이지 위에 빨간 경고가 뜨면,                 │
+ │ 방금 고친 곳에서 쉼표나 따옴표가 빠진 것입니다.         │
+ └──────────────────────────────────────────────────┘
+*/
+const SITE = {
 
-    /* ── 안내 사이드 ── */
-    .info-side { display: flex; flex-direction: column; gap: 20px; }
+    /* ────────── 행사 기본 정보 ──────────
+       제목 "제 10회 SPARK Poster Session", "SPARK 10기 정기 학술 행사",
+       "10기 일정" 은 아래 숫자로 자동 생성됩니다. */
+    generation:    10,              // 발표하는 기수 (숫자만, 따옴표 없이)
+    sessionNumber: 10,              // 제 몇 회 포스터 세션인지 (숫자만)
+    date:  '2026-08-19',            // 행사 날짜
+    time:  '19:00 – 21:00',         // 행사 시간
+    place: '올댓마인드 문래점',        // 장소
 
-    .info-card {
-        background: var(--white);
-        border-radius: var(--radius-md);
-        padding: 28px 26px;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border);
-        animation: fadeUp 0.5s ease both;
-    }
-    .info-card + .info-card { animation-delay: 0.08s; }
 
-    .info-card-title {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: var(--accent-dark);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 18px;
-    }
-    .info-card-title::before {
-        content: '';
-        display: block;
-        width: 4px;
-        height: 14px;
-        background: var(--accent);
-        border-radius: 2px;
-    }
+    /* ────────── 사전 신청 기간 ──────────
+       날짜만 바꾸면 신청서 열림/닫힘, 상단 상태 표시("신청 접수 중" 등),
+       마감 안내 문구가 모두 자동으로 바뀝니다. */
+    apply: {
+        start: '2026-08-03',   // 신청 시작일 (이 날 0시부터)
+        end:   '2026-08-18',   // 신청 마지막 날 (이 날 밤 23:59까지 신청 가능)
+    },
 
-    .timeline { display: flex; flex-direction: column; gap: 0; }
-    .timeline-item {
-        display: flex;
-        gap: 14px;
-        position: relative;
-    }
-    .timeline-item:not(:last-child)::before {
-        content: '';
-        position: absolute;
-        left: 11px;
-        top: 26px;
-        bottom: -6px;
-        width: 2px;
-        background: var(--border);
-    }
-    .timeline-dot {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: var(--accent-pale);
-        border: 2px solid var(--accent);
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.65rem;
-        color: var(--accent-dark);
-        font-weight: 700;
-        margin-top: 2px;
-    }
-    .timeline-item.done .timeline-dot {
-        background: var(--accent);
-        color: white;
-    }
-    .timeline-body { padding-bottom: 20px; }
-    .timeline-date {
-        font-size: 0.75rem;
-        color: var(--muted);
-        font-weight: 500;
-        margin-bottom: 3px;
-    }
-    .timeline-label {
-        font-size: 0.92rem;
-        font-weight: 600;
-        color: var(--text);
-    }
-    .timeline-item.highlight .timeline-label { color: var(--accent-dark); }
-    .timeline-item.highlight .timeline-dot {
-        background: var(--accent);
-        color: white;
-        box-shadow: 0 0 0 4px rgba(46,204,113,0.2);
-    }
 
-    .notice-list { display: flex; flex-direction: column; gap: 10px; }
-    .notice-row {
-        display: flex;
-        gap: 10px;
-        align-items: flex-start;
-        font-size: 0.88rem;
-        line-height: 1.65;
-        color: #444;
-    }
-    .notice-icon {
-        flex-shrink: 0;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: var(--accent-pale);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.65rem;
-        margin-top: 2px;
-        color: var(--accent-dark);
-    }
+    /* ────────── 첫 화면 설명 ────────── */
+    intro: '한 학기 동안 탐구한 생명과학 연구를 포스터로 발표하고, 다양한 관심사를 가진 참가자들과 학술적 교류를 나누는 SPARK의 대표 행사입니다.',
 
-    /* ── 폼 카드 ── */
-    .form-card {
-        background: var(--white);
-        border-radius: var(--radius-md);
-        padding: 38px 36px;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border);
-        position: sticky;
-        top: 82px;
-        animation: fadeUp 0.5s ease 0.15s both;
-    }
 
-    @media (max-width: 860px) {
-        .form-card { position: static; padding: 28px 22px; }
-        .info-side { order: 1; }
-        .form-card { order: 2; }
-    }
+    /* ────────── 행사 소개 카드 ────────── */
+    about: {
+        text: `
+            SPARK 포스터 세션은 매 기수마다 진행되는 정기 학술 행사로, 부원들이 한 기수 동안 논문 스터디를 통해 쌓은 지식과 탐구 결과를 공유하는 자리입니다. 다양한 생명과학 주제를 발표하며, 참가자들과의 토론을 통해 새로운 관점과 아이디어를 나눕니다.
+        `,
+        tags: ['학술 발표', '포스터 제작', 'Q&A 세션', '네트워킹'],
+    },
 
-    .form-header {
-        margin-bottom: 28px;
-        padding-bottom: 22px;
-        border-bottom: 1px solid var(--border);
-    }
-    .form-tag {
-        display: inline-block;
-        background: var(--accent-pale);
-        color: var(--accent-dark);
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 3px 10px;
-        border-radius: 100px;
-        margin-bottom: 10px;
-    }
-    .form-header h2 {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: var(--primary);
-        line-height: 1.3;
-    }
-    .form-header p {
-        font-size: 0.85rem;
-        color: var(--muted);
-        margin-top: 6px;
-    }
 
-    /* 폼 요소들 */
-    .form-group { margin-bottom: 20px; }
-    .form-label {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: 600;
-        font-size: 0.88rem;
-        color: var(--primary);
-        margin-bottom: 8px;
-    }
-    .form-label .required {
-        color: var(--danger);
-        font-size: 0.75rem;
-    }
-    .form-label .optional {
-        color: var(--muted);
-        font-size: 0.72rem;
-        font-weight: 400;
-    }
+    /* ────────── 기수 일정 ──────────
+       지난 일정은 회색, 다가오는 일정은 초록색으로 자동 표시됩니다. */
+    schedule: [
+        { date: '2026-03-21', label: 'OT' },
+        { date: '2026-05-09', label: '1차 세미나' },
+        { date: '2026-06-27', label: '2차 세미나' },
+        { date: '2026-08-08', label: '3차 세미나' },
+        { date: '2026-08-19', label: '포스터 세션' },
+    ],
 
-    .form-input {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1.5px solid var(--border);
-        border-radius: var(--radius-sm);
-        font-family: inherit;
-        font-size: 0.9rem;
-        color: var(--text);
-        background: #fafbfc;
-        transition: var(--transition);
-    }
-    .form-input:focus {
-        outline: none;
-        border-color: var(--accent);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(46,204,113,0.12);
-    }
-    .form-input::placeholder { color: #c0c9d4; }
 
-    select.form-input { cursor: pointer; }
+    /* ────────── 지난 포스터 세션 사진 ──────────
+       사진 파일 이름만 적으면 됩니다. 2장씩 한 줄로 놓입니다. */
+    photos: [
+        'posterpo1.jpg',
+        'posterpo2.jpg',
+        'posterpo3.jpg',
+        'posterpo4.jpg',
+    ],
 
-    /* 파일 업로드 */
-    .file-upload-area {
-        border: 2px dashed var(--border);
-        border-radius: var(--radius-sm);
-        padding: 24px 16px;
-        text-align: center;
-        cursor: pointer;
-        transition: var(--transition);
-        background: #fafbfc;
-        position: relative;
-    }
-    .file-upload-area:hover,
-    .file-upload-area.dragover {
-        border-color: var(--accent);
-        background: var(--accent-pale);
-    }
-    .file-upload-area input[type="file"] {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        cursor: pointer;
-        width: 100%;
-        height: 100%;
-    }
-    .file-upload-icon { font-size: 2rem; margin-bottom: 8px; }
-    .file-upload-text {
-        font-size: 0.85rem;
-        color: var(--muted);
-        line-height: 1.6;
-    }
-    .file-upload-text strong { color: var(--accent-dark); }
-    .file-name-display {
-        margin-top: 10px;
-        font-size: 0.82rem;
-        color: var(--accent-dark);
-        font-weight: 600;
-        display: none;
-        word-break: break-all;
-    }
 
-    /* ── 현장 사진 갤러리 ── */
-    .photo-gallery {
-        margin-top: 20px;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-    .photo-item {
-        position: relative;
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-        aspect-ratio: 4 / 3;
-        cursor: pointer;
-        border: 1px solid var(--border);
-    }
-    .photo-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-    }
-    .photo-item:hover img { transform: scale(1.1); }
-    .photo-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(10, 35, 66, 0.4);
-        opacity: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: var(--transition);
-    }
-    .photo-item:hover .photo-overlay { opacity: 1; }
-    .photo-overlay span { color: white; font-size: 1.2rem; }
+    /* ────────── 참가 안내사항 ──────────
+       번호(1, 2, 3…)는 순서대로 자동으로 붙습니다. */
+    notices: [
+        '포스터 세션은 **SPARK {기수}기 회원 전원**이 참여하며, 각자 준비한 포스터를 발표합니다.',
+        '포스터 규격은 **A1**이며, 영문으로 된 포스터를 한국어로 발표합니다.',
+        '행사 당일 참석할 경우 다음 기수 지원 시 **가산점**이 부여됩니다.',
+        '행사는 지정된 시간 동안 자유롭게 운영되며, 편하신 시간에 방문하여 참여하시면 됩니다.',
+        '행사 당일 사진·영상 촬영이 진행됩니다. 사진 제공 동의 여부를 참고 부탁드립니다.',
+        '행사 하루 전, 신청자분들께 문자로 추가 안내가 발송될 예정입니다.',
+        '문의는 [카카오톡 채널](https://pf.kakao.com/_hLbxeb)로 보내주세요.',
+    ],
 
-    @media (max-width: 480px) {
-        .photo-gallery { grid-template-columns: 1fr; }
-    }
 
-    /* 개인정보 동의 박스 */
-    .privacy-box {
-        background: #f8fafb;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 16px;
-    }
-    .privacy-scroll {
-        height: 88px;
-        overflow-y: auto;
-        font-size: 0.8rem;
-        color: #666;
-        line-height: 1.9;
-        margin-bottom: 12px;
-        padding: 10px 12px;
-        background: var(--white);
-        border: 1px solid var(--border);
-        border-radius: 7px;
-    }
-    .privacy-scroll::-webkit-scrollbar { width: 4px; }
-    .privacy-scroll::-webkit-scrollbar-thumb { background: #d0d7de; border-radius: 2px; }
+    /* ────────── 신청서 선택지 ──────────
+       여기 적은 글자가 그대로 화면에 보이고, 구글 시트에도 그대로 저장됩니다. */
+    form: {
+        roles: [            // 참가 유형
+            '역대 기수자',
+            '외부 참관객',
+        ],
+        sources: [          // 알게 된 경로
+            '인스타그램',
+            '네이버 카페',
+            'LinkedIn',
+            '지인 소개',
+            '에브리타임',
+            '기타',
+        ],
 
-    .checkbox-row {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        cursor: pointer;
-        font-size: 0.86rem;
-        color: var(--text);
-        user-select: none;
-    }
-    .checkbox-row input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        accent-color: var(--accent);
-        cursor: pointer;
-        flex-shrink: 0;
-    }
+        // 개인정보 수집·이용 동의문 (신청서 항목을 바꾸면 '수집 항목'도 같이 바꿔 주세요)
+        privacy: `
+            **[개인정보 수집·이용 동의서]**
 
-    /* 구분선 */
-    .form-divider {
-        border: none;
-        border-top: 1px solid var(--border);
-        margin: 22px 0;
-    }
+            수집 항목: 이름, 휴대폰 번호, 소속(학교·학과), 참가 유형, 행사 알게 된 경로, 사진 활용 동의 여부
 
-    /* 제출 버튼 */
-    .submit-btn {
-        width: 100%;
-        padding: 15px;
-        background: var(--accent);
-        color: var(--white);
-        font-family: inherit;
-        font-size: 1rem;
-        font-weight: 700;
-        border: none;
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        transition: var(--transition);
-        box-shadow: 0 4px 16px rgba(46,204,113,0.35);
-        position: relative;
-        overflow: hidden;
-    }
-    .submit-btn::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: rgba(255,255,255,0);
-        transition: background 0.2s;
-    }
-    .submit-btn:hover {
-        background: var(--accent-dark);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(46,204,113,0.45);
-    }
-    .submit-btn:active { transform: translateY(0); }
-    .submit-btn:disabled {
-        background: #ccc;
-        box-shadow: none;
-        transform: none;
-        cursor: not-allowed;
-    }
+            수집 목적: 포스터 세션 참가 접수, 행사 안내 및 운영, 출결 관리
 
-    /* 제출 완료 화면 */
-    #success-view {
-        display: none;
-        text-align: center;
-        padding: 30px 10px;
-        animation: fadeUp 0.5s ease both;
-    }
-    .success-icon {
-        width: 72px;
-        height: 72px;
-        background: var(--accent-pale);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        margin: 0 auto 20px;
-        border: 2px solid rgba(46,204,113,0.3);
-    }
-    #success-view h3 {
-        font-size: 1.3rem;
-        color: var(--primary);
-        margin-bottom: 10px;
-    }
-    #success-view p {
-        font-size: 0.88rem;
-        color: var(--muted);
-        line-height: 1.8;
-    }
+            보유 기간: 행사 종료 후 30일 이내 파기
 
-    /* ── 접수 전 / 마감 화면 (신규) ── */
-    #closed-view,
-    #pending-view {
-        display: none;
-        text-align: center;
-        padding: 30px 10px;
-        animation: fadeUp 0.5s ease both;
-    }
-    .closed-icon,
-    .pending-icon {
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        margin: 0 auto 20px;
-    }
-    .closed-icon {
-        background: rgba(231,76,60,0.08);
-        border: 2px solid rgba(231,76,60,0.25);
-    }
-    .pending-icon {
-        background: rgba(19,50,87,0.06);
-        border: 2px solid rgba(19,50,87,0.18);
-    }
-    #closed-view h3,
-    #pending-view h3 {
-        font-size: 1.3rem;
-        color: var(--primary);
-        margin-bottom: 10px;
-    }
-    #closed-view p,
-    #pending-view p {
-        font-size: 0.88rem;
-        color: var(--muted);
-        line-height: 1.8;
-    }
-    #pending-period {
-        display: inline-block;
-        margin-top: 4px;
-        color: var(--primary);
-        font-weight: 700;
-    }
+            제3자 제공: 없음
 
-    /* Toast */
-    #toast {
-        position: fixed;
-        bottom: 28px; left: 50%;
-        transform: translateX(-50%) translateY(16px);
-        background: #1a1a2e;
-        color: #fff;
-        padding: 12px 24px;
-        border-radius: 100px;
-        font-size: 0.88rem;
-        font-weight: 600;
-        z-index: 9999;
-        opacity: 0;
-        transition: all 0.35s ease;
-        pointer-events: none;
-        white-space: nowrap;
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+            귀하는 개인정보 수집·이용에 동의하지 않을 권리가 있습니다. 단, 동의하지 않을 경우 행사 참가 신청이 제한될 수 있습니다.
+        `,
+    },
 
-    /* 푸터 */
-    footer {
-        background: #0d0d0d;
-        color: #666;
-        text-align: center;
-        padding: 24px;
-        font-size: 0.8rem;
-    }
-    footer a { color: var(--accent); text-decoration: none; }
 
-    /* 반응형 */
-    @media (max-width: 520px) {
-        .hero { padding: 48px 5% 44px; }
-        .hero-cards { flex-direction: column; }
-        .hero-card { min-width: unset; }
+    /* ────────── 연락처 · 링크 ────────── */
+    contact: {
+        email:         'officialspark@spark2021.com',
+        instagramName: '@spark__2021',
+        instagramUrl:  'https://www.instagram.com/spark__2021/',
+    },
+    logo:     'logo.png',
+    homePage: 'index.html',   // 로고를 누르면 가는 페이지
+
+
+    /* ────────── ⚠️ 신청서 저장 주소 (구글 Apps Script) ──────────
+       신청 내용이 저장되는 구글 시트 연결 주소입니다.
+       Apps Script를 새로 배포해서 주소가 바뀐 경우에만 교체하세요.
+       한 글자라도 틀리면 신청이 저장되지 않습니다. */
+    sheetUrl: 'https://script.google.com/macros/s/AKfycbwafY2GCfXNe0e4CGdds370ynk6iQxYengdOIseEKtxSETXdswL27q1G55Dhe1YTATB/exec',
+
+
+    /* ────────── 색상 ────────── */
+    colors: {
+        main:      '#15674c',   // 대표 색
+        mainDark:  '#0f4d38',   // 버튼에 마우스를 올렸을 때 색
+        mainLight: '#eef3f0',   // 연한 배경 색
+    },
+
+};
+</script>
+<!-- ════════════════ ✏️ 수정 구역 끝 ════════════════ -->
+
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     ⛔ 여기부터 아래는 수정하지 않아도 됩니다 (디자인·동작 코드)
+═══════════════════════════════════════════════════════════════ -->
+
+<script>
+/* 위에서 정한 색상을 디자인에 적용 */
+(function () {
+    if (typeof SITE === 'undefined' || !SITE.colors) return;
+    var root = document.documentElement.style, c = SITE.colors;
+    if (c.main)      root.setProperty('--accent', c.main);
+    if (c.mainDark)  root.setProperty('--accent-deep', c.mainDark);
+    if (c.mainLight) root.setProperty('--accent-wash', c.mainLight);
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════
+   SPARK 포스터 세션 — index.html과 동일한 보드 시스템
+   ※ 대표 색상은 [수정 구역 2]의 colors 에서 바꿉니다.
+══════════════════════════════════════════════ */
+
+:root {
+    --board:        #e0e2dd;
+    --board-deep:   #d2d6d1;
+    --paper:        #ffffff;
+
+    --ink:          #132638;
+    --ink-mid:      #4a5a6b;
+    --ink-soft:     #7b8894;
+
+    --rule:         #dfe2de;
+    --rule-strong:  #c3c9c3;
+
+    --accent:       #15674c;
+    --accent-deep:  #0f4d38;
+    --accent-wash:  #eef3f0;
+
+    --alert:        #9c3a2a;
+    --alert-wash:   #f7eeec;
+
+    --lift:    0 1px 2px rgba(19,38,56,.05), 0 10px 28px rgba(19,38,56,.07);
+    --lift-hi: 0 2px 4px rgba(19,38,56,.07), 0 18px 44px rgba(19,38,56,.11);
+
+    --serif: 'Source Serif 4', 'Noto Serif KR', Georgia, serif;
+    --sans:  'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+    font-family: var(--sans);
+    background: var(--board);
+    color: var(--ink);
+    line-height: 1.75;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ── 설정 오류 경고 ───────────────────────── */
+#config-error {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10001;
+    background: #b3261e;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+#config-error[hidden] { display: none; }
+
+/* ── 헤더 ─────────────────────────────────── */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-strong);
+}
+.header-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.header-logo { height: 36px; display: block; }
+.header-divider { width: 1px; height: 20px; background: var(--rule-strong); }
+.header-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink-mid);
+}
+
+.status-chip {
+    margin-left: auto;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 5px 13px;
+    border-radius: 2px;
+    border: 1px solid;
+    white-space: nowrap;
+    background: var(--accent-wash);
+    color: var(--accent);
+    border-color: rgba(21,103,76,.28);
+}
+.status-chip.is-pending {
+    background: #eef0f3; color: var(--ink-mid); border-color: var(--rule-strong);
+}
+.status-chip.is-closed {
+    background: var(--alert-wash); color: var(--alert); border-color: rgba(156,58,42,.25);
+}
+
+@media (max-width: 560px) {
+    .header-inner { padding: 0 18px; gap: 10px; }
+    .header-title { font-size: 0.9rem; }
+    .status-chip { font-size: 0.72rem; padding: 4px 9px; }
+}
+
+/* ── 히어로 ───────────────────────────────── */
+.hero {
+    background-color: var(--paper);
+    background-image:
+        linear-gradient(rgba(19,38,56,.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(19,38,56,.038) 1px, transparent 1px);
+    background-size: 30px 30px;
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 76px 0 64px;
+}
+.hero-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 56px;
+    align-items: center;
+}
+
+.hero-figure { margin: 0; }
+.floorplan {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 14px 32px rgba(19,38,56,.14));
+}
+.floorplan .floor { fill: var(--paper); }
+.floorplan .wall  { fill: none; stroke: var(--ink); stroke-width: 2; }
+.floorplan .board { fill: var(--ink); }
+.floorplan .pres  { fill: var(--accent); }
+.floorplan .vis   { fill: #9aa6b1; }
+.floorplan .label { font-family: var(--sans); font-size: 9px; font-weight: 500; fill: var(--ink-soft); }
+
+.hero-figure figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-top: 16px;
+    font-size: 0.83rem;
+    color: var(--ink-soft);
+}
+.legend { display: inline-flex; align-items: center; gap: 7px; }
+.legend::before {
+    content: '';
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: #9aa6b1;
+}
+.legend.is-pres::before { background: var(--accent); }
+.legend.is-board::before { width: 16px; height: 4px; border-radius: 0; background: var(--ink); }
+
+@media (max-width: 940px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+    .hero-figure { max-width: 300px; }
+}
+@media (max-width: 640px) {
+    .hero-figure { display: none; }
+}
+.hero-kicker {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+}
+.hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.1rem, 5.4vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    padding-bottom: 24px;
+    border-bottom: 4px solid var(--ink);
+    margin-bottom: 24px;
+}
+.hero-desc {
+    font-size: 1.02rem;
+    color: var(--ink-mid);
+    max-width: 46em;
+}
+
+.fact-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border: 1px solid var(--rule-strong);
+    border-radius: 3px;
+    margin-top: 34px;
+    max-width: 760px;
+}
+.fact {
+    padding: 18px 22px;
+    border-right: 1px solid var(--rule-strong);
+}
+.fact:last-child { border-right: none; }
+.fact dt {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+}
+.fact dd {
+    font-family: var(--serif);
+    font-size: 1.08rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.fact dd small {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--ink-mid);
+}
+@media (max-width: 640px) {
+    .fact-row { grid-template-columns: 1fr; }
+    .fact { border-right: none; border-bottom: 1px solid var(--rule-strong); }
+    .fact:last-child { border-bottom: none; }
+}
+
+.hero-kicker, .hero h1, .hero-desc, .fact-row {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards;
+}
+.hero h1    { animation-delay: .06s; }
+.hero-desc  { animation-delay: .16s; }
+.fact-row   { animation-delay: .24s; }
+.hero-figure {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) .3s forwards;
+}
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+.floorplan .vis { opacity: 0; animation: arrive .5s ease forwards; }
+.floorplan .r1 { animation-delay: .75s; }
+.floorplan .r2 { animation-delay: .95s; }
+.floorplan .r3 { animation-delay: 1.15s; }
+@keyframes arrive { to { opacity: 1; } }
+
+/* ── 본문 2열 ─────────────────────────────── */
+.page-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 56px 28px 88px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 420px;
+    gap: 28px;
+    align-items: start;
+}
+@media (max-width: 940px) {
+    .page-wrap { grid-template-columns: 1fr; padding: 40px 20px 64px; }
+}
+
+.panel {
+    background: var(--paper);
+    border-radius: 3px;
+    box-shadow: var(--lift);
+}
+
+.info-side { display: flex; flex-direction: column; gap: 20px; }
+.info-card { padding: 30px 28px 32px; }
+
+.card-head {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ink);
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 20px;
+}
+.card-lede { font-size: 0.94rem; color: var(--ink-mid); white-space: pre-line; }
+.card-lede a { color: var(--accent); font-weight: 500; }
+.card-lede.with-gap { margin-bottom: 18px; }
+
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+.tag {
+    background: var(--accent-wash);
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 11px;
+    border-radius: 2px;
+}
+
+/* ── 타임라인 ─────────────────────────────── */
+.timeline { display: flex; flex-direction: column; }
+.timeline-item { display: flex; gap: 16px; position: relative; }
+.timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 6px; top: 20px; bottom: -4px;
+    width: 2px;
+    background: var(--rule-strong);
+}
+.timeline-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--rule-strong);
+    flex-shrink: 0;
+    margin-top: 6px;
+    position: relative;
+    z-index: 1;
+}
+.timeline-item.done .timeline-dot { background: var(--rule-strong); }
+.timeline-item.highlight .timeline-dot { background: var(--accent); border-color: var(--accent); }
+.timeline-body { padding-bottom: 20px; }
+.timeline-date { font-size: 0.8rem; color: var(--ink-soft); }
+.timeline-label { font-family: var(--serif); font-size: 1.02rem; font-weight: 600; }
+.timeline-item.done .timeline-label { color: var(--ink-soft); }
+.timeline-item.highlight .timeline-label { color: var(--accent); }
+
+/* ── 지난 세션 사진 ───────────────────────── */
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+.photo-item {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    cursor: zoom-in;
+    background: var(--board-deep);
+}
+.photo-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .45s ease;
+}
+.photo-item:hover img { transform: scale(1.05); }
+.photo-item::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(19,38,56,.22);
+    opacity: 0;
+    transition: opacity .25s ease;
+}
+.photo-item:hover::after { opacity: 1; }
+@media (max-width: 480px) { .photo-gallery { grid-template-columns: 1fr; } }
+
+/* ── 안내사항 ─────────────────────────────── */
+.notice-list { display: flex; flex-direction: column; gap: 13px; }
+.notice-row {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--ink-mid);
+}
+.notice-no {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.7;
+}
+.notice-row strong { color: var(--ink); font-weight: 700; }
+.notice-row a { color: var(--accent); font-weight: 500; }
+
+/* ── 신청 폼 ──────────────────────────────── */
+.form-card {
+    padding: 36px 34px 38px;
+    position: sticky;
+    top: 90px;
+    box-shadow: var(--lift-hi);
+}
+@media (max-width: 940px) {
+    .form-card { position: static; padding: 28px 22px 32px; order: -1; }
+}
+
+.form-header {
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 26px;
+}
+.form-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-wash);
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+.form-header h2 {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+.form-header p { font-size: 0.9rem; color: var(--ink-soft); margin-top: 5px; }
+
+.form-group { margin-bottom: 20px; }
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+.form-label .required { color: var(--alert); font-size: 0.76rem; font-weight: 500; }
+
+.form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.94rem;
+    color: var(--ink);
+    background: #fcfcfb;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--paper);
+    box-shadow: 0 0 0 3px rgba(21,103,76,.12);
+}
+.form-input::placeholder { color: #b6bfc7; }
+select.form-input { cursor: pointer; }
+
+.checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--ink-mid);
+    user-select: none;
+}
+.checkbox-row input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+.checkbox-row .req-mark { color: var(--alert); font-size: 0.8rem; }
+
+.privacy-box {
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    padding: 14px;
+    background: #fafbfa;
+}
+.privacy-scroll {
+    height: 92px;
+    overflow-y: auto;
+    font-size: 0.83rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+    margin-bottom: 12px;
+    padding: 12px 13px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    white-space: pre-line;
+}
+.privacy-scroll strong { color: var(--ink); }
+.privacy-scroll::-webkit-scrollbar { width: 4px; }
+.privacy-scroll::-webkit-scrollbar-thumb { background: var(--rule-strong); }
+
+.form-divider { border: none; border-top: 1px solid var(--rule); margin: 24px 0; }
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+.submit-btn:hover { background: var(--accent-deep); }
+.submit-btn:disabled { background: var(--board-deep); color: var(--ink-soft); cursor: not-allowed; }
+
+#form-msg {
+    text-align: center;
+    font-size: 0.86rem;
+    margin-top: 14px;
+    min-height: 20px;
+    font-weight: 500;
+    color: var(--alert);
+}
+
+/* ── 상태 화면 (완료 / 마감 / 접수 전) ────── */
+#success-view, #closed-view, #pending-view {
+    display: none;
+    padding: 12px 0 18px;
+}
+.state-mark {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+}
+.state-mark.neutral { border-color: var(--rule-strong); color: var(--ink-soft); }
+.state-mark.alert   { border-color: var(--alert); color: var(--alert); }
+.state-mark svg { width: 22px; height: 22px; }
+
+#success-view h3, #closed-view h3, #pending-view h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+#success-view p, #closed-view p, #pending-view p {
+    font-size: 0.92rem;
+    color: var(--ink-mid);
+    line-height: 1.85;
+}
+#success-view a, #closed-view a, #pending-view a { color: var(--accent); }
+#pending-period { font-family: var(--serif); font-weight: 600; color: var(--ink); }
+
+/* ── 토스트 ───────────────────────────────── */
+#toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--ink);
+    color: #fff;
+    padding: 13px 26px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity .3s ease, transform .3s ease;
+    pointer-events: none;
+    max-width: calc(100% - 40px);
+    text-align: center;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast.alert { background: var(--alert); }
+
+/* ── 푸터 ─────────────────────────────────── */
+footer {
+    background: var(--ink);
+    color: #9dabb8;
+    text-align: center;
+    padding: 30px 24px;
+    font-size: 0.85rem;
+}
+footer a { color: #9dabb8; text-decoration: none; }
+footer a:hover { color: #fff; text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: .001ms !important;
     }
+    .hero-kicker, .hero h1, .hero-desc, .fact-row, .hero-figure { opacity: 1; transform: none; }
+    .floorplan .vis { opacity: 1; }
+}
 </style>
 </head>
 <body>
 
-<!-- Toast -->
+<!--
+  ⛔ 아래 HTML은 '틀'입니다. 글자는 [수정 구역 2]에서 자동으로 채워집니다.
+     여기에 직접 글을 써도 반영되지 않으니 위쪽 SITE 설정을 고쳐 주세요.
+-->
+
+<div id="config-error" hidden>
+    ⚠️ 페이지 내용 설정(SITE)에 오류가 있어 내용을 불러오지 못했습니다.
+    최근에 고친 곳에서 쉼표( , ), 따옴표( ' ), 괄호( { } [ ] )가 빠지거나 남지 않았는지 확인해 주세요.
+    (PC에서 F12 → Console 탭을 열면 오류가 난 줄 번호가 보입니다.)
+</div>
+
 <div id="toast"></div>
 
-
-<!-- ── 헤더 ── -->
+<!-- 헤더 -->
 <header>
     <div class="header-inner">
-        <a href="index.html"><img src="logo.png" alt="SPARK" class="header-logo"></a>
+        <a id="home-link" aria-label="홈으로"><img id="logo" class="header-logo" alt=""></a>
         <div class="header-divider"></div>
         <span class="header-title">포스터 세션</span>
+        <span class="status-chip" id="status-chip"></span>
     </div>
-    <span class="header-badge">🖼️ 신청 접수 전</span>
 </header>
 
-<!-- ── 히어로 배너 ── -->
+<!-- 히어로 -->
 <section class="hero">
     <div class="hero-inner">
-        <div class="hero-chip">SPARK 10기 공식 행사</div>
-        <h1>제 10회 <em>SPARK Poster Session</em></h1>
-        <p class="hero-desc">
-            한 학기 동안 탐구한 생명과학 연구를 포스터로 발표하고, 
-            다양한 관심사를 가진 참가자들과 심도 있는 학술적 교류를 나누는 SPARK의 대표 행사입니다.
-        </p>
-        <div class="hero-cards">
-            <div class="hero-card">
-                <span class="hero-card-icon">📅</span>
-                <div>
-    <span class="hero-card-label">행사 일자</span>
-    <span class="hero-card-value">
-        2026. 08. 19
-       <br><small style="font-size: 0.85em; color: #ffffff; font-weight: normal;">19:00 ~ 21:00</small>
-    </span>
-</div>
-            </div>
-            <div class="hero-card">
-                <span class="hero-card-icon">📍</span>
-                <div>
-                    <span class="hero-card-label">장소</span>
-                    <span class="hero-card-value">올댓마인드 문래점</span>
-                </div>
-            </div>
-            <div class="hero-card">
-                <span class="hero-card-icon">🕐</span>
-                <div>
-                    <span class="hero-card-label">신청 마감</span>
-                    <span class="hero-card-value">2026. 08. 18</span>
-                </div>
-            </div>
+        <div class="hero-text">
+            <p class="hero-kicker" id="hero-kicker"></p>
+            <h1 id="hero-title"></h1>
+            <p class="hero-desc" id="hero-desc"></p>
+            <dl class="fact-row" id="fact-row"></dl>
         </div>
+
+        <figure class="hero-figure">
+            <svg class="floorplan" viewBox="0 0 300 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="포스터 세션 행사장 배치도: 세 줄로 놓인 포스터 보드 앞에 발표자와 참가자가 모여 있음">
+                <rect class="floor" x="0" y="0" width="300" height="244"/>
+                <path class="wall" d="M128 243 H1 V1 H299 V243 H172"/>
+                <text class="label" x="150" y="238" text-anchor="middle">입구</text>
+
+                <rect class="board" x="24"  y="40" width="54" height="5"/>
+                <rect class="board" x="90"  y="40" width="54" height="5"/>
+                <rect class="board" x="156" y="40" width="54" height="5"/>
+                <rect class="board" x="222" y="40" width="54" height="5"/>
+                <circle class="pres" cx="34"  cy="56" r="4.5"/>
+                <circle class="pres" cx="100" cy="56" r="4.5"/>
+                <circle class="pres" cx="166" cy="56" r="4.5"/>
+                <circle class="pres" cx="232" cy="56" r="4.5"/>
+                <circle class="vis r1" cx="52"  cy="66" r="4"/>
+                <circle class="vis r1" cx="64"  cy="59" r="4"/>
+                <circle class="vis r1" cx="118" cy="67" r="4"/>
+                <circle class="vis r1" cx="182" cy="63" r="4"/>
+                <circle class="vis r1" cx="194" cy="70" r="4"/>
+                <circle class="vis r1" cx="205" cy="60" r="4"/>
+                <circle class="vis r1" cx="250" cy="66" r="4"/>
+                <circle class="vis r1" cx="263" cy="60" r="4"/>
+
+                <rect class="board" x="24"  y="104" width="54" height="5"/>
+                <rect class="board" x="90"  y="104" width="54" height="5"/>
+                <rect class="board" x="156" y="104" width="54" height="5"/>
+                <rect class="board" x="222" y="104" width="54" height="5"/>
+                <circle class="pres" cx="34"  cy="120" r="4.5"/>
+                <circle class="pres" cx="100" cy="120" r="4.5"/>
+                <circle class="pres" cx="166" cy="120" r="4.5"/>
+                <circle class="pres" cx="232" cy="120" r="4.5"/>
+                <circle class="vis r2" cx="50"  cy="128" r="4"/>
+                <circle class="vis r2" cx="62"  cy="134" r="4"/>
+                <circle class="vis r2" cx="114" cy="126" r="4"/>
+                <circle class="vis r2" cx="127" cy="133" r="4"/>
+                <circle class="vis r2" cx="139" cy="124" r="4"/>
+                <circle class="vis r2" cx="184" cy="130" r="4"/>
+                <circle class="vis r2" cx="250" cy="128" r="4"/>
+
+                <rect class="board" x="24"  y="168" width="54" height="5"/>
+                <rect class="board" x="90"  y="168" width="54" height="5"/>
+                <rect class="board" x="156" y="168" width="54" height="5"/>
+                <rect class="board" x="222" y="168" width="54" height="5"/>
+                <circle class="pres" cx="34"  cy="184" r="4.5"/>
+                <circle class="pres" cx="100" cy="184" r="4.5"/>
+                <circle class="pres" cx="166" cy="184" r="4.5"/>
+                <circle class="pres" cx="232" cy="184" r="4.5"/>
+                <circle class="vis r3" cx="54"  cy="194" r="4"/>
+                <circle class="vis r3" cx="116" cy="192" r="4"/>
+                <circle class="vis r3" cx="129" cy="199" r="4"/>
+                <circle class="vis r3" cx="183" cy="190" r="4"/>
+                <circle class="vis r3" cx="196" cy="197" r="4"/>
+                <circle class="vis r3" cx="248" cy="194" r="4"/>
+                <circle class="vis r3" cx="261" cy="188" r="4"/>
+                <circle class="vis r3" cx="272" cy="198" r="4"/>
+            </svg>
+            <figcaption>
+                <span class="legend is-board">포스터 보드</span>
+                <span class="legend is-pres">발표자</span>
+                <span class="legend">참가자</span>
+            </figcaption>
+        </figure>
     </div>
 </section>
 
-<!-- ── 본문: 2열 레이아웃 ── -->
+<!-- 본문 -->
 <div class="page-wrap">
 
-    <!-- 왼쪽: 안내 정보 -->
     <aside class="info-side">
-
-        <!-- 행사 소개 -->
-        <div class="info-card">
-            <div class="info-card-title">행사 소개</div>
-            <p style="font-size:0.9rem; color:#444; line-height:1.85;">
-                SPARK 포스터 세션은 매 기수마다 진행되는 정기 학술 행사로, 
-                부원들이 한 기수 동안 논문 스터디를 통해 쌓은 지식과 탐구 결과를 공유하는 행사입니다. 
-                다양한 생명과학 주제를 발표하며, 다양한 참가자들과 토론을 통해 새로운 관점과 아이디어를 나누는 경험을 하게 됩니다.
-            </p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;">
-                <span style="background:#eef9f3; color:var(--accent-dark); font-size:0.78rem; font-weight:600; padding:5px 12px; border-radius:100px;">학술 발표</span>
-                <span style="background:#eef9f3; color:var(--accent-dark); font-size:0.78rem; font-weight:600; padding:5px 12px; border-radius:100px;">포스터 제작</span>
-                <span style="background:#eef9f3; color:var(--accent-dark); font-size:0.78rem; font-weight:600; padding:5px 12px; border-radius:100px;">Q&A 세션</span>
-                <span style="background:#eef9f3; color:var(--accent-dark); font-size:0.78rem; font-weight:600; padding:5px 12px; border-radius:100px;">네트워킹</span>
-            </div>
+        <div class="panel info-card">
+            <h2 class="card-head">행사 소개</h2>
+            <p class="card-lede" id="about-text"></p>
+            <div class="tag-row" id="about-tags"></div>
         </div>
 
-        <!-- 일정 타임라인 -->
-        <div class="info-card">
-            <div class="info-card-title">10기 일정</div>
-            <div class="timeline">
-                <div class="timeline-item done">
-                    <div class="timeline-dot">✓</div>
-                    <div class="timeline-body">
-                        <div class="timeline-date">2026. 03. 21</div>
-                        <div class="timeline-label">OT</div>
-                    </div>
-                </div>
-                <div class="timeline-item done">
-                    <div class="timeline-dot">✓</div>
-                    <div class="timeline-body">
-                        <div class="timeline-date">2026. 05. 09</div>
-                        <div class="timeline-label">1차 세미나</div>
-                    </div>
-                </div>
-                <div class="timeline-item done">
-                    <div class="timeline-dot">✓</div>
-                    <div class="timeline-body">
-                        <div class="timeline-date">2026. 06. 27</div>
-                        <div class="timeline-label">2차 세미나</div>
-                    </div>
-                </div>
-                <div class="timeline-item done">
-                    <div class="timeline-dot">✓</div>
-                    <div class="timeline-body">
-                        <div class="timeline-date">2026. 08. 08</div>
-                        <div class="timeline-label">3차 세미나</div>
-                    </div>
-                </div>
-                <div class="timeline-item highlight">
-                    <div class="timeline-dot">★</div>
-                    <div class="timeline-body">
-                        <div class="timeline-date">2026. 08. 19</div>
-                        <div class="timeline-label">포스터 세션 🎉</div>
-                    </div>
-                </div>
-            </div>
+        <div class="panel info-card">
+            <h2 class="card-head" id="schedule-title"></h2>
+            <div class="timeline" id="timeline"></div>
         </div>
 
-
-        <div class="info-card">
-    <div class="info-card-title">지난 Poster Session</div>
-    <p style="font-size:0.85rem; color:var(--muted); margin-bottom:15px;">
-        열정적인 학술 교류의 현장을 확인해보세요.
-    </p>
-    
-    <div class="photo-gallery">
-        <div class="photo-item" onclick="openLightbox('posterpo1.jpg')">
-            <img src="posterpo1.jpg" alt="포스터 세션 현장 1">
-            <div class="photo-overlay"><span>🔍</span></div>
-        </div>
-        <div class="photo-item" onclick="openLightbox('posterpo2.jpg')">
-            <img src="posterpo2.jpg" alt="포스터 세션 현장 2">
-            <div class="photo-overlay"><span>🔍</span></div>
-        </div>
-        <div class="photo-item" onclick="openLightbox('posterpo3.jpg')">
-            <img src="posterpo3.jpg" alt="포스터 세션 현장 3">
-            <div class="photo-overlay"><span>🔍</span></div>
-        </div>
-        <div class="photo-item" onclick="openLightbox('posterpo4.jpg')">
-            <img src="posterpo4.jpg" alt="포스터 세션 현장 4">
-            <div class="photo-overlay"><span>🔍</span></div>
-        </div>
-    </div>
-</div>
-        <!-- 안내사항 -->
-        <div class="info-card">
-            <div class="info-card-title">참가 안내사항</div>
-            <div class="notice-list">
-                <div class="notice-row">
-                    <div class="notice-icon">①</div>
-                    <span>포스터 세션은 <strong>SPARK 10기 회원 전원</strong>이 참여하며, 각자 준비한 포스터를 발표합니다.</span>
-                </div>
-                <div class="notice-row">
-                    <div class="notice-icon">②</div>
-                    <span>포스터 규격은 <strong>A1</strong>이며, 영문으로 된 포스터를 한국어로 발표합니다.</span>
-                </div>
-                <div class="notice-row">
-                    <div class="notice-icon">③</div>
-                    <span>행사 당일 참석 할 경우 다음 기수 지원 시 <strong>가산점</strong>이 부여됩니다.</span>
-                </div>
-                <div class="notice-row">
-                    <div class="notice-icon">④</div>
-                    <span>행사는 지정된 시간 동안 자유롭게 운영되며, 편하신 시간에 방문하여 참여하시면 됩니다.</span>
-                </div>
-                <div class="notice-row">
-                    <div class="notice-icon">⑤</div>
-                    <span>행사 당일 사진·영상 촬영이 진행됩니다. 사진 제공 동의 여부를 참고 부탁드립니다.</span>
-                </div>
-                <div class="notice-row">
-                    <div class="notice-icon">⑥</div>
-                    <span>행사 하루 전, 신청자분들께 문자로 추가 안내가 발송될 예정이오니 참고해 주시기 바랍니다.</span>
-                </div>
-               <div class="notice-row">
-    <div class="notice-icon">⑦</div>
-    <span>문의는 <a href="https://pf.kakao.com/_hLbxeb" style="color:var(--accent-dark); font-weight:600;" target="_blank" rel="noopener noreferrer">카카오톡 채널</a>로 보내주세요.</span>
-</div>
-            </div>
+        <div class="panel info-card">
+            <h2 class="card-head">지난 포스터 세션</h2>
+            <p class="card-lede with-gap">사진을 누르면 크게 볼 수 있습니다.</p>
+            <div class="photo-gallery" id="photo-gallery"></div>
         </div>
 
+        <div class="panel info-card">
+            <h2 class="card-head">참가 안내사항</h2>
+            <div class="notice-list" id="notice-list"></div>
+        </div>
     </aside>
 
-    <!-- 오른쪽: 신청 폼 -->
-    <div class="form-card">
+    <!-- 신청 폼 -->
+    <div class="panel form-card">
 
-        <!-- 폼 헤더 -->
         <div class="form-header">
-            <div class="form-tag">사전 신청</div>
+            <span class="form-tag" id="form-tag">사전 신청</span>
             <h2>포스터 세션 참가 신청</h2>
             <p>아래 정보를 입력하여 참가를 신청해 주세요.</p>
         </div>
 
-        <!-- 성공 화면 (숨김) -->
         <div id="success-view">
-            <div class="success-icon">🎉</div>
-            <h3>신청이 완료되었습니다!</h3>
+            <div class="state-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            </div>
+            <h3>신청이 접수되었습니다</h3>
             <p>
-                포스터 세션 참가 신청을 받았습니다.<br>
                 자세한 안내는 입력하신 연락처로 전달됩니다.<br><br>
-                문의: <a href="mailto:officialspark@spark2021.com" style="color:var(--accent-dark);">officialspark@spark2021.com</a>
+                문의: <a class="mail-link"></a>
             </p>
         </div>
-<!-- 마감 화면 (숨김) -->
-<div id="closed-view">
-    <div class="closed-icon">⏰</div>
-    <h3>신청이 마감되었습니다</h3>
-    <p>
-        포스터 세션 사전 신청 접수가 종료되었습니다.<br>
-        (마감: 2026. 08. 18)<br><br>
-        문의: <a href="mailto:officialspark@spark2021.com" style="color:var(--accent-dark);">officialspark@spark2021.com</a>
-    </p>
-</div>
-        <!-- 접수 전 화면 (숨김) -->
-<div id="pending-view">
-    <div class="pending-icon">🗓️</div>
-    <h3>아직 신청 기간이 아닙니다</h3>
-    <p>
-        포스터 세션 사전 신청은 아래 기간에 접수됩니다.<br>
-        <strong id="pending-period" style="color:var(--primary);"></strong><br><br>
-        문의: <a href="mailto:officialspark@spark2021.com" style="color:var(--accent-dark);">officialspark@spark2021.com</a>
-    </p>
-</div>
-        <!-- 신청 폼 -->
+
+        <div id="closed-view">
+            <div class="state-mark alert" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.5l3.5 2"/></svg>
+            </div>
+            <h3>신청이 마감되었습니다</h3>
+            <p>
+                포스터 세션 사전 신청 접수가 종료되었습니다. <span id="closed-date"></span><br><br>
+                문의: <a class="mail-link"></a>
+            </p>
+        </div>
+
+        <div id="pending-view">
+            <div class="state-mark neutral" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+            </div>
+            <h3>아직 신청 기간이 아닙니다</h3>
+            <p>
+                포스터 세션 사전 신청은 아래 기간에 접수됩니다.<br>
+                <span id="pending-period"></span><br><br>
+                문의: <a class="mail-link"></a>
+            </p>
+        </div>
+
         <form id="poster-form">
-
-            <!-- 이름 -->
             <div class="form-group">
-                <label class="form-label" for="inp-name">
-                    이름 <span class="required">필수</span>
-                </label>
-                <input type="text" id="inp-name" name="name"
-                    placeholder="홍길동" required class="form-input">
+                <label class="form-label" for="inp-name">이름 <span class="required">필수</span></label>
+                <input type="text" id="inp-name" name="name" placeholder="홍길동" required class="form-input">
             </div>
 
-            <!-- 전화번호 -->
             <div class="form-group">
-                <label class="form-label" for="inp-phone">
-                    휴대폰 번호 <span class="required">필수</span>
-                </label>
-                <input type="tel" id="inp-phone" name="phone"
-                    placeholder="010-0000-0000" required class="form-input">
+                <label class="form-label" for="inp-phone">휴대폰 번호 <span class="required">필수</span></label>
+                <input type="tel" id="inp-phone" name="phone" placeholder="010-0000-0000" required class="form-input">
             </div>
 
-            <!-- 소속 -->
             <div class="form-group">
-                <label class="form-label" for="inp-affiliation">
-                    소속 (학교 / 학과) <span class="required">필수</span>
-                </label>
-                <input type="text" id="inp-affiliation" name="affiliation"
-                    placeholder="예: ○○대학교 생명과학과" required class="form-input">
+                <label class="form-label" for="inp-affiliation">소속 (학교 / 학과) <span class="required">필수</span></label>
+                <input type="text" id="inp-affiliation" name="affiliation" placeholder="예: ○○대학교 생명과학과" required class="form-input">
             </div>
 
-            <!-- 참가 유형 -->
             <div class="form-group">
-                <label class="form-label" for="inp-role">
-                    참가 유형 <span class="required">필수</span>
-                </label>
-                <select id="inp-role" name="role" required class="form-input">
-                    <option value="" disabled selected>선택해 주세요</option>
-                    <option value="역대 기수자">역대 기수자</option>
-                    <option value="외부 참관객">외부 참관객</option>
-                </select>
+                <label class="form-label" for="inp-role">참가 유형 <span class="required">필수</span></label>
+                <select id="inp-role" name="role" required class="form-input"></select>
             </div>
 
-            <!-- 알게 된 경로 -->
             <div class="form-group">
-                <label class="form-label" for="inp-source">
-                    알게 된 경로 <span class="required">필수</span>
-                </label>
-                <select id="inp-source" name="source" required class="form-input">
-                    <option value="" disabled selected>선택해 주세요</option>
-                    <option value="인스타그램">인스타그램 (@spark__2021)</option>
-                    <option value="네이버 카페">네이버 카페</option>
-                    <option value="링크드인">LinkedIn</option>
-                    <option value="지인 소개">지인 소개</option>
-                    <option value="에브리타임">에브리타임</option>
-                    <option value="기타">기타</option>
-                </select>
+                <label class="form-label" for="inp-source">알게 된 경로 <span class="required">필수</span></label>
+                <select id="inp-source" name="source" required class="form-input"></select>
             </div>
 
-            <!-- 사진 제공 동의 -->
             <div class="form-group">
-                <label class="form-label">
-                    행사 사진 활용 동의 <span class="required">필수</span>
+                <label class="form-label">행사 사진 활용 동의 <span class="required">필수</span></label>
+                <label class="checkbox-row">
+                    <input type="checkbox" name="photo_agree" value="동의함" required>
+                    <span>행사 중 촬영되는 사진 및 영상에 본인의 모습이 포함될 수 있음에 동의합니다. <span class="req-mark">(필수)</span></span>
                 </label>
-                <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
-                    <label class="checkbox-row">
-                        <input type="checkbox" name="photo_agree" value="동의함" required>
-                        <span>동의합니다 — 행사 진행 중 촬영되는 사진 및 영상에 본인의 모습이 포함될 수 있습니다. <span style="color:#e74c3c; font-size:0.8rem;">(필수)</span></span>
-                    </label>
-                </div>
             </div>
 
             <hr class="form-divider">
 
-            <!-- 개인정보 수집 동의 -->
             <div class="form-group">
-                <label class="form-label">
-                    개인정보 수집·이용 동의 <span class="required">필수</span>
-                </label>
+                <label class="form-label">개인정보 수집·이용 동의 <span class="required">필수</span></label>
                 <div class="privacy-box">
-                    <div class="privacy-scroll">
-                        <strong>[개인정보 수집·이용 동의서]</strong><br><br>
-                        수집 항목: 이름, 휴대폰 번호, 소속(학교·학과), 참가 유형, 행사 알게 된 경로, 사진 활용 동의 여부<br><br>
-                        수집 목적: 포스터 세션 참가 접수, 행사 안내 및 운영, 출결 관리<br><br>
-                        보유 기간: 행사 종료 후 30일 이내 파기<br><br>
-                        제3자 제공: 없음<br><br>
-                        귀하는 개인정보 수집·이용에 동의하지 않을 권리가 있습니다. 단, 동의하지 않을 경우 행사 참가 신청이 제한될 수 있습니다.
-                    </div>
-                    <label class="checkbox-row" style="padding-top:4px;">
+                    <div class="privacy-scroll" id="privacy-text" tabindex="0"></div>
+                    <label class="checkbox-row">
                         <input type="checkbox" name="privacy_agree" id="privacy_agree" required>
-                        <span>위 개인정보 수집·이용에 동의합니다. <span style="color:#e74c3c; font-size:0.8rem;">(필수)</span></span>
+                        <span>위 개인정보 수집·이용에 동의합니다. <span class="req-mark">(필수)</span></span>
                     </label>
                 </div>
             </div>
 
-            <!-- 제출 버튼 -->
-            <button type="submit" class="submit-btn" id="submit-btn">
-                신청하기 →
-            </button>
-
-            <p id="form-msg" style="text-align:center; font-size:0.84rem; margin-top:14px; min-height:20px; font-weight:600;"></p>
-
+            <button type="submit" class="submit-btn" id="submit-btn">신청하기</button>
+            <p id="form-msg"></p>
         </form>
     </div>
 </div>
 
-<!-- ── 푸터 ── -->
 <footer>
-    <p>&copy; 2026 SPARK · <a href="mailto:officialspark@spark2021.com">officialspark@spark2021.com</a> · Instagram: <a href="https://www.instagram.com/spark__2021/" target="_blank">@spark__2021</a></p>
+    <p id="footer-text"></p>
 </footer>
 
 <script>
+/* ══════════════════════════════════════════════
+   ⛔ 동작 코드 — 수정하지 않아도 됩니다.
+   [수정 구역 2]의 SITE 내용을 읽어 화면에 채워 넣습니다.
+══════════════════════════════════════════════ */
 (function () {
-    /* ── Toast ── */
-    function toast(msg, color) {
-        const el = document.getElementById('toast');
+    'use strict';
+
+    if (typeof SITE === 'undefined') {
+        document.getElementById('config-error').hidden = false;
+        return;
+    }
+
+    /* ── 도우미 함수 ────────────────────────── */
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+    const fill  = s => String(s == null ? '' : s).replace(/\{기수\}/g, SITE.generation);
+    const tidy  = s => fill(s).split('\n').map(l => l.trim()).join('\n').trim();
+    /* **굵게**, [글자](주소) 를 화면용으로 변환 */
+    const rich  = s => esc(tidy(s))
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    const toKST   = (d, time) => new Date(d + 'T' + time + '+09:00');
+    const dotDate = d => String(d).split('-').join('. ');          // 2026-08-19 → 2026. 08. 19
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ── 신청 기간 (한국시간) ────────────────── */
+    const OPEN_AT  = toKST(SITE.apply.start, '00:00:00');
+    const CLOSE_AT = toKST(SITE.apply.end,   '23:59:59');
+
+    /* ── 헤더 ───────────────────────────────── */
+    $('home-link').href = SITE.homePage;
+    $('logo').src = SITE.logo;
+    $('logo').alt = 'SPARK';
+
+    /* ── 히어로 ─────────────────────────────── */
+    $('hero-kicker').textContent = 'SPARK ' + SITE.generation + '기 정기 학술 행사';
+    $('hero-title').textContent  = '제 ' + SITE.sessionNumber + '회 SPARK Poster Session';
+    $('hero-desc').textContent   = fill(SITE.intro);
+    $('fact-row').innerHTML =
+        '<div class="fact"><dt>행사 일자</dt><dd>' + dotDate(SITE.date) + '<small>' + esc(SITE.time) + '</small></dd></div>' +
+        '<div class="fact"><dt>장소</dt><dd>' + esc(SITE.place) + '</dd></div>' +
+        '<div class="fact"><dt>신청 마감</dt><dd>' + dotDate(SITE.apply.end) + '</dd></div>';
+
+    /* ── 행사 소개 ──────────────────────────── */
+    $('about-text').innerHTML = rich(SITE.about.text);
+    $('about-tags').innerHTML = SITE.about.tags.map(t => '<span class="tag">' + esc(t) + '</span>').join('');
+
+    /* ── 일정 (지난 일정 회색 / 다음 일정 초록) ─ */
+    $('schedule-title').textContent = SITE.generation + '기 일정';
+    const now0 = new Date();
+    let nextFound = false;
+    $('timeline').innerHTML = SITE.schedule.map(ev => {
+        let cls = 'timeline-item';
+        if (toKST(ev.date, '23:59:59') < now0) cls += ' done';
+        else if (!nextFound) { cls += ' highlight'; nextFound = true; }
+        return '<div class="' + cls + '"><div class="timeline-dot"></div><div class="timeline-body">' +
+                   '<div class="timeline-date">' + dotDate(ev.date) + '</div>' +
+                   '<div class="timeline-label">' + esc(ev.label) + '</div>' +
+               '</div></div>';
+    }).join('');
+
+    /* ── 사진 ───────────────────────────────── */
+    $('photo-gallery').innerHTML = SITE.photos.map((src, i) =>
+        '<button type="button" class="photo-item" data-src="' + esc(src) + '" aria-label="지난 포스터 세션 사진 ' + (i + 1) + ' 크게 보기">' +
+            '<img src="' + esc(src) + '" alt="포스터 세션 현장 ' + (i + 1) + '" loading="lazy">' +
+        '</button>'
+    ).join('');
+    document.querySelectorAll('.photo-item').forEach(btn =>
+        btn.addEventListener('click', () => openLightbox(btn.dataset.src)));
+
+    /* ── 안내사항 ───────────────────────────── */
+    $('notice-list').innerHTML = SITE.notices.map((n, i) =>
+        '<div class="notice-row"><span class="notice-no">' + (i + 1) + '</span><span>' + rich(n) + '</span></div>'
+    ).join('');
+
+    /* ── 신청서 선택지 · 동의문 ─────────────── */
+    const toOptions = list =>
+        '<option value="" disabled selected>선택해 주세요</option>' +
+        list.map(o => '<option value="' + esc(o) + '">' + esc(o) + '</option>').join('');
+    $('inp-role').innerHTML   = toOptions(SITE.form.roles);
+    $('inp-source').innerHTML = toOptions(SITE.form.sources);
+    $('privacy-text').innerHTML = rich(SITE.form.privacy);
+
+    /* ── 연락처 · 푸터 ──────────────────────── */
+    document.querySelectorAll('.mail-link').forEach(a => {
+        a.href = 'mailto:' + SITE.contact.email;
+        a.textContent = SITE.contact.email;
+    });
+    $('footer-text').innerHTML =
+        '&copy; ' + now0.getFullYear() + ' SPARK &nbsp;|&nbsp; ' +
+        '<a href="mailto:' + esc(SITE.contact.email) + '">' + esc(SITE.contact.email) + '</a> &nbsp;|&nbsp; ' +
+        '<a href="' + esc(SITE.contact.instagramUrl) + '" target="_blank" rel="noopener">' + esc(SITE.contact.instagramName) + '</a>';
+
+
+    /* ══════════ 화면 동작 ══════════ */
+
+    /* 토스트 */
+    function toast(msg, isAlert) {
+        const el = $('toast');
         el.textContent = msg;
-        el.style.background = color || '#1a1a2e';
+        el.classList.toggle('alert', !!isAlert);
         el.classList.add('show');
         setTimeout(() => el.classList.remove('show'), 3000);
     }
 
-    /* ── 전화번호 자동 하이픈 ── */
-    const phoneInput = document.getElementById('inp-phone');
+    /* 전화번호 자동 하이픈 */
+    const phoneInput = $('inp-phone');
     phoneInput.addEventListener('input', () => {
-        let v = phoneInput.value.replace(/\D/g, '');
-        if (v.length <= 3) phoneInput.value = v;
-        else if (v.length <= 7) phoneInput.value = v.slice(0,3) + '-' + v.slice(3);
-        else phoneInput.value = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7,11);
+        const v = phoneInput.value.replace(/\D/g, '');
+        if (v.length <= 3)      phoneInput.value = v;
+        else if (v.length <= 7) phoneInput.value = v.slice(0, 3) + '-' + v.slice(3);
+        else                    phoneInput.value = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7, 11);
     });
 
-    /* ── 파일 업로드 드래그&드롭 (없으면 skip) ── */
-    // (이 폼에는 파일 업로드 없음 — 추후 확장 시 사용)
+    /* 신청 기간에 따라 화면 전환 (1분마다 다시 확인) */
+    const form      = $('poster-form');
+    const submitBtn = $('submit-btn');
+    const msgArea   = $('form-msg');
 
-    /* ── 폼 제출 ── */
-    const POSTER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwafY2GCfXNe0e4CGdds370ynk6iQxYengdOIseEKtxSETXdswL27q1G55Dhe1YTATB/exec';
-    // ↑ Google Apps Script 배포 URL로 교체해 주세요.
-
-    const form      = document.getElementById('poster-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const msgArea   = document.getElementById('form-msg');
-    /* ── 신청 기간 설정 (KST) ── */
-const OPEN_AT  = new Date('2026-08-03T00:00:00+09:00'); // 접수 시작
-const CLOSE_AT = new Date('2026-08-19T00:00:00+09:00'); // 접수 마감
-
-function getPhase() {
-    const now = new Date();
-    if (now < OPEN_AT)  return 'pending';
-    if (now > CLOSE_AT) return 'closed';
-    return 'open';
-}
-
-function fmt(d) {
-    return d.toLocaleDateString('ko-KR', {
-        year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Seoul'
-    });
-}
-
-function setBadge(text, bg, color, border) {
-    const badge = document.querySelector('.header-badge');
-    if (!badge) return;
-    badge.textContent       = text;
-    badge.style.background  = bg;
-    badge.style.color       = color;
-    badge.style.borderColor = border;
-}
-
-function applyPhase() {
-    const phase   = getPhase();
-    const success = document.getElementById('success-view');
-    const closed  = document.getElementById('closed-view');
-    const pending = document.getElementById('pending-view');
-    const tag     = document.querySelector('.form-tag');
-
-    // 제출 완료 화면이 떠 있으면 건드리지 않음
-    if (success && success.style.display === 'block') return phase;
-
-    form.style.display    = (phase === 'open') ? 'block' : 'none';
-    closed.style.display  = (phase === 'closed')  ? 'block' : 'none';
-    pending.style.display = (phase === 'pending') ? 'block' : 'none';
-
-    if (phase === 'pending') {
-        document.getElementById('pending-period').textContent =
-            fmt(OPEN_AT) + ' ~ ' + fmt(CLOSE_AT);
-        setBadge('🗓️ 신청 접수 전', 'rgba(19,50,87,0.07)', '#133257', 'rgba(19,50,87,0.2)');
-        if (tag) tag.textContent = '접수 예정';
-    } else if (phase === 'closed') {
-        setBadge('⏰ 신청 마감', 'rgba(231,76,60,0.10)', '#c0392b', 'rgba(231,76,60,0.3)');
-        if (tag) tag.textContent = '접수 마감';
-    } else {
-        setBadge('✅ 신청 접수 중', 'var(--accent-pale)', 'var(--accent-dark)', 'rgba(46,204,113,0.3)');
-        if (tag) tag.textContent = '사전 신청';
+    function getPhase() {
+        const now = new Date();
+        if (now < OPEN_AT)  return 'pending';
+        if (now > CLOSE_AT) return 'closed';
+        return 'open';
     }
-    return phase;
-}
 
-applyPhase();
-setInterval(applyPhase, 60 * 1000); // 1분마다 상태 갱신 (페이지 열어둬도 자동 전환)
+    function setChip(text, modifier) {
+        const chip = $('status-chip');
+        chip.textContent = text;
+        chip.className = 'status-chip' + (modifier ? ' ' + modifier : '');
+    }
 
+    function applyPhase() {
+        const phase = getPhase();
+        if ($('success-view').style.display === 'block') return;   // 제출 완료 화면이면 유지
+
+        form.style.display            = phase === 'open'    ? 'block' : 'none';
+        $('closed-view').style.display  = phase === 'closed'  ? 'block' : 'none';
+        $('pending-view').style.display = phase === 'pending' ? 'block' : 'none';
+
+        if (phase === 'pending') {
+            $('pending-period').textContent = dotDate(SITE.apply.start) + ' ~ ' + dotDate(SITE.apply.end);
+            setChip('신청 접수 전', 'is-pending');
+            $('form-tag').textContent = '접수 예정';
+        } else if (phase === 'closed') {
+            $('closed-date').textContent = '(마감: ' + dotDate(SITE.apply.end) + ')';
+            setChip('신청 마감', 'is-closed');
+            $('form-tag').textContent = '접수 마감';
+        } else {
+            setChip('신청 접수 중', '');
+            $('form-tag').textContent = '사전 신청';
+        }
+    }
+
+    applyPhase();
+    setInterval(applyPhase, 60 * 1000);
+
+    /* 신청서 제출 (구글 시트로 전송) */
     form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        // 유효성 검사
-        const phone = document.getElementById('inp-phone').value;
-        const phoneRegex = /^010-\d{4}-\d{4}$/;
-        if (!phoneRegex.test(phone)) {
-            toast('올바른 전화번호 형식을 입력해 주세요. (010-0000-0000)', '#e74c3c');
+        if (getPhase() !== 'open') {
+            applyPhase();
+            toast('신청 기간이 아닙니다.', true);
+            return;
+        }
+
+        const phone = phoneInput.value;
+        if (!/^010-\d{4}-\d{4}$/.test(phone)) {
+            toast('휴대폰 번호를 010-0000-0000 형식으로 입력해 주세요.', true);
             return;
         }
 
         const photoAgree = form.querySelector('input[name="photo_agree"]:checked');
         if (!photoAgree) {
-            toast('행사 사진 활용에 동의해 주세요.', '#e74c3c');
+            toast('행사 사진 활용에 동의해 주세요.', true);
             return;
         }
 
         submitBtn.disabled    = true;
-        submitBtn.textContent = '제출 중...';
+        submitBtn.textContent = '제출 중';
         msgArea.textContent   = '';
 
+        // ※ 아래 항목 이름(name, phone …)은 구글 시트 스크립트와 맞춰져 있으므로 바꾸지 마세요.
         const payload = {
             name:        form.elements['name'].value,
             phone:       phone,
@@ -1122,97 +1221,107 @@ setInterval(applyPhase, 60 * 1000); // 1분마다 상태 갱신 (페이지 열�
             role:        form.elements['role'].value,
             source:      form.elements['source'].value,
             photoAgree:  photoAgree.value,
-            submittedAt: new Date().toLocaleString('ko-KR')
+            submittedAt: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
         };
 
-        fetch(POSTER_SCRIPT_URL, {
+        fetch(SITE.sheetUrl, {
             method: 'POST',
             mode: 'no-cors',
             body: JSON.stringify(payload)
         })
         .then(() => {
-            // no-cors 응답은 본문을 읽을 수 없으므로, 전송 완료를 성공으로 처리합니다.
-            // (Apps Script의 리다이렉트/CORS 때문에 데이터가 저장됐는데도 실패로 뜨는 문제 방지)
+            // no-cors 응답은 본문을 읽을 수 없으므로 전송 완료를 성공으로 처리합니다.
             form.style.display = 'none';
-            document.getElementById('success-view').style.display = 'block';
-            launchConfetti();
+            $('success-view').style.display = 'block';
+            celebrate();
         })
         .catch(() => {
-            // 네트워크 자체가 끊긴 경우에만 여기로 들어옵니다.
-            msgArea.textContent = '❌ 제출에 실패했습니다. 네트워크 상태를 확인하고 다시 시도해 주세요.';
-            msgArea.style.color = '#e74c3c';
-
-            submitBtn.disabled  = false;
-            submitBtn.textContent = '신청하기 →';
+            msgArea.textContent   = '제출에 실패했습니다. 네트워크 상태를 확인하고 다시 시도해 주세요.';
+            submitBtn.disabled    = false;
+            submitBtn.textContent = '신청하기';
         });
     });
-    /* ── Confetti ── */
-    function launchConfetti() {
-        const colors = ['#2ecc71','#0a2342','#f1c40f','#3498db','#e74c3c','#9b59b6','#1abc9c'];
+
+    /* 제출 완료 연출 */
+    function celebrate() {
+        if (reduceMotion) return;
+
+        const colors = [getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#15674c',
+                        '#132638', '#c8a54a', '#4a7fa5', '#8a9a5b'];
         const canvas = document.createElement('canvas');
         canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;';
         document.body.appendChild(canvas);
+
         const ctx = canvas.getContext('2d');
         canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const particles = Array.from({ length: 140 }, () => ({
+        const particles = Array.from({ length: 90 }, () => ({
             x: Math.random() * canvas.width,
             y: -12,
-            r: Math.random() * 7 + 3,
-            d: Math.random() * 2.5 + 1,
+            r: Math.random() * 5 + 2.5,
+            d: Math.random() * 2.2 + 1,
             color: colors[Math.floor(Math.random() * colors.length)],
             tilt: 0,
-            tiltAngle: 0,
-            tiltSpeed: Math.random() * 0.1 + 0.04
+            tiltAngle: Math.random() * Math.PI * 2,
+            tiltSpeed: Math.random() * 0.09 + 0.03
         }));
 
         let frame, tick = 0;
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
+                ctx.globalAlpha = Math.max(0, 1 - tick / 200);
                 ctx.fillStyle = p.color;
                 ctx.beginPath();
                 ctx.ellipse(p.x, p.y, p.r, p.r * 0.45, p.tilt, 0, Math.PI * 2);
                 ctx.fill();
                 p.y += p.d + 1;
                 p.tiltAngle += p.tiltSpeed;
-                p.tilt = Math.sin(p.tiltAngle) * 13;
+                p.tilt = Math.sin(p.tiltAngle) * 12;
                 if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
             });
             tick++;
-            if (tick < 210) frame = requestAnimationFrame(draw);
+            if (tick < 200) frame = requestAnimationFrame(draw);
             else { cancelAnimationFrame(frame); canvas.remove(); }
         }
         frame = requestAnimationFrame(draw);
     }
-/* ── 라이트박스 기능 (이미지 크게 보기) ── */
-window.openLightbox = function(src) {
-    // 이미 존재하는 라이트박스가 있으면 제거
-    const oldBox = document.getElementById('lightbox');
-    if (oldBox) oldBox.remove();
 
-    const lightbox = document.createElement('div');
-    lightbox.id = 'lightbox';
-    lightbox.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.85); display: flex; align-items: center;
-        justify-content: center; z-index: 10000; cursor: zoom-out;
-        backdrop-filter: blur(5px); transition: opacity 0.3s ease;
-    `;
-    
-    const img = document.createElement('img');
-    img.src = src;
-    img.style.cssText = 'max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.5);';
-    
-    lightbox.appendChild(img);
-    document.body.appendChild(lightbox);
-    
-    lightbox.onclick = () => {
-        lightbox.style.opacity = '0';
-        setTimeout(() => lightbox.remove(), 300);
-    };
-};
+    /* 사진 크게 보기 */
+    function openLightbox(src) {
+        const old = $('lightbox');
+        if (old) old.remove();
+
+        const box = document.createElement('div');
+        box.id = 'lightbox';
+        box.setAttribute('role', 'dialog');
+        box.setAttribute('aria-modal', 'true');
+        box.style.cssText =
+            'position:fixed;inset:0;background:rgba(19,38,56,.88);display:flex;' +
+            'align-items:center;justify-content:center;z-index:10000;cursor:zoom-out;' +
+            'padding:32px;opacity:0;transition:opacity .25s ease;';
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = '';
+        img.style.cssText = 'max-width:100%;max-height:100%;border-radius:3px;box-shadow:0 24px 60px rgba(0,0,0,.45);';
+
+        box.appendChild(img);
+        document.body.appendChild(box);
+        requestAnimationFrame(() => { box.style.opacity = '1'; });
+
+        function close() {
+            box.style.opacity = '0';
+            setTimeout(() => box.remove(), 250);
+            document.removeEventListener('keydown', onKey);
+        }
+        function onKey(e) { if (e.key === 'Escape') close(); }
+
+        box.addEventListener('click', close);
+        document.addEventListener('keydown', onKey);
+    }
+
 })();
 </script>
 </body>
