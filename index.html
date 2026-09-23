@@ -1273,15 +1273,17 @@ section { scroll-margin-top: 66px; }
     /* ── 활동 기록 ──────────────────────────── */
     setLines('activity-title', SITE.activity.title);
     setLines('activity-sub', SITE.activity.subtitle);
-    $('activity-grid').innerHTML = SITE.activity.cards.map((c, i) =>
-        '<a href="' + esc(c.link) + '" class="panel figure-card"><figure>' +
+      $('activity-grid').innerHTML = SITE.activity.cards.map((c, i) => {
+        const tag  = c.link ? 'a' : 'div';                         // link가 없으면 클릭 안 되는 카드
+        const href = c.link ? ' href="' + esc(c.link) + '"' : '';
+        return '<' + tag + href + ' class="panel figure-card"><figure>' +
             '<div class="plate"><img src="' + esc(c.image) + '" alt="' + esc(c.title) + ' 현장" loading="lazy"></div>' +
             '<figcaption>' +
                 '<span class="fig-no">Fig. ' + (i + 1) + '</span>' + esc(c.title) +
                 '<span class="fig-sub">' + lines(c.sub) + '</span>' +
             '</figcaption>' +
-        '</figure></a>'
-    ).join('');
+        '</figure></' + tag + '>';
+    }).join('');
 
     /* ── 공지사항 ───────────────────────────── */
     setLines('notice-title', SITE.notice.title);
