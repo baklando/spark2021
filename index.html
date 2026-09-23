@@ -54,6 +54,10 @@
  │ 5. 날짜는 항상 '2026-09-19' 형식(연-월-일)으로 씁니다.│
  │ 6. 글 안에 작은따옴표 ' 를 넣고 싶으면 ‘ ’ 를 쓰세요.  │
  │ 7. // 뒤의 회색 글씨는 설명이라 화면에 나오지 않습니다. │
+ │ 8. 줄을 바꾸고 싶으면 '  ' 대신 ` (백틱, 숫자 1 왼쪽 키)│
+ │    으로 감싸고, 원하는 곳에서 Enter를 치면 됩니다.      │
+ │      예) intro: `첫째 줄                          │
+ │                  둘째 줄`,                        │
  │                                                  │
  │ 수정 후 페이지 위에 빨간 경고가 뜨면,                 │
  │ 방금 고친 곳에서 쉼표나 따옴표가 빠진 것입니다.         │
@@ -1173,6 +1177,8 @@ section { scroll-margin-top: 66px; }
     const toKST    = (dateStr, time) => new Date(dateStr + 'T' + time + '+09:00');
     const monthDay = dateStr => { const p = String(dateStr).split('-').map(Number); return p[1] + '월 ' + p[2] + '일'; };
     const tidy     = s => String(s == null ? '' : s).split('\n').map(l => l.trim()).join('\n').trim();
+    const lines    = s => esc(tidy(s)).replace(/\n/g, '<br>');                  // Enter 친 곳 = 줄바꿈
+    const setLines = (id, text) => { const el = $(id); if (el) el.innerHTML = lines(text); };
     const now      = new Date();
 
     const ICONS = {
@@ -1198,15 +1204,15 @@ section { scroll-margin-top: 66px; }
     setText('mob-apply', R.menuText);
 
     /* ── 히어로 ─────────────────────────────── */
-    setText('hero-slogan', SITE.slogan);
     setText('wordmark', SITE.name);
     $('acronym').innerHTML = String(SITE.fullName).split(' ').map(w =>
         /^[A-Z]/.test(w) ? '<b>' + esc(w[0]) + '</b>' + esc(w.slice(1)) : esc(w)
     ).join(' ');
-    setText('hero-lede', SITE.hero.intro);
-    setText('hero-meta', SITE.hero.meta);
+    setLines('hero-slogan', SITE.slogan);
+    setLines('hero-lede', SITE.hero.intro);
+    setLines('hero-meta', SITE.hero.meta);
     setText('hero-poster-link', SITE.hero.posterLinkText);
-    setText('hero-caption', SITE.hero.figureCaption);
+    setLines('hero-caption', SITE.hero.figureCaption);
 
     const cta = $('hero-cta');
     if (status === 'open') {
@@ -1225,19 +1231,19 @@ section { scroll-margin-top: 66px; }
     }
 
     /* ── 소개 ───────────────────────────────── */
-    setText('about-title', SITE.about.title);
-    setText('about-sub', SITE.about.subtitle);
+    setLines('about-title', SITE.about.title);
+    setLines('about-sub', SITE.about.subtitle);
     $('about-grid').innerHTML = SITE.about.cards.map(c =>
         '<div class="panel about-card">' +
             (ICONS[c.icon] || ICONS.paper) +
-            '<h3>' + esc(c.title) + '</h3>' +
-            '<p>' + esc(c.text) + '</p>' +
+            '<h3>' + lines(c.title) + '</h3>' +
+            '<p>' + lines(c.text) + '</p>' +
         '</div>'
     ).join('');
 
     /* ── 일정 ───────────────────────────────── */
     setText('schedule-title', gen + '기 일정');
-    setText('schedule-sub', SITE.schedule.subtitle);
+    setLines('schedule-sub', SITE.schedule.subtitle);
     let nextFound = false;
     $('schedule-track').innerHTML = SITE.schedule.events.map(ev => {
         let cls = 'stop';
@@ -1245,26 +1251,26 @@ section { scroll-margin-top: 66px; }
         else if (!nextFound) { cls += ' next'; nextFound = true; }
         return '<div class="' + cls + '"><div>' +
                    '<span class="date">' + monthDay(ev.date) + '</span>' +
-                   '<span class="label">' + esc(ev.label) + '</span>' +
+                   '<span class="label">' + lines(ev.label) + '</span>' +
                '</div></div>';
     }).join('');
 
     /* ── 활동 기록 ──────────────────────────── */
-    setText('activity-title', SITE.activity.title);
-    setText('activity-sub', SITE.activity.subtitle);
+    setLines('activity-title', SITE.activity.title);
+    setLines('activity-sub', SITE.activity.subtitle);
     $('activity-grid').innerHTML = SITE.activity.cards.map((c, i) =>
         '<a href="' + esc(c.link) + '" class="panel figure-card"><figure>' +
             '<div class="plate"><img src="' + esc(c.image) + '" alt="' + esc(c.title) + ' 현장" loading="lazy"></div>' +
             '<figcaption>' +
                 '<span class="fig-no">Fig. ' + (i + 1) + '</span>' + esc(c.title) +
-                '<span class="fig-sub">' + esc(c.sub) + '</span>' +
+                '<span class="fig-sub">' + lines(c.sub) + '</span>' +
             '</figcaption>' +
         '</figure></a>'
     ).join('');
 
     /* ── 공지사항 ───────────────────────────── */
-    setText('notice-title', SITE.notice.title);
-    setText('notice-sub', SITE.notice.subtitle);
+    setLines('notice-title', SITE.notice.title);
+    setLines('notice-sub', SITE.notice.subtitle);
 
     const notices = SITE.notice.items.slice();
     if (SITE.notice.showRecruitNotice) {
@@ -1281,7 +1287,7 @@ section { scroll-margin-top: 66px; }
             '<button class="faq-question" aria-expanded="false">' +
                 '<span>' + esc(n.title) + '</span><i class="sign" aria-hidden="true"></i>' +
             '</button>' +
-            '<div class="faq-answer"><div class="inner">' + esc(tidy(n.content)) + '</div></div>' +
+            '<div class="faq-answer"><div class="inner">' + lines(n.content) + '</div></div>' +
         '</div>'
     ).join('');
 
