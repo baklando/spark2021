@@ -959,6 +959,7 @@ section { scroll-margin-top: 66px; }
             <a href="#activity">활동</a>
             <a href="#news">공지사항</a>
             <a id="nav-poster">포스터 세션</a>
+            <a id="nav-archive">포스터 아카이브</a>
             <a id="nav-apply" class="nav-apply"></a>
         </nav>
 
@@ -974,6 +975,7 @@ section { scroll-margin-top: 66px; }
     <a href="#activity">활동</a>
     <a href="#news">공지사항</a>
     <a id="mob-poster">포스터 세션</a>
+    <a id="mob-archive">포스터 아카이브</a> 
     <a id="mob-apply"></a>
 </div>
 
@@ -1207,6 +1209,12 @@ section { scroll-margin-top: 66px; }
     logo.alt = SITE.name;
     setHref(['nav-poster', 'mob-poster', 'hero-poster-link'], SITE.pages.poster);
     setHref(['nav-apply', 'mob-apply', 'hero-cta'], SITE.pages.apply);
+     if (SITE.pages.archive) {
+        setHref(['nav-archive', 'mob-archive'], SITE.pages.archive);
+    } else {                                   // archive 줄을 지우면 메뉴도 숨김
+        $('nav-archive').style.display = 'none';
+        $('mob-archive').style.display = 'none';
+    }
     setText('nav-apply', R.menuText);
     setText('mob-apply', R.menuText);
 
