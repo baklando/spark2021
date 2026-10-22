@@ -635,7 +635,8 @@ nav.pc-nav a.nav-apply:hover { background: var(--accent-deep); color: var(--pape
 
 /* ── 섹션 공통 ──────────────────────────── */
 section { scroll-margin-top: 66px; }
-.section-body { padding: 84px 0; }
+/* 위아래 여백만 지정 (좌우 여백은 .wrap 에서 관리) */
+.section-body { padding-top: 84px; padding-bottom: 84px; }
 .section-body.no-top { padding-top: 0; }
 
 .section-head {
@@ -912,10 +913,22 @@ section { scroll-margin-top: 66px; }
 }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ── 모바일 여백 ────────────────────────── */
 @media (max-width: 860px) {
     .hero { padding: 66px 0 58px; }
-    .section-body { padding: 58px 0; }
-    .wrap, .header-inner, .hero-inner { padding: 0 20px; }
+
+    /* 좌우 여백만 지정 (위아래 여백을 덮어쓰지 않도록 분리) */
+    .wrap, .header-inner, .hero-inner {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    /* 섹션 위아래 간격 — 숫자를 키우면 더 넓어집니다 */
+    .section-body {
+        padding-top: 72px;
+        padding-bottom: 72px;
+    }
+    .section-body.no-top { padding-top: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
